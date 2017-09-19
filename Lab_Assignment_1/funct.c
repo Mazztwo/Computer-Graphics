@@ -73,5 +73,32 @@ Vec4* crossProduct(Vec4 *vec1, Vec4 *vec2, Vec4 *productVector)
     return productVector;
 }
 
+/*
+Function:
+    Calculate the dot product of vec1 and vec2.
+    Though Vec4 are 4 compnents, we are only 
+    concerened with the dot product of their x, y, and z.
+Inputs:
+    vec1 --> pointer to user defined vector
+    vec2 --> pointer to user defined vector
+Outputs:
+    sum --> the scalar result of vec1 dot vec2
+*/
+float dotProduct(Vec4 *vec1, Vec4 *vec2)
+{
+    /* 
+    A = {a1, a2, a3}
+    B = {b1, b2, b3}
 
+    A dot B = a1b1 + a2b2 + a3b3 
+    */
 
+    // Calculate each part of dot product, and sum them
+    float part1 = vec1->x * vec2->x;
+    float part2 = vec1->y * vec2->y;
+    float part3 = vec1->z * vec2->z;
+
+    float sum = part1 + part2 + part3;
+
+    return sum;
+}
