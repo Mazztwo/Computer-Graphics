@@ -15,3 +15,4 @@ void printVec4(Vec4 *ptr_vectorToPrint);
 Vec4* crossProduct(Vec4 *vec1, Vec4 *vec2, Vec4 *productVector);
 float dotProduct(Vec4 *vec1, Vec4 *vec2);
 Vec4* scalarMultVector(float scalar, Vec4 *vec, Vec4 *productVector);
+Vec4* vec4addition(Vec4* vec1, Vec4* vec2, Vec4 *sumVec);

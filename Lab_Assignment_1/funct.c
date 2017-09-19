@@ -136,3 +136,47 @@ Vec4* scalarMultVector(float scalar, Vec4 *vec, Vec4 *productVector)
 
     return productVector;
 }
+
+/*
+Function:
+    This function performs the vector addition of two vectors.
+    Though Vec4 are 4 compnents, we are only 
+    concerened with the summation of their x, y, and z.    
+Inputs:
+    vec1,vec2 --> vector pointers to be added
+Outputs:
+    sumVec --> sum of vec1 and vec2
+*/
+Vec4* vec4addition(Vec4* vec1, Vec4* vec2, Vec4 *sumVec)
+{
+    /* 
+    A = {a1, a2, a3}
+    B = {b1, b2, b3}
+
+    A + B = {a1+b1, a2+b2, a3+b3} 
+    */
+    
+    // Caclulate each component and return vector to user
+    float xSum = vec1->x + vec2->x;
+    float ySum = vec1->y + vec2->y;
+    float zSum = vec1->z + vec2->z;
+
+    sumVec->x = xSum;
+    sumVec->y = ySum;
+    sumVec->z = zSum;
+
+    return sumVec;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
