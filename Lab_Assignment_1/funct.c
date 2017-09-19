@@ -102,3 +102,37 @@ float dotProduct(Vec4 *vec1, Vec4 *vec2)
 
     return sum;
 }
+
+/*
+Function:
+    This function will multiply a vector by a scalar. 
+    Though Vec4 are 4 compnents, we are only concerened 
+    with the cross product of their x, y, and z.
+Inputs:
+    scalar --> scalar to multiply vector by
+    vec --> vector to be multiplied by scalar
+    productVector --> pointer to place result in
+Outputs:
+    productVector --> scalar multiplied vector 
+*/
+Vec4* scalarMultVector(float scalar, Vec4 *vec, Vec4 *productVector)
+{
+    /*
+    A = {a1, a2, a3}
+    C = constant
+
+    C*A = {C*a1, C*a2, C*a3}
+    */
+
+    // Multiply each component of vector by the scalar
+    float xProd = vec->x * scalar;
+    float yProd = vec->y * scalar;
+    float zProd = vec->z * scalar;
+
+    // Update product vector and return to user
+    productVector->x = xProd;
+    productVector->y = yProd;
+    productVector->z = zProd;
+
+    return productVector;
+}
