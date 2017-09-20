@@ -16,6 +16,7 @@ int main()
     Vec4 scalarMultProduct = {0,0,0,0}; // C * vec1 = {C*x,C*y,C*z}
     Vec4 vecSum = {0,0,0,0};            // vec1 + vec2 = vecSum
     Vec4 vecSub = {0,0,0,0};            // vec - vec2 = vecSub
+    Mat4 matrix1 = {{1,2,3,4},{3,2,1,4},{4,5,6,5},{0,0,0,0}};
 
     // Test printVec4 
     printVec4(&vector1);
@@ -45,6 +46,10 @@ int main()
     // Test vec4subtraction
     vecSub = *vec4subtraction(&vector1, &vector2, &vecSub);
     printVec4(&vecSub);
+    //////////////////////////
+
+    // Test printMat4
+    printMat4(&matrix1);
     //////////////////////////
     
 

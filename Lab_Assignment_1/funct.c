@@ -15,22 +15,22 @@ Function:
     This method will derefrence a vec4 pointer
     and print its x,y,z, and w components.
 Inputs: 
-    ptr_vectorToPrint --> Contains a
+    vectorToPrint --> Contains a
         pointer to a vec4 struc to 
         print to terminal.
 Outputs:
     None
 */
-void printVec4(Vec4 *ptr_vectorToPrint)
+void printVec4(Vec4 *vectorToPrint)
 {   
     // Declare vec4 components and 
     // extract from vector
     float xComp, yComp, zComp, wComp;
     
-    xComp = ptr_vectorToPrint->x;
-    yComp = ptr_vectorToPrint->y;
-    zComp = ptr_vectorToPrint->z;
-    wComp = ptr_vectorToPrint->w;
+    xComp = vectorToPrint->x;
+    yComp = vectorToPrint->y;
+    zComp = vectorToPrint->z;
+    wComp = vectorToPrint->w;
     
     // Print each component of vector
     printf("[%f,%f,%f,%f]\n", xComp,yComp,zComp,wComp);
@@ -60,7 +60,7 @@ Vec4* crossProduct(Vec4 *vec1, Vec4 *vec2, Vec4 *productVector)
     A X B = {a2b3 - a3b2, a3b1 - a1b3, a1b2 - a2b1}  
     */
     
-    // Calculate x,y,z of product, set w to 0.
+    // Calculate x,y,z of product
     float xProd = (vec1->y * vec2->z) - (vec1->z * vec2->y);
     float yProd = (vec1->z * vec2->x) - (vec1->x * vec2->z);
     float zProd = (vec1->x * vec2->y) - (vec1->y * vec2->x);
@@ -198,6 +198,53 @@ Vec4* vec4subtraction(Vec4* vec1, Vec4* vec2, Vec4 *subVec)
 
     return subVec;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+Function:
+Inputs:
+Outputs:
+*/
+void printMat4(Mat4 *mat)
+{
+    /* 
+    Matrix:
+   | x.x | y.x | z.x | w.x |
+   | x.y | y.y | z.y | w.y |
+   | x.z | y.z | z.z | w.z |
+   | x.w | y.w | z.w | w.w |
+    */
+
+    printf("| %f | %f | %f | %f |\n",mat->x.x,mat->y.x,mat->z.x,mat->w.x);
+    printf("| %f | %f | %f | %f |\n",mat->x.y,mat->y.y,mat->z.y,mat->w.y);
+    printf("| %f | %f | %f | %f |\n",mat->x.z,mat->y.z,mat->z.z,mat->w.z);
+    printf("| %f | %f | %f | %f |\n",mat->x.w,mat->y.w,mat->z.w,mat->w.w);
+}
+
+
+
+
+
+
+
+
+
 
 
 
