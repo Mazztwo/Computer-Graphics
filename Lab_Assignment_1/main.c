@@ -21,6 +21,9 @@ int main()
     Mat4 scalarProdMatrix = {{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0}};
     Mat4 matSum = {{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0}};
     Mat4 matSub = {{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0}};
+    Mat4 matProd = {{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0}};
+    Mat4 matrix3 = {{1,0,2,1},{1,3,3,0},{1,1,1,2},{0,2,0,1}};
+    Mat4 inverse = {{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0}};
 
     // Test printVec4 
     printVec4(&vector1);
@@ -74,7 +77,22 @@ int main()
     printMat4(&matSub);
     //////////////////////////
 
+    // Test matMultiplication
+    matProd = *matMultiplication(&matrix1,&matrix2,&matProd);
+    printf("\n");
+    printMat4(&matProd);
+    //////////////////////////
 
+    // Test inverseMatrix
+    printf("\n");
+    inverse = *inverseMatrix(&matrix1,&inverse);
+    printf("\n");
+    inverse = *inverseMatrix(&matrix2,&inverse);
+    printf("\n");
+    inverse = *inverseMatrix(&matrix3,&inverse);
+    printf("\n");
+    printMat4(&inverse);
+    //////////////////////////
 
     return 0;
 }

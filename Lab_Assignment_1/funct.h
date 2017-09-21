@@ -31,3 +31,5 @@ void printMat4(Mat4 *mat);
 Mat4* scalarMultMatrix(float scalar, Mat4 *mat, Mat4 *productMatrix);
 Mat4* mat4addition(Mat4 *mat1, Mat4 *mat2, Mat4 *sumMatrix);
 Mat4* mat4subtraction(Mat4 *mat1, Mat4 *mat2, Mat4 *subMatrix);
+Mat4* matMultiplication(Mat4 *mat1, Mat4 *mat2, Mat4 *productMatrix);
+Mat4* inverseMatrix(Mat4 *mat1, Mat4 *inverse);

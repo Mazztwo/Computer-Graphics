@@ -144,6 +144,7 @@ Function:
     concerened with the summation of their x, y, and z.    
 Inputs:
     vec1,vec2 --> vector pointers to be added
+    sumVec --> pointer to place resulting vector
 Outputs:
     sumVec --> sum of vec1 and vec2
 */
@@ -175,6 +176,7 @@ Function:
     concerened with the summation of their x, y, and z.    
 Inputs:
     vec1,vec2 --> vector pointers to be added
+    sumVec --> ponter to place resulting vector
 Outputs:
     sumVec --> subtraction of vec1 and vec2
 */
@@ -230,6 +232,7 @@ Function:
 Inputs:
     scalar --> scalar to multiply every element in matrix by
     mat --> matrix to be multiplied by scalar
+    productMatrix --> pointer to place resulting matrix
 Outputs:
     productMatrix --> resulting matrix to be returned to user
 */
@@ -260,6 +263,7 @@ Function:
     This function adds two matricies together.
 Inputs:
     mat1, mat2 --> matricies to be added together.
+    sumMatrix --> pointer to place resulting matrix
 Outputs:
     sumMatrix --> summation of mat1 and mat2
 */
@@ -289,7 +293,8 @@ Mat4* mat4addition(Mat4 *mat1, Mat4 *mat2, Mat4 *sumMatrix)
 Function:
     This function subtracts two matricies together.
 Inputs:
-    mat1, mat2 --> matricies to be subtracted .
+    mat1, mat2 --> matricies to be subtracted
+    sumMatrix --> pointer to place resulting matrix
 Outputs:
     sumMatrix --> subtraction of mat1 and mat2
 */
@@ -315,12 +320,261 @@ Mat4* mat4subtraction(Mat4 *mat1, Mat4 *mat2, Mat4 *subMatrix)
     return subMatrix;
 }
 
+/*
+Function:
+    This function multiplies two 4x4 matricies together.
+Inputs:
+    mat1,mat2 --> two matricies to be multiplied together
+    productMatrix --> pointer to place resulting matrix
+Outputs:
+    productMatrix --> product of two matricies
+*/
+Mat4* matMultiplication(Mat4 *mat1, Mat4 *mat2, Mat4 *productMatrix)
+{
+    /* 
+    Matrix:
+   | x.x | y.x | z.x | w.x |     | x.x | y.x | z.x | w.x |
+   | x.y | y.y | z.y | w.y |     | x.y | y.y | z.y | w.y |
+   | x.z | y.z | z.z | w.z |     | x.z | y.z | z.z | w.z |
+   | x.w | y.w | z.w | w.w |     | x.w | y.w | z.w | w.w |
+    */
+    // row x col
+    
+    // Row 1
+    productMatrix->col1.x = (mat1->col1.x * mat2->col1.x) +
+                            (mat1->col2.x * mat2->col1.y) + 
+                            (mat1->col3.x * mat2->col1.z) +
+                            (mat1->col4.x * mat2->col1.z);
 
+    productMatrix->col2.x = (mat1->col1.x * mat2->col2.x) +
+                            (mat1->col2.x * mat2->col2.y) + 
+                            (mat1->col3.x * mat2->col2.z) +
+                            (mat1->col4.x * mat2->col2.z);
 
+    productMatrix->col3.x = (mat1->col1.x * mat2->col3.x) +
+                            (mat1->col2.x * mat2->col3.y) + 
+                            (mat1->col3.x * mat2->col3.z) +
+                            (mat1->col4.x * mat2->col3.z);
 
+    productMatrix->col4.x = (mat1->col1.x * mat2->col4.x) +
+                            (mat1->col2.x * mat2->col4.y) + 
+                            (mat1->col3.x * mat2->col4.z) +
+                            (mat1->col4.x * mat2->col4.z);
 
+    // Row 2
+    productMatrix->col1.y = (mat1->col1.y * mat2->col1.x) +
+                            (mat1->col2.y * mat2->col1.y) + 
+                            (mat1->col3.y * mat2->col1.z) +
+                            (mat1->col4.y * mat2->col1.z);
 
+    productMatrix->col2.y = (mat1->col1.y * mat2->col2.x) +
+                            (mat1->col2.y * mat2->col2.y) + 
+                            (mat1->col3.y * mat2->col2.z) +
+                            (mat1->col4.y * mat2->col2.z);
 
+    productMatrix->col3.y = (mat1->col1.y * mat2->col3.x) +
+                            (mat1->col2.y * mat2->col3.y) + 
+                            (mat1->col3.y * mat2->col3.z) +
+                            (mat1->col4.y * mat2->col3.z);
+
+    productMatrix->col4.y = (mat1->col1.y * mat2->col4.x) +
+                            (mat1->col2.y * mat2->col4.y) + 
+                            (mat1->col3.y * mat2->col4.z) +
+                            (mat1->col4.y * mat2->col4.z);
+
+    // Row 3
+    productMatrix->col1.z = (mat1->col1.z * mat2->col1.x) +
+                            (mat1->col2.z * mat2->col1.y) + 
+                            (mat1->col3.z * mat2->col1.z) +
+                            (mat1->col4.z * mat2->col1.z);
+
+    productMatrix->col2.z = (mat1->col1.z * mat2->col2.x) +
+                            (mat1->col2.z * mat2->col2.y) + 
+                            (mat1->col3.z * mat2->col2.z) +
+                            (mat1->col4.z * mat2->col2.z);
+
+    productMatrix->col3.z = (mat1->col1.z * mat2->col3.x) +
+                            (mat1->col2.z * mat2->col3.y) + 
+                            (mat1->col3.z * mat2->col3.z) +
+                            (mat1->col4.z * mat2->col3.z);
+
+    productMatrix->col4.z = (mat1->col1.z * mat2->col4.x) +
+                            (mat1->col2.z * mat2->col4.y) + 
+                            (mat1->col3.z * mat2->col4.z) +
+                            (mat1->col4.z * mat2->col4.z);
+
+    // Row 4
+    productMatrix->col1.w = (mat1->col1.w * mat2->col1.x) +
+                            (mat1->col2.w * mat2->col1.y) + 
+                            (mat1->col3.w * mat2->col1.z) +
+                            (mat1->col4.w * mat2->col1.z);
+
+    productMatrix->col2.w = (mat1->col1.w * mat2->col2.x) +
+                            (mat1->col2.w * mat2->col2.y) + 
+                            (mat1->col3.w * mat2->col2.z) +
+                            (mat1->col4.w * mat2->col2.z);
+
+    productMatrix->col3.w = (mat1->col1.w * mat2->col3.x) +
+                            (mat1->col2.w * mat2->col3.y) + 
+                            (mat1->col3.w * mat2->col3.z) +
+                            (mat1->col4.w * mat2->col3.z);
+
+    productMatrix->col4.w = (mat1->col1.w * mat2->col4.x) +
+                            (mat1->col2.w * mat2->col4.y) + 
+                            (mat1->col3.w * mat2->col4.z) +
+                            (mat1->col4.w * mat2->col4.z);  
+
+    return productMatrix;
+}
+
+/*
+Function:
+Inputs:
+Outputs:
+*/
+Mat4* inverseMatrix(Mat4 *mat1, Mat4 *inverse)
+{
+    /*
+    inverse of matrix A = (1/determinant(A)) * adjoin(A)
+    */
+
+    // Calculate determinant
+    float determinant = (mat1->col1.x * mat1->col2.y * mat1->col3.z * mat1->col4.w) +
+                        (mat1->col1.x * mat1->col3.y * mat1->col4.z * mat1->col2.w) +
+                        (mat1->col1.x * mat1->col4.y * mat1->col2.z * mat1->col3.w) +
+                        (mat1->col2.x * mat1->col1.y * mat1->col4.z * mat1->col3.w) +
+                        (mat1->col2.x * mat1->col3.y * mat1->col1.z * mat1->col4.w) +
+                        (mat1->col2.x * mat1->col4.y * mat1->col3.z * mat1->col1.w) +
+                        (mat1->col3.x * mat1->col1.y * mat1->col2.z * mat1->col4.w) +
+                        (mat1->col3.x * mat1->col2.y * mat1->col4.z * mat1->col1.w) +
+                        (mat1->col3.x * mat1->col4.y * mat1->col1.z * mat1->col2.w) +
+                        (mat1->col4.x * mat1->col1.y * mat1->col3.z * mat1->col2.w) +
+                        (mat1->col4.x * mat1->col2.y * mat1->col1.z * mat1->col3.w) +
+                        (mat1->col4.x * mat1->col3.y * mat1->col2.z * mat1->col1.w) -
+                        (mat1->col1.x * mat1->col2.y * mat1->col4.z * mat1->col3.w) -
+                        (mat1->col1.x * mat1->col3.y * mat1->col2.z * mat1->col4.w) -
+                        (mat1->col1.x * mat1->col4.y * mat1->col3.z * mat1->col2.w) -
+                        (mat1->col2.x * mat1->col1.y * mat1->col3.z * mat1->col4.w) -
+                        (mat1->col2.x * mat1->col3.y * mat1->col4.z * mat1->col1.w) -
+                        (mat1->col2.x * mat1->col4.y * mat1->col1.z * mat1->col3.w) -
+                        (mat1->col3.x * mat1->col1.y * mat1->col4.z * mat1->col2.w) -
+                        (mat1->col3.x * mat1->col2.y * mat1->col1.z * mat1->col4.w) -
+                        (mat1->col3.x * mat1->col4.y * mat1->col2.z * mat1->col1.w) -
+                        (mat1->col4.x * mat1->col1.y * mat1->col2.z * mat1->col3.w) -
+                        (mat1->col4.x * mat1->col2.y * mat1->col3.z * mat1->col1.w) -
+                        (mat1->col4.x * mat1->col3.y * mat1->col1.z * mat1->col2.w);
+    
+    // If determinant is 0, inverse of matrix does not exist.
+    if(determinant == 0)
+    {
+        printf("Inverse of matrix does not exist because determinant = 0.\n");
+        return inverse;
+    }
+    
+    // Calculate adjoin
+    Mat4 adjoin = {{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0}};
+    adjoin.col1.x = (mat1->col2.y * mat1->col3.z * mat1->col4.w) + 
+                    (mat1->col3.y * mat1->col4.z * mat1->col2.w) +
+                    (mat1->col4.y * mat1->col2.z * mat1->col3.w) -
+                    (mat1->col2.y * mat1->col4.z * mat1->col3.w) -
+                    (mat1->col3.y * mat1->col2.z * mat1->col4.w) -
+                    (mat1->col4.y * mat1->col3.z * mat1->col2.w);
+    adjoin.col2.x = (mat1->col2.x * mat1->col4.z * mat1->col3.w) + 
+                    (mat1->col3.x * mat1->col2.z * mat1->col4.w) +
+                    (mat1->col4.x * mat1->col3.z * mat1->col2.w) -
+                    (mat1->col2.x * mat1->col3.z * mat1->col4.w) -
+                    (mat1->col3.x * mat1->col4.z * mat1->col2.w) -
+                    (mat1->col4.x * mat1->col2.z * mat1->col3.w);
+    adjoin.col3.x = (mat1->col2.x * mat1->col3.y * mat1->col4.w) + 
+                    (mat1->col3.x * mat1->col4.y * mat1->col2.w) +
+                    (mat1->col4.x * mat1->col2.y * mat1->col3.w) -
+                    (mat1->col2.x * mat1->col4.y * mat1->col3.w) -
+                    (mat1->col3.x * mat1->col2.y * mat1->col4.w) -
+                    (mat1->col4.x * mat1->col3.y * mat1->col2.w);                
+    adjoin.col4.x = (mat1->col2.x * mat1->col4.y * mat1->col3.z) + 
+                    (mat1->col3.x * mat1->col2.y * mat1->col4.z) +
+                    (mat1->col4.x * mat1->col3.y * mat1->col2.z) -
+                    (mat1->col2.x * mat1->col3.y * mat1->col4.z) -
+                    (mat1->col3.x * mat1->col4.y * mat1->col2.z) -
+                    (mat1->col4.x * mat1->col2.y * mat1->col3.z);
+    adjoin.col1.y = (mat1->col1.y * mat1->col4.z * mat1->col3.w) + 
+                    (mat1->col3.y * mat1->col1.z * mat1->col4.w) +
+                    (mat1->col4.y * mat1->col3.z * mat1->col1.w) -
+                    (mat1->col1.y * mat1->col3.z * mat1->col4.w) -
+                    (mat1->col3.y * mat1->col4.z * mat1->col1.w) -
+                    (mat1->col4.y * mat1->col1.z * mat1->col3.w);
+    adjoin.col2.y = (mat1->col1.x * mat1->col3.z * mat1->col4.w) + 
+                    (mat1->col3.x * mat1->col4.z * mat1->col1.w) +
+                    (mat1->col4.x * mat1->col1.z * mat1->col3.w) -
+                    (mat1->col1.x * mat1->col4.z * mat1->col3.w) -
+                    (mat1->col3.x * mat1->col1.z * mat1->col4.w) -
+                    (mat1->col4.x * mat1->col3.z * mat1->col1.w);
+    adjoin.col3.y = (mat1->col1.x * mat1->col4.y * mat1->col3.w) + 
+                    (mat1->col3.x * mat1->col1.y * mat1->col4.w) +
+                    (mat1->col4.x * mat1->col3.y * mat1->col1.w) -
+                    (mat1->col1.x * mat1->col3.y * mat1->col4.w) -
+                    (mat1->col3.x * mat1->col4.y * mat1->col1.w) -
+                    (mat1->col4.x * mat1->col1.y * mat1->col3.w);
+    adjoin.col4.y = (mat1->col1.x * mat1->col3.y * mat1->col4.z) + 
+                    (mat1->col3.x * mat1->col4.y * mat1->col1.z) +
+                    (mat1->col4.x * mat1->col1.y * mat1->col3.z) -
+                    (mat1->col1.x * mat1->col4.y * mat1->col3.z) -
+                    (mat1->col3.x * mat1->col1.y * mat1->col4.z) -
+                    (mat1->col4.x * mat1->col3.y * mat1->col1.z);
+    adjoin.col1.z = (mat1->col1.y * mat1->col2.z * mat1->col4.w) + 
+                    (mat1->col2.y * mat1->col4.z * mat1->col1.w) +
+                    (mat1->col4.y * mat1->col1.z * mat1->col2.w) -
+                    (mat1->col1.y * mat1->col4.z * mat1->col2.w) -
+                    (mat1->col2.y * mat1->col1.z * mat1->col4.w) -
+                    (mat1->col4.y * mat1->col2.z * mat1->col1.w);
+    adjoin.col2.z = (mat1->col1.x * mat1->col4.z * mat1->col2.w) + 
+                    (mat1->col2.x * mat1->col1.z * mat1->col4.w) +
+                    (mat1->col4.x * mat1->col2.z * mat1->col1.w) -
+                    (mat1->col1.x * mat1->col2.z * mat1->col4.w) -
+                    (mat1->col2.x * mat1->col4.z * mat1->col1.w) -
+                    (mat1->col4.x * mat1->col1.z * mat1->col2.w);
+    adjoin.col3.z = (mat1->col1.x * mat1->col2.y * mat1->col4.w) + 
+                    (mat1->col2.x * mat1->col4.y * mat1->col1.w) +
+                    (mat1->col4.x * mat1->col1.y * mat1->col2.w) -
+                    (mat1->col1.x * mat1->col4.y * mat1->col2.w) -
+                    (mat1->col2.x * mat1->col1.y * mat1->col4.w) -
+                    (mat1->col4.x * mat1->col2.y * mat1->col1.w);
+    adjoin.col4.z = (mat1->col1.x * mat1->col4.y * mat1->col2.z) + 
+                    (mat1->col2.x * mat1->col1.y * mat1->col4.z) +
+                    (mat1->col4.x * mat1->col2.y * mat1->col1.z) -
+                    (mat1->col1.x * mat1->col2.y * mat1->col4.z) -
+                    (mat1->col2.x * mat1->col4.y * mat1->col1.z) -
+                    (mat1->col4.x * mat1->col1.y * mat1->col2.z);
+    adjoin.col1.w = (mat1->col1.y * mat1->col3.z * mat1->col2.w) + 
+                    (mat1->col2.y * mat1->col1.z * mat1->col3.w) +
+                    (mat1->col3.y * mat1->col2.z * mat1->col1.w) -
+                    (mat1->col1.y * mat1->col2.z * mat1->col3.w) -
+                    (mat1->col2.y * mat1->col3.z * mat1->col1.w) -
+                    (mat1->col3.y * mat1->col1.z * mat1->col2.w);
+    adjoin.col2.w = (mat1->col1.x * mat1->col2.z * mat1->col3.w) + 
+                    (mat1->col2.x * mat1->col3.z * mat1->col1.w) +
+                    (mat1->col3.x * mat1->col1.z * mat1->col2.w) -
+                    (mat1->col1.x * mat1->col3.z * mat1->col2.w) -
+                    (mat1->col2.x * mat1->col1.z * mat1->col3.w) -
+                    (mat1->col3.x * mat1->col2.z * mat1->col1.w);
+    adjoin.col3.w = (mat1->col1.x * mat1->col3.y * mat1->col2.w) + 
+                    (mat1->col2.x * mat1->col1.y * mat1->col3.w) +
+                    (mat1->col3.x * mat1->col2.y * mat1->col1.w) -
+                    (mat1->col1.x * mat1->col2.y * mat1->col3.w) -
+                    (mat1->col2.x * mat1->col3.y * mat1->col1.w) -
+                    (mat1->col3.x * mat1->col1.y * mat1->col2.w);
+    adjoin.col4.w = (mat1->col1.x * mat1->col2.y * mat1->col3.z) + 
+                    (mat1->col2.x * mat1->col3.y * mat1->col1.z) +
+                    (mat1->col3.x * mat1->col1.y * mat1->col2.z) -
+                    (mat1->col1.x * mat1->col3.y * mat1->col2.z) -
+                    (mat1->col2.x * mat1->col1.y * mat1->col3.z) -
+                    (mat1->col3.x * mat1->col2.y * mat1->col1.z);
+    
+    inverse = scalarMultMatrix((1/determinant),&adjoin,inverse);
+
+    return inverse;
+
+}
 
 
 
