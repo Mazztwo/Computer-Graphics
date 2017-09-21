@@ -17,6 +17,10 @@ int main()
     Vec4 vecSum = {0,0,0,0};            // vec1 + vec2 = vecSum
     Vec4 vecSub = {0,0,0,0};            // vec - vec2 = vecSub
     Mat4 matrix1 = {{1,2,3,4},{3,2,1,4},{4,5,6,5},{0,0,0,0}};
+    Mat4 matrix2 = {{2,2,2,2},{1,1,2,0},{1,1,1,1},{0,0,0,0}};
+    Mat4 scalarProdMatrix = {{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0}};
+    Mat4 matSum = {{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0}};
+    Mat4 matSub = {{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0}};
 
     // Test printVec4 
     printVec4(&vector1);
@@ -52,6 +56,25 @@ int main()
     printMat4(&matrix1);
     //////////////////////////
     
+    // Test scalarMultMatrix
+    scalarProdMatrix = *scalarMultMatrix(3,&matrix1,&scalarProdMatrix);
+    printf("\n");
+    printMat4(&scalarProdMatrix);
+    //////////////////////////
+    
+    // Test mat4addition
+    matSum = *mat4addition(&matrix1,&matrix2,&matSum);
+    printf("\n");
+    printMat4(&matSum);
+    //////////////////////////
+
+    // Test mat4subtraction
+    matSub = *mat4subtraction(&matrix1,&matrix2,&matSub);
+    printf("\n");
+    printMat4(&matSub);
+    //////////////////////////
+
+
 
     return 0;
 }

@@ -199,27 +199,13 @@ Vec4* vec4subtraction(Vec4* vec1, Vec4* vec2, Vec4 *subVec)
     return subVec;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
 Function:
+    This function prints a 4x4 matrix in column major fashion.
 Inputs:
+    mat--> pointer to matrix to print
 Outputs:
+    None
 */
 void printMat4(Mat4 *mat)
 {
@@ -231,21 +217,103 @@ void printMat4(Mat4 *mat)
    | x.w | y.w | z.w | w.w |
     */
 
-    printf("| %f | %f | %f | %f |\n",mat->x.x,mat->y.x,mat->z.x,mat->w.x);
-    printf("| %f | %f | %f | %f |\n",mat->x.y,mat->y.y,mat->z.y,mat->w.y);
-    printf("| %f | %f | %f | %f |\n",mat->x.z,mat->y.z,mat->z.z,mat->w.z);
-    printf("| %f | %f | %f | %f |\n",mat->x.w,mat->y.w,mat->z.w,mat->w.w);
+    printf("| %f | %f | %f | %f |\n",mat->col1.x,mat->col2.x,mat->col3.x,mat->col4.x);
+    printf("| %f | %f | %f | %f |\n",mat->col1.y,mat->col2.y,mat->col3.y,mat->col4.y);
+    printf("| %f | %f | %f | %f |\n",mat->col1.z,mat->col2.z,mat->col3.z,mat->col4.z);
+    printf("| %f | %f | %f | %f |\n",mat->col1.w,mat->col2.w,mat->col3.w,mat->col4.w);
 }
 
+/*
+Function:
+    Function takes a matrix and multiplies every element
+    by a scalar.
+Inputs:
+    scalar --> scalar to multiply every element in matrix by
+    mat --> matrix to be multiplied by scalar
+Outputs:
+    productMatrix --> resulting matrix to be returned to user
+*/
+Mat4* scalarMultMatrix(float scalar, Mat4 *mat, Mat4 *productMatrix)
+{
+    productMatrix->col1.x = mat->col1.x * scalar;
+    productMatrix->col1.y = mat->col1.y * scalar;
+    productMatrix->col1.z = mat->col1.z * scalar;
+    productMatrix->col1.w = mat->col1.w * scalar;
+    productMatrix->col2.x = mat->col2.x * scalar;
+    productMatrix->col2.y = mat->col2.y * scalar;
+    productMatrix->col2.z = mat->col2.z * scalar;
+    productMatrix->col2.w = mat->col2.w * scalar;
+    productMatrix->col3.x = mat->col3.x * scalar;
+    productMatrix->col3.y = mat->col3.y * scalar;
+    productMatrix->col3.z = mat->col3.z * scalar;
+    productMatrix->col3.w = mat->col3.w * scalar;
+    productMatrix->col4.x = mat->col4.x * scalar;
+    productMatrix->col4.y = mat->col4.y * scalar;
+    productMatrix->col4.z = mat->col4.z * scalar;
+    productMatrix->col4.w = mat->col4.w * scalar;
+   
+    return productMatrix;
+}
 
+/*
+Function:
+    This function adds two matricies together.
+Inputs:
+    mat1, mat2 --> matricies to be added together.
+Outputs:
+    sumMatrix --> summation of mat1 and mat2
+*/
+Mat4* mat4addition(Mat4 *mat1, Mat4 *mat2, Mat4 *sumMatrix)
+{
+    sumMatrix->col1.x = mat1->col1.x + mat2->col1.x;
+    sumMatrix->col1.y = mat1->col1.y + mat2->col1.y;
+    sumMatrix->col1.z = mat1->col1.z + mat2->col1.z;
+    sumMatrix->col1.w = mat1->col1.w + mat2->col1.w;
+    sumMatrix->col2.x = mat1->col2.x + mat2->col2.x;
+    sumMatrix->col2.y = mat1->col2.y + mat2->col2.y;
+    sumMatrix->col2.z = mat1->col2.z + mat2->col2.z;
+    sumMatrix->col2.w = mat1->col2.w + mat2->col2.w;
+    sumMatrix->col3.x = mat1->col3.x + mat2->col3.x;
+    sumMatrix->col3.y = mat1->col3.y + mat2->col3.y;
+    sumMatrix->col3.z = mat1->col3.z + mat2->col3.z;
+    sumMatrix->col3.w = mat1->col3.w + mat2->col3.w;
+    sumMatrix->col4.x = mat1->col4.x + mat2->col4.x;
+    sumMatrix->col4.y = mat1->col4.y + mat2->col4.y;
+    sumMatrix->col4.z = mat1->col4.z + mat2->col4.z;
+    sumMatrix->col4.w = mat1->col4.w + mat2->col4.w;
 
+    return sumMatrix;
+}
 
+/*
+Function:
+    This function subtracts two matricies together.
+Inputs:
+    mat1, mat2 --> matricies to be subtracted .
+Outputs:
+    sumMatrix --> subtraction of mat1 and mat2
+*/
+Mat4* mat4subtraction(Mat4 *mat1, Mat4 *mat2, Mat4 *subMatrix)
+{
+    subMatrix->col1.x = mat1->col1.x - mat2->col1.x;
+    subMatrix->col1.y = mat1->col1.y - mat2->col1.y;
+    subMatrix->col1.z = mat1->col1.z - mat2->col1.z;
+    subMatrix->col1.w = mat1->col1.w - mat2->col1.w;
+    subMatrix->col2.x = mat1->col2.x - mat2->col2.x;
+    subMatrix->col2.y = mat1->col2.y - mat2->col2.y;
+    subMatrix->col2.z = mat1->col2.z - mat2->col2.z;
+    subMatrix->col2.w = mat1->col2.w - mat2->col2.w;
+    subMatrix->col3.x = mat1->col3.x - mat2->col3.x;
+    subMatrix->col3.y = mat1->col3.y - mat2->col3.y;
+    subMatrix->col3.z = mat1->col3.z - mat2->col3.z;
+    subMatrix->col3.w = mat1->col3.w - mat2->col3.w;
+    subMatrix->col4.x = mat1->col4.x - mat2->col4.x;
+    subMatrix->col4.y = mat1->col4.y - mat2->col4.y;
+    subMatrix->col4.z = mat1->col4.z - mat2->col4.z;
+    subMatrix->col4.w = mat1->col4.w - mat2->col4.w;
 
-
-
-
-
-
+    return subMatrix;
+}
 
 
 

@@ -13,10 +13,10 @@ typedef struct
 
 typedef struct
 {
-    Vec4 x;
-    Vec4 y;
-    Vec4 z;
-    Vec4 w;
+    Vec4 col1;
+    Vec4 col2;
+    Vec4 col3;
+    Vec4 col4;
 }Mat4;
 
 
@@ -28,3 +28,6 @@ Vec4* vec4addition(Vec4* vec1, Vec4* vec2, Vec4 *sumVec);
 Vec4* vec4subtraction(Vec4* vec1, Vec4* vec2, Vec4 *subVec);
 
 void printMat4(Mat4 *mat);
+Mat4* scalarMultMatrix(float scalar, Mat4 *mat, Mat4 *productMatrix);
+Mat4* mat4addition(Mat4 *mat1, Mat4 *mat2, Mat4 *sumMatrix);
+Mat4* mat4subtraction(Mat4 *mat1, Mat4 *mat2, Mat4 *subMatrix);
