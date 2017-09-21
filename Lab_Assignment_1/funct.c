@@ -1,5 +1,8 @@
 /*
-Lab Assignment 1
+Alessio Mazzone
+CS1566 Computer Graphics
+ 
+Lab Assignment 1 functions
 This file will contain all the implementations of the 
 functions required of the Lab Assignment: 1 
 instruction pdf.
@@ -576,16 +579,46 @@ Mat4* inverseMatrix(Mat4 *mat1, Mat4 *inverse)
 
 }
 
-
-
 /*
 Function:
+     This function transposes a matrix.
 Inputs:
+     mat1 --> matrix to be transposed
+     transpose --> pointer where transpose will be placed
 Outputs:
+     transpose --> transposed matrix
 */
+Mat4* transposeMatrix(Mat4 *mat1, Mat4 *transpose)
+{
+    /*
+     | A1 | B1 | C1 | D1 |T        | A1 | A2 | A3 | A4 |
+     | A2 | B2 | C2 | D2 |         | B1 | B2 | B3 | B4 |
+     | A3 | B3 | C3 | D3 |    =    | C1 | C2 | C3 | C4 |
+     | A4 | B4 | C4 | D4 |         | D1 | D2 | D3 | D4 |
+     */
+    
+    transpose->col1.x = mat1->col1.x;
+    transpose->col2.x = mat1->col1.y;
+    transpose->col3.x = mat1->col1.z;
+    transpose->col4.x = mat1->col1.w;
+    
+    transpose->col1.y = mat1->col2.x;
+    transpose->col2.y = mat1->col2.y;
+    transpose->col3.y = mat1->col2.z;
+    transpose->col4.y = mat1->col2.w;
+    
+    transpose->col1.z = mat1->col3.x;
+    transpose->col2.z = mat1->col3.y;
+    transpose->col3.z = mat1->col3.z;
+    transpose->col4.z = mat1->col3.w;
 
-
-
+    transpose->col1.w = mat1->col4.x;
+    transpose->col2.w = mat1->col4.y;
+    transpose->col3.w = mat1->col4.z;
+    transpose->col4.w = mat1->col4.w;
+    
+    return transpose;
+}
 
 
 

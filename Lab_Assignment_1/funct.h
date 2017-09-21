@@ -1,8 +1,10 @@
 /*
-Header file for Lab Assignment 1
+Alessio Mazzone
+CS1566 Computer Graphics
+
+ Header file for Lab Assignment 1
 */
 
-// Define a vector, Vec4
 typedef struct
 {
     float x;
@@ -33,3 +35,4 @@ Mat4* mat4addition(Mat4 *mat1, Mat4 *mat2, Mat4 *sumMatrix);
 Mat4* mat4subtraction(Mat4 *mat1, Mat4 *mat2, Mat4 *subMatrix);
 Mat4* matMultiplication(Mat4 *mat1, Mat4 *mat2, Mat4 *productMatrix);
 Mat4* inverseMatrix(Mat4 *mat1, Mat4 *inverse);
+Mat4* transposeMatrix(Mat4 *mat1, Mat4 *transpose);
