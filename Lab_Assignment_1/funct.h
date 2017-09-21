@@ -1,7 +1,8 @@
 /*
 Alessio Mazzone
 CS1566 Computer Graphics
-
+University of Pittsburgh
+ 
  Header file for Lab Assignment 1
 */
 

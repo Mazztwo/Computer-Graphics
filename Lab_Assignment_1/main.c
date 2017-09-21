@@ -1,6 +1,7 @@
 /*
 Alessio Mazzone
 CS1566 Computer Graphics
+University of Pittsburgh
  
 Lab Assignment1 Main
 This file will contain the main() for 

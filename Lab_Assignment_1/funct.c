@@ -1,6 +1,7 @@
 /*
 Alessio Mazzone
 CS1566 Computer Graphics
+University of Pittsburgh
  
 Lab Assignment 1 functions
 This file will contain all the implementations of the 
