@@ -41,7 +41,7 @@
 		CAD869811F7574C70024E021 = {
 			isa = PBXGroup;
 			children = (
-				CAD8698C1F7574C70024E021 /* Project_1 */,
+				CAD8698D1F7574C70024E021 /* main.c */,
 				CAD8698B1F7574C70024E021 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -52,14 +52,6 @@
 				CAD8698A1F7574C70024E021 /* Project_1 */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		CAD8698C1F7574C70024E021 /* Project_1 */ = {
-			isa = PBXGroup;
-			children = (
-				CAD8698D1F7574C70024E021 /* main.c */,
-			);
-			path = Project_1;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
