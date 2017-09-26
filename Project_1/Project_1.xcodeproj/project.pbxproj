@@ -10,6 +10,8 @@
 		CAD8698E1F7574C70024E021 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = CAD8698D1F7574C70024E021 /* main.c */; };
 		CAD869961F7575660024E021 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAD869951F7575660024E021 /* GLUT.framework */; };
 		CAD869981F75756B0024E021 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAD869971F75756B0024E021 /* OpenGL.framework */; };
+		CAFF04B91F75790E00E31CF0 /* initShader.c in Sources */ = {isa = PBXBuildFile; fileRef = CAFF04B71F75790E00E31CF0 /* initShader.c */; };
+		CAFF04BC1F757A2000E31CF0 /* funct.c in Sources */ = {isa = PBXBuildFile; fileRef = CAFF04BA1F757A2000E31CF0 /* funct.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -33,6 +35,10 @@
 		CAD8699C1F7576950024E021 /* fshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fshader.glsl; sourceTree = "<group>"; };
 		CAFF04B51F75782000E31CF0 /* vshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = vshader.glsl; path = "../../../../../../Library/Developer/Xcode/DerivedData/Project_1-cjkfqoqiorluszffxlhamolfhccl/Build/Products/Debug/vshader.glsl"; sourceTree = "<group>"; };
 		CAFF04B61F75782000E31CF0 /* fshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = fshader.glsl; path = "../../../../../../Library/Developer/Xcode/DerivedData/Project_1-cjkfqoqiorluszffxlhamolfhccl/Build/Products/Debug/fshader.glsl"; sourceTree = "<group>"; };
+		CAFF04B71F75790E00E31CF0 /* initShader.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = initShader.c; sourceTree = "<group>"; };
+		CAFF04B81F75790E00E31CF0 /* initShader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = initShader.h; sourceTree = "<group>"; };
+		CAFF04BA1F757A2000E31CF0 /* funct.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = funct.c; sourceTree = "<group>"; };
+		CAFF04BB1F757A2000E31CF0 /* funct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = funct.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +57,10 @@
 		CAD869811F7574C70024E021 = {
 			isa = PBXGroup;
 			children = (
+				CAFF04BA1F757A2000E31CF0 /* funct.c */,
+				CAFF04BB1F757A2000E31CF0 /* funct.h */,
+				CAFF04B71F75790E00E31CF0 /* initShader.c */,
+				CAFF04B81F75790E00E31CF0 /* initShader.h */,
 				CAD8699B1F7576950024E021 /* vshader.glsl */,
 				CAD8699C1F7576950024E021 /* fshader.glsl */,
 				CAD8698D1F7574C70024E021 /* main.c */,
@@ -135,6 +145,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAFF04BC1F757A2000E31CF0 /* funct.c in Sources */,
+				CAFF04B91F75790E00E31CF0 /* initShader.c in Sources */,
 				CAD8698E1F7574C70024E021 /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
