@@ -189,7 +189,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
 {
     if(key == 'q')
     exit(0);
-    
+    /*
     if(!enableIdle)
     {
         if(key == 'X')
@@ -223,7 +223,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
             tr_matrix.col4.z = 0.0;
             enableIdle = 0;
         }
-    }
+    }*/
     
 }
 
@@ -252,17 +252,23 @@ void idle(void)
     }
 }
 
+void mouse(int button, int state, int x, int y)
+{
+    
+}
+
 int main(int argc, char **argv)
 {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
     glutInitWindowSize(512, 512);
     glutInitWindowPosition(100,100);
-    glutCreateWindow("Triangle");
+    glutCreateWindow("Project 1");
     glewInit();
     init();
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
+    glutMouseFunc(mouse);
     glutIdleFunc(idle);
     glutMainLoop();
     
