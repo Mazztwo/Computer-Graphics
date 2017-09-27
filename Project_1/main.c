@@ -136,6 +136,13 @@ float initialY = 0.0;
 float currX = 0.0;
 float currY = 0.0;
 
+// Declare vector pointing from initial mouse click to origin
+Vec3 originVector = {0.0,0.0,0.0};
+
+
+
+
+
 
 GLuint ctm_location;
 
@@ -306,6 +313,7 @@ void mouse(int button, int state, int x, int y)
             // calculation of axis of rotation
             initialX = x;
             initialY = y;
+            printf("Initial X: %f\nInitial Y: %f\n", initialX, initialY);
             
             glutPostRedisplay();
         }
@@ -317,7 +325,15 @@ void mouse(int button, int state, int x, int y)
 
 void motion(int x, int y)
 {
+    // Capture moving x,y
+    currX = x;
+    currY = y;
     
+    printf("Curr X: %f\nCurr Y: %f\n", currX, currY);
+    
+    // We must calculate cross product
+    
+    glutPostRedisplay();
 }
 
 
