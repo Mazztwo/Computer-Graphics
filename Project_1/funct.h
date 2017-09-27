@@ -30,9 +30,9 @@ typedef struct
 
 typedef struct
 {
-    GLfloat x;
-    GLfloat y;
-    GLfloat z;
+    float x;
+    float y;
+    float z;
 } Vec3;
 
 

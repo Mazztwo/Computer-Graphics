@@ -65,7 +65,7 @@ Vec3 vertices[36] =
     {0.2, 0.2, -0.2},              // top right
     {-0.2, 0.2, -0.2},             // top left
     {-0.2, 0.2, 0.2},            // bottom left
-    {0.2, 0.2, -0.2},              // top right
+    {0.2, 0.2, -0.2,},              // top right
     {-0.2, 0.2, 0.2},            // bottom left
     {0.2, 0.2, 0.2},              // bottom right
     
@@ -127,9 +127,19 @@ Vec4 colors[36] =
 // Declare number of verticies
 int num_vertices = 36;
 
+// Declare initial x,y coordinates of cick
+float initialX = 0.0;
+float initialY = 0.0;
+
+// Declare x and y variables that are
+// being drawn by user rotating object
+float currX = 0.0;
+float currY = 0.0;
+
+
 GLuint ctm_location;
 
-Mat4 tr_matrix =
+Mat4 scaling_matrix =
 {
     {1.0, 0.0, 0.0, 0.0},
     {0.0, 1.0, 0.0, 0.0},
@@ -176,7 +186,7 @@ void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &tr_matrix);
+    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &scaling_matrix);
     
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_LINE);
@@ -185,30 +195,34 @@ void display(void)
     glutSwapBuffers();
 }
 
+
 void keyboard(unsigned char key, int mousex, int mousey)
 {
     if(key == 'q')
     exit(0);
-    /*
+    
+    
     if(!enableIdle)
     {
-        if(key == 'X')
-        tr_matrix.col4.x += 0.1;
-        else if(key == 'x')
-        tr_matrix.col4.x -= 0.1;
-        else if(key == 'Y')
-        tr_matrix.col4.y += 0.1;
-        else if(key == 'y')
-        tr_matrix.col4.y -= 0.1;
-        else if(key == 'Z')
-        tr_matrix.col4.z += 0.1;
-        else if(key == 'z')
-        tr_matrix.col4.z -= 0.1;
+        if(key == 'o')
+        {
+            scaling_matrix.col1.x *= 1.02;
+            scaling_matrix.col2.y *= 1.02;
+            scaling_matrix.col3.z *= 1.02;
+            glutPostRedisplay();
+        }
+        else if(key == 'l')
+        {
+            scaling_matrix.col1.x *= 1/1.02;
+            scaling_matrix.col2.y *= 1/1.02;
+            scaling_matrix.col3.z *= 1/1.02;
+            glutPostRedisplay();
+        }
         else if(key == ' ')
         {
-            tr_matrix.col4.x = 0.5;
-            tr_matrix.col4.y = 0.5;
-            tr_matrix.col4.z = 0.0;
+            scaling_matrix.col4.x = 0.5;
+            scaling_matrix.col4.y = 0.5;
+            scaling_matrix.col4.z = 0.0;
             enableIdle = 1;
         }
         
@@ -218,12 +232,12 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         if(key == ' ')
         {
-            tr_matrix.col4.x = 0.0;
-            tr_matrix.col4.y = 0.0;
-            tr_matrix.col4.z = 0.0;
+            scaling_matrix.col4.x = 0.0;
+            scaling_matrix.col4.y = 0.0;
+            scaling_matrix.col4.z = 0.0;
             enableIdle = 0;
         }
-    }*/
+    }
     
 }
 
@@ -233,18 +247,18 @@ void idle(void)
     {
         if(leftDown)
         {
-            tr_matrix.col4.x -= 0.01;
-            tr_matrix.col4.y -= 0.01;
+            scaling_matrix.col4.x -= 0.01;
+            scaling_matrix.col4.y -= 0.01;
             
-            if(tr_matrix.col4.x < -0.5)
+            if(scaling_matrix.col4.x < -0.5)
             leftDown = 0;
         }
         else
         {
-            tr_matrix.col4.x += 0.01;
-            tr_matrix.col4.y += 0.01;
+            scaling_matrix.col4.x += 0.01;
+            scaling_matrix.col4.y += 0.01;
             
-            if(tr_matrix.col4.x > 0.5)
+            if(scaling_matrix.col4.x > 0.5)
             leftDown = 1;
         }
         
@@ -252,10 +266,61 @@ void idle(void)
     }
 }
 
+
+
+// Listner for mouse scroll up or down.
+// Scroll up enlarges object, scroll down shrinks it.
 void mouse(int button, int state, int x, int y)
+{
+    // Add scaling matrix to object
+    // Scroll UP --> button = 3
+    // Scroll DOWN --> button = 4
+    
+    // Scroll up enlarge
+    /*
+    printf("Button = %d\n",button);
+    
+    if(button == 3)
+    {
+        printf("Scrolled up!, Button = %d",button);
+    }
+    // Scroll down shrink
+   // else if (button == 4)
+    {
+        printf("Scrolled down!, Button = %d",button);
+    }
+    */
+    
+    
+    // If button is pressed
+    // button = GLUT LEFT BUTTON
+    // state = GLUT_UP or GLUT_DOWN
+    // The top-left corner of the screen is at (0, 0)
+    // x y represent pointer position on screen
+    if(button == GLUT_LEFT_BUTTON)
+    {
+        if(state == GLUT_DOWN)
+        {
+           
+            // Can get initial click point to use for
+            // calculation of axis of rotation
+            initialX = x;
+            initialY = y;
+            
+            glutPostRedisplay();
+        }
+    }
+    
+    
+    glutPostRedisplay();
+}
+
+void motion(int x, int y)
 {
     
 }
+
+
 
 int main(int argc, char **argv)
 {
@@ -269,6 +334,7 @@ int main(int argc, char **argv)
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
     glutMouseFunc(mouse);
+    glutMotionFunc(motion);
     glutIdleFunc(idle);
     glutMainLoop();
     
