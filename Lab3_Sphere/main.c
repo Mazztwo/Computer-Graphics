@@ -70,11 +70,13 @@ Vec4 colors[342];
 
 void initColors()
 {
+    srand ( time(NULL) );
+    
     for(int i = 0; i < 342; i++)
     {
-        colors[i].x = 1.0;
-        colors[i].y = 0.0;
-        colors[i].z = 0.0;
+        colors[i].x = rand() / (float)RAND_MAX;
+        colors[i].y = rand() / (float)RAND_MAX;
+        colors[i].z = rand() / (float)RAND_MAX;
         colors[i].w = 1.0;
     }
 }
