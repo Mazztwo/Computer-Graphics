@@ -127,26 +127,19 @@ Vec4 colors[36] =
 // Declare number of verticies
 int num_vertices = 36;
 
-// Declare initial x,y coordinates of cick
-float initialX = 0.0;
-float initialY = 0.0;
+// Declare point & vector pointing from initial mouse click to origin
+Vec4 originVector = {0.0,0.0,1.0,0.0};
 
-// Declare x and y variables that are
-// being drawn by user rotating object
-float currX = 0.0;
-float currY = 0.0;
+// Declare vector of motion starting from origin point
+Vec4 motionVector = {0.0,0.0,1.0,0.0};
 
-// Declare vector pointing from initial mouse click to origin
-Vec3 originVector = {0.0,0.0,0.0};
-
-
-
-
+// Declare vector denoting axis of rotation
+Vec4 rotationAxis = {0.0,0.0,0.0,0.0};
 
 
 GLuint ctm_location;
 
-Mat4 scaling_matrix =
+Mat4 tr_matrix =
 {
     {1.0, 0.0, 0.0, 0.0},
     {0.0, 1.0, 0.0, 0.0},
@@ -193,7 +186,7 @@ void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &scaling_matrix);
+    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &tr_matrix);
     
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_LINE);
@@ -213,23 +206,23 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         if(key == 'o')
         {
-            scaling_matrix.col1.x *= 1.02;
-            scaling_matrix.col2.y *= 1.02;
-            scaling_matrix.col3.z *= 1.02;
+            tr_matrix.col1.x *= 1.02;
+            tr_matrix.col2.y *= 1.02;
+            tr_matrix.col3.z *= 1.02;
             glutPostRedisplay();
         }
         else if(key == 'l')
         {
-            scaling_matrix.col1.x *= 1/1.02;
-            scaling_matrix.col2.y *= 1/1.02;
-            scaling_matrix.col3.z *= 1/1.02;
+            tr_matrix.col1.x *= 1/1.02;
+            tr_matrix.col2.y *= 1/1.02;
+            tr_matrix.col3.z *= 1/1.02;
             glutPostRedisplay();
         }
         else if(key == ' ')
         {
-            scaling_matrix.col4.x = 0.5;
-            scaling_matrix.col4.y = 0.5;
-            scaling_matrix.col4.z = 0.0;
+            tr_matrix.col4.x = 0.5;
+            tr_matrix.col4.y = 0.5;
+            tr_matrix.col4.z = 0.0;
             enableIdle = 1;
         }
         
@@ -239,9 +232,9 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         if(key == ' ')
         {
-            scaling_matrix.col4.x = 0.0;
-            scaling_matrix.col4.y = 0.0;
-            scaling_matrix.col4.z = 0.0;
+            tr_matrix.col4.x = 0.0;
+            tr_matrix.col4.y = 0.0;
+            tr_matrix.col4.z = 0.0;
             enableIdle = 0;
         }
     }
@@ -254,18 +247,18 @@ void idle(void)
     {
         if(leftDown)
         {
-            scaling_matrix.col4.x -= 0.01;
-            scaling_matrix.col4.y -= 0.01;
+            tr_matrix.col4.x -= 0.01;
+            tr_matrix.col4.y -= 0.01;
             
-            if(scaling_matrix.col4.x < -0.5)
+            if(tr_matrix.col4.x < -0.5)
             leftDown = 0;
         }
         else
         {
-            scaling_matrix.col4.x += 0.01;
-            scaling_matrix.col4.y += 0.01;
+            tr_matrix.col4.x += 0.01;
+            tr_matrix.col4.y += 0.01;
             
-            if(scaling_matrix.col4.x > 0.5)
+            if(tr_matrix.col4.x > 0.5)
             leftDown = 1;
         }
         
@@ -311,10 +304,9 @@ void mouse(int button, int state, int x, int y)
            
             // Can get initial click point to use for
             // calculation of axis of rotation
-            initialX = x;
-            initialY = y;
-            printf("Initial X: %f\nInitial Y: %f\n", initialX, initialY);
-            
+            originVector.x = (x/256.0) - 1.0;
+            originVector.y = (y/256.0) - 1.0;
+
             glutPostRedisplay();
         }
     }
@@ -326,12 +318,17 @@ void mouse(int button, int state, int x, int y)
 void motion(int x, int y)
 {
     // Capture moving x,y
-    currX = x;
-    currY = y;
+    motionVector.x = (x/256.0) - 1.0;
+    motionVector.y = (y/256.0) - 1.0;
     
-    printf("Curr X: %f\nCurr Y: %f\n", currX, currY);
+    // Caclculate rotation axis
+    rotationAxis = *crossProduct(&originVector, &motionVector, &rotationAxis);
     
-    // We must calculate cross product
+    // Generate rotation matrix by calculating
+    // Rx, Ry, Rz, being rotation about x,y,z axes.
+    // Then, Rotation matrix R = RzRyRx
+    
+    
     
     glutPostRedisplay();
 }

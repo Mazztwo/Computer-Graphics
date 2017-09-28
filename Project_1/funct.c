@@ -59,7 +59,7 @@ Vec4* crossProduct(Vec4 *vec1, Vec4 *vec2, Vec4 *productVector)
 {
     /* 
     A = {a1, a2, a3}
-    B = {b1, b2, b3}
+    B = {b1, b2, b3}oo
 
     A X B = {a2b3 - a3b2, a3b1 - a1b3, a1b2 - a2b1}  
     */
