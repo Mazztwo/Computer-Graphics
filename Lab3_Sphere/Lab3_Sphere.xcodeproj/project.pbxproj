@@ -33,7 +33,8 @@
 		CA4165181F7B107000A44FDF /* vshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vshader.glsl; sourceTree = "<group>"; };
 		CA4165191F7B107100A44FDF /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		CA41651A1F7B107100A44FDF /* funct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = funct.h; sourceTree = "<group>"; };
-		CA41651E1F7B114400A44FDF /* fshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = fshader.glsl; path = "../../../../Library/Developer/Xcode/DerivedData/Lab3_Sphere-dmetyfyogpzxjzalgyginwzmzayc/Build/Products/Debug/fshader.glsl"; sourceTree = "<group>"; };
+		CA5A703F1F7DB9DC009FC615 /* vshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = vshader.glsl; path = "../../../../../../Library/Developer/Xcode/DerivedData/Lab3_Sphere-atltvmywjvghxpekceovzdvovbtn/Build/Products/Debug/vshader.glsl"; sourceTree = "<group>"; };
+		CA5A70401F7DB9DC009FC615 /* fshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = fshader.glsl; path = "../../../../../../Library/Developer/Xcode/DerivedData/Lab3_Sphere-atltvmywjvghxpekceovzdvovbtn/Build/Products/Debug/fshader.glsl"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +52,7 @@
 			isa = PBXGroup;
 			children = (
 				CA4165161F7B107000A44FDF /* fshader.glsl */,
+				CA5A70401F7DB9DC009FC615 /* fshader.glsl */,
 				CA4165181F7B107000A44FDF /* vshader.glsl */,
 				CA4165171F7B107000A44FDF /* funct.c */,
 				CA41651A1F7B107100A44FDF /* funct.h */,
@@ -58,7 +60,7 @@
 				CA4165151F7B107000A44FDF /* initShader.h */,
 				CA4165191F7B107100A44FDF /* main.c */,
 				CA41650B1F7B103200A44FDF /* Products */,
-				CA41651E1F7B114400A44FDF /* fshader.glsl */,
+				CA5A703F1F7DB9DC009FC615 /* vshader.glsl */,
 			);
 			sourceTree = "<group>";
 		};

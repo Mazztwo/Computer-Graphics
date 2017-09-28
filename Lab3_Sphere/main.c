@@ -34,17 +34,9 @@ const float DegreesToRadians = M_PI / 180.0; // M_PI = 3.14159...
 
 
 // Create 3D object verticies
-//Vec4 vertices[342];
-
-Vec4 vertices[3] =
-{
-    {0.5,0.5,0.0,1.0},
-    {-0.5,0.5,0.0,1.0},
-    {-0.5,-0.5,0.0,1.0},
-};
+Vec4 vertices[342];
 
 
-/*
 void initVertices()
 {
     int k = 0;
@@ -71,16 +63,14 @@ void initVertices()
         }
     }
 }
-*/
+
 
 // Color each face of object
-//Vec4 colors[342];
-/*
+Vec4 colors[342];
+
 void initColors()
 {
-    //srand(time(NULL));   // should only be called once
-    
-    for(int i = 342; i < 342; i++)
+    for(int i = 0; i < 342; i++)
     {
         colors[i].x = 1.0;
         colors[i].y = 0.0;
@@ -88,19 +78,12 @@ void initColors()
         colors[i].w = 1.0;
     }
 }
-*/
 
-Vec4 colors[3] =
-{
-    {1,0,0,1},
-    {1,0,0,1},
-    {1,0,0,1}
-};
 
-int num_vertices = 3;
+
 
 // Declare number of verticies
-//int num_vertices = 342;
+int num_vertices = 342;
 
 
 GLuint ctm_location;
@@ -156,7 +139,7 @@ void display(void)
     
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_LINE);
-    glDrawArrays(GL_TRIANGLES, 0, num_vertices);
+    glDrawArrays(GL_QUAD_STRIP, 0, num_vertices);
     
     glutSwapBuffers();
 }
@@ -189,15 +172,10 @@ void idle(void)
 
 
 
-
-
-
-
-
 int main(int argc, char **argv)
 {
-    //initVertices();
-    //initColors();
+    initVertices();
+    initColors();
     
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
