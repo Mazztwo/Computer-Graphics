@@ -9,7 +9,7 @@ University of Pittsburgh
 
 #include <OpenGL/OpenGL.h>
 #include <OpenGL/gl3.h>
-#include <GLUT/glut.h>
+#include <math.h>
 
 
 typedef struct
@@ -43,6 +43,7 @@ float dotProduct(Vec4 *vec1, Vec4 *vec2);
 Vec4* scalarMultVector(float scalar, Vec4 *vec, Vec4 *productVector);
 Vec4* vec4addition(Vec4* vec1, Vec4* vec2, Vec4 *sumVec);
 Vec4* vec4subtraction(Vec4* vec1, Vec4* vec2, Vec4 *subVec);
+float angleBetweenVectors(Vec4 *vec1, Vec4 *vec2);
 
 void printMat4(Mat4 *mat);
 Mat4* scalarMultMatrix(float scalar, Mat4 *mat, Mat4 *productMatrix);

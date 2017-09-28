@@ -12,6 +12,7 @@ instruction pdf.
 
 #include "funct.h"
 #include <stdio.h>
+#include <math.h>
 
 
 /*
@@ -204,6 +205,36 @@ Vec4* vec4subtraction(Vec4* vec1, Vec4* vec2, Vec4 *subVec)
 
     return subVec;
 }
+
+/*
+ Function:
+     This function calculates the angle between two vectors
+ Inputs:
+     vec1, vec2 --> pointers to vectors find angle between
+ Outputs:
+     angle --> angle between vec1 and vec2
+ */
+float angleBetweenVectors(Vec4 *vec1, Vec4 *vec2)
+{
+    float angle = 0.0;
+    float DegreesToRadians = M_PI / 180.0;
+    float dotProd = 0.0;
+    float magVec1 = 0.0;
+    float magVec2 = 0.0;
+    
+    // First calculate dot product between vectors
+    dotProd = dotProduct(vec1, vec2);
+    
+    // Next calculate the magnitude of vec1 and vec2
+    magVec1 = sqrt((vec1->x * vec1->x) + (vec1->y * vec1->y ) + (vec1->z * vec1->z ));
+    magVec2 = sqrt((vec2->x * vec2->x) + (vec2->y * vec2->y ) + (vec2->z * vec2->z ));
+    
+    // Calcuate angle and convert to radians
+    angle = (acos(dotProd/(magVec1 * magVec2))); //* DegreesToRadians;
+    
+    return angle;
+}
+
 
 /*
 Function:

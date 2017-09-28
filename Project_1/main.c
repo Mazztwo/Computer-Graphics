@@ -23,8 +23,11 @@
 #include "initShader.h"
 #include <stdio.h>
 #include "funct.h"
+#include <math.h>
 
 #define BUFFER_OFFSET( offset )   ((GLvoid*) (offset))
+
+
 
 // Create 3D object verticies
 Vec3 vertices[36] =
@@ -32,7 +35,7 @@ Vec3 vertices[36] =
     // Front Face 1
     {0.2, 0.2, 0.2},              // top right
     {-0.2, 0.2, 0.2},             // top left
-    {-0.2, -0.2, 0.2},            // bottom left
+    {-0.2, -0.2, 0.2},            //  qbottom left
     {0.2, 0.2, 0.2},              // top right
     {-0.2, -0.2, 0.2},            // bottom left
     {0.2, -0.2, 0.2},              // bottom right
@@ -77,6 +80,7 @@ Vec3 vertices[36] =
     {0.2, -0.2, 0.2},            // bottom right
     {-0.2, -0.2, 0.2}              // bottom left
 };
+
 
 // Color each face of object
 Vec4 colors[36] =
@@ -123,19 +127,17 @@ Vec4 colors[36] =
     {0.0, 1.0, 0.0, 1.0},
     {0.0, 1.0, 0.0, 1.0}
 };
-
+ 
 // Declare number of verticies
 int num_vertices = 36;
+
+
 
 // Declare point & vector pointing from initial mouse click to origin
 Vec4 originVector = {0.0,0.0,1.0,0.0};
 
 // Declare vector of motion starting from origin point
 Vec4 motionVector = {0.0,0.0,1.0,0.0};
-
-// Declare vector denoting axis of rotation
-Vec4 rotationAxis = {0.0,0.0,0.0,0.0};
-
 
 GLuint ctm_location;
 
@@ -201,9 +203,8 @@ void keyboard(unsigned char key, int mousex, int mousey)
     if(key == 'q')
     exit(0);
     
-    
-    if(!enableIdle)
-    {
+    // ZOOM IN/OUT
+   
         if(key == 'o')
         {
             tr_matrix.col1.x *= 1.02;
@@ -227,17 +228,6 @@ void keyboard(unsigned char key, int mousex, int mousey)
         }
         
         glutPostRedisplay();
-    }
-    else
-    {
-        if(key == ' ')
-        {
-            tr_matrix.col4.x = 0.0;
-            tr_matrix.col4.y = 0.0;
-            tr_matrix.col4.z = 0.0;
-            enableIdle = 0;
-        }
-    }
     
 }
 
@@ -276,18 +266,24 @@ void mouse(int button, int state, int x, int y)
     // Scroll UP --> button = 3
     // Scroll DOWN --> button = 4
     
-    // Scroll up enlarge
+    // Scroll up to enlarge
     /*
     printf("Button = %d\n",button);
     
     if(button == 3)
     {
-        printf("Scrolled up!, Button = %d",button);
+         tr_matrix.col1.x *= 1.02;
+         tr_matrix.col2.y *= 1.02;
+         tr_matrix.col3.z *= 1.02;
+         glutPostRedisplay();
     }
     // Scroll down shrink
    // else if (button == 4)
     {
-        printf("Scrolled down!, Button = %d",button);
+         tr_matrix.col1.x *= 1/1.02;
+         tr_matrix.col2.y *= 1/1.02;
+         tr_matrix.col3.z *= 1/1.02;
+         glutPostRedisplay();
     }
     */
     
@@ -307,7 +303,6 @@ void mouse(int button, int state, int x, int y)
             originVector.x = (x/256.0) - 1.0;
             originVector.y = (y/256.0) - 1.0;
 
-            glutPostRedisplay();
         }
     }
     
@@ -322,12 +317,41 @@ void motion(int x, int y)
     motionVector.y = (y/256.0) - 1.0;
     
     // Caclculate rotation axis
-    rotationAxis = *crossProduct(&originVector, &motionVector, &rotationAxis);
+    //rotationAxis = *crossProduct(&originVector, &motionVector, &rotationAxis);
     
     // Generate rotation matrix by calculating
     // Rx, Ry, Rz, being rotation about x,y,z axes.
     // Then, Rotation matrix R = RzRyRx
+    float theta = angleBetweenVectors(&originVector, &motionVector);
+    Mat4 rz =
+    {
+        {cos(theta), sin(theta),0,0},
+        {-sin(theta),cos(theta),0,0},
+        {0,0,1,0},
+        {0,0,0,1}
+    };
     
+    Mat4 ry =
+    {
+        {cos(theta),0, -sin(theta),0},
+        {0,1,0,0},
+        {sin(theta),0,cos(theta),0},
+        {0,0,0,1}
+    };
+    
+    Mat4 rx =
+    {
+        {1, 0,0,0},
+        {0,cos(theta),sin(theta),0},
+        {0,-sin(theta),cos(theta),0},
+        {0,0,0,1}
+    };
+    
+    Mat4 rotationMat = *matMultiplication(&rz, &ry, &rotationMat);
+    rotationMat = *matMultiplication(&rotationMat, &rx, &rotationMat);
+    
+    // Try adding?
+    tr_matrix = *mat4addition(&tr_matrix, &rotationMat,&tr_matrix);
     
     
     glutPostRedisplay();
@@ -337,6 +361,10 @@ void motion(int x, int y)
 
 int main(int argc, char **argv)
 {
+    
+    
+    
+    
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
     glutInitWindowSize(512, 512);
