@@ -226,11 +226,11 @@ float angleBetweenVectors(Vec4 *vec1, Vec4 *vec2)
     dotProd = dotProduct(vec1, vec2);
     
     // Next calculate the magnitude of vec1 and vec2
-    magVec1 = sqrt((vec1->x * vec1->x) + (vec1->y * vec1->y ) + (vec1->z * vec1->z ));
-    magVec2 = sqrt((vec2->x * vec2->x) + (vec2->y * vec2->y ) + (vec2->z * vec2->z ));
+    magVec1 = vecMagnitude(vec1);
+    magVec2 = vecMagnitude(vec2);
     
     // Calcuate angle and convert to radians
-    angle = (acos(dotProd/(magVec1 * magVec2))); //* DegreesToRadians;
+    angle = acos((dotProd/(magVec1 * magVec2)) * DegreesToRadians) ;
     
     return angle;
 }
@@ -665,6 +665,20 @@ Mat4* transposeMatrix(Mat4 *mat1, Mat4 *transpose)
     transpose->col4.w = mat1->col4.w;
     
     return transpose;
+}
+
+/*
+ Function:
+ This function transposes a matrix.
+ Inputs:
+ mat1 --> matrix to be transposed
+ transpose --> pointer where transpose will be placed
+ Outputs:
+ transpose --> transposed matrix
+ */
+Mat4* rotateAboutX(Mat4 *matrixToRotate, float degrees, Mat4 productMatrix)
+{
+    
 }
 
 

@@ -222,6 +222,10 @@ void keyboard(unsigned char key, int mousex, int mousey)
             tr_matrix.col3.z *= 1/1.02;
             glutPostRedisplay();
         }
+        else if(key == 'x')
+        {
+            tr_matrix = *rotateAboutX(&tr_matrix, 10.0, &tr_matrix);
+        }
         else if(key == ' ')
         {
             tr_matrix.col4.x = 0.5;
@@ -337,7 +341,9 @@ void motion(int x, int y)
     
     
         float theta = angleBetweenVectors(&originVector, &motionVector);
-    
+        float d = sqrt((rotationAxis.y*rotationAxis.y) + (rotationAxis.z*rotationAxis.z));
+        
+        
         Mat4 rz =
         {
        
