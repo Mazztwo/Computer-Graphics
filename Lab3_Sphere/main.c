@@ -50,40 +50,40 @@ void initVertices()
             float thetar = theta*DegreesToRadians;
             float thetar20 = (theta+20.0)*DegreesToRadians;
               
-            vertices[k].x = sin(thetar)*cos(phir20);
-            vertices[k].y = cos(thetar)*cos(phir20);
-            vertices[k].z = sin(phir20);
-            vertices[k].w = 1.0;
-            k++;
-            
             vertices[k].x = sin(thetar)*cos(phir);
             vertices[k].y = cos(thetar)*cos(phir);
             vertices[k].z = sin(phir);
             vertices[k].w = 1.0;
             k++;
             
-            vertices[k].x = sin(thetar20)*cos(phir);
-            vertices[k].y = cos(thetar20)*cos(phir);
-            vertices[k].z = sin(phir);
-            vertices[k].w = 1.0;
-            k++;
-            
-            
             vertices[k].x = sin(thetar)*cos(phir20);
             vertices[k].y = cos(thetar)*cos(phir20);
             vertices[k].z = sin(phir20);
             vertices[k].w = 1.0;
             k++;
             
+            vertices[k].x = sin(thetar20)*cos(phir20);
+            vertices[k].y = cos(thetar20)*cos(phir20);
+            vertices[k].z = sin(phir20);
+            vertices[k].w = 1.0;
+            k++;
+            
+            
+            vertices[k].x = sin(thetar20)*cos(phir20);
+            vertices[k].y = cos(thetar20)*cos(phir20);
+            vertices[k].z = sin(phir20);
+            vertices[k].w = 1.0;
+            k++;
+            
             vertices[k].x = sin(thetar20)*cos(phir);
             vertices[k].y = cos(thetar20)*cos(phir);
             vertices[k].z = sin(phir);
             vertices[k].w = 1.0;
             k++;
             
-            vertices[k].x = sin(thetar20)*cos(phir20);
-            vertices[k].y = cos(thetar20)*cos(phir20);
-            vertices[k].z = sin(phir20);
+            vertices[k].x = sin(thetar)*cos(phir);
+            vertices[k].y = cos(thetar)*cos(phir);
+            vertices[k].z = sin(phir);
             vertices[k].w = 1.0;
             k++;
         }
@@ -166,7 +166,7 @@ void display(void)
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &scaling_matrix);
     
     glPolygonMode(GL_FRONT, GL_FILL);
-    glPolygonMode(GL_BACK, GL_FILL);
+    glPolygonMode(GL_BACK, GL_LINE);
     glDrawArrays(GL_TRIANGLES, 0, num_vertices);
     
     glutSwapBuffers();
