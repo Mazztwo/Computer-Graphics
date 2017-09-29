@@ -69,6 +69,12 @@ void initVertices()
             k++;
             
             
+            vertices[k].x = sin(thetar)*cos(phir20);
+            vertices[k].y = cos(thetar)*cos(phir20);
+            vertices[k].z = sin(phir20);
+            vertices[k].w = 1.0;
+            k++;
+            
             vertices[k].x = sin(thetar20)*cos(phir);
             vertices[k].y = cos(thetar20)*cos(phir);
             vertices[k].z = sin(phir);
@@ -77,19 +83,11 @@ void initVertices()
             
             vertices[k].x = sin(thetar20)*cos(phir20);
             vertices[k].y = cos(thetar20)*cos(phir20);
-            vertices[k].z = sin(phir);
-            vertices[k].w = 1.0;
-            k++;
-            
-            vertices[k].x = sin(thetar)*cos(phir20);
-            vertices[k].y = cos(thetar)*cos(phir20);
             vertices[k].z = sin(phir20);
             vertices[k].w = 1.0;
             k++;
         }
     }
-    
-    printf("%d",k);
 }
 
 
@@ -168,7 +166,7 @@ void display(void)
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &scaling_matrix);
     
     glPolygonMode(GL_FRONT, GL_FILL);
-    glPolygonMode(GL_BACK, GL_LINE);
+    glPolygonMode(GL_BACK, GL_FILL);
     glDrawArrays(GL_TRIANGLES, 0, num_vertices);
     
     glutSwapBuffers();
