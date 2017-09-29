@@ -30,55 +30,55 @@
 
 
 // Create 3D object verticies
-Vec3 vertices[36] =
+Vec4 vertices[36] =
 {
     // Front Face 1
-    {0.2, 0.2, 0.2},              // top right
-    {-0.2, 0.2, 0.2},             // top left
-    {-0.2, -0.2, 0.2},            //  qbottom left
-    {0.2, 0.2, 0.2},              // top right
-    {-0.2, -0.2, 0.2},            // bottom left
-    {0.2, -0.2, 0.2},              // bottom right
+    {0.2, 0.2, 0.2, 1.0},              // top right
+    {-0.2, 0.2, 0.2, 1.0},             // top left
+    {-0.2, -0.2, 0.2, 1.0},            //  qbottom left
+    {0.2, 0.2, 0.2, 1.0},              // top right
+    {-0.2, -0.2, 0.2, 1.0},            // bottom left
+    {0.2, -0.2, 0.2, 1.0},              // bottom right
     
     // Right Face 2
-    {0.2, 0.2, -0.2},             // top right
-    {0.2, 0.2, 0.2},              // top left
-    {0.2, -0.2, 0.2},             // bottom left
-    {0.2, 0.2, -0.2},             // top right
-    {0.2, -0.2, 0.2},             // bottom left
-    {0.2, -0.2, -0.2},            // bottom right
+    {0.2, 0.2, -0.2, 1.0},             // top right
+    {0.2, 0.2, 0.2, 1.0},              // top left
+    {0.2, -0.2, 0.2, 1.0},             // bottom left
+    {0.2, 0.2, -0.2, 1.0},             // top right
+    {0.2, -0.2, 0.2, 1.0},             // bottom left
+    {0.2, -0.2, -0.2, 1.0},            // bottom right
     
     // Back Face 3
-    {-0.2, -0.2, -0.2},           // Bottom left
-    {-0.2, 0.2, -0.2},            // Top left
-    {0.2, 0.2, -0.2},             // Top Right
-    {0.2, 0.2, -0.2},              // Top Right
-    {0.2, -0.2, -0.2},            // Bottom Right
-    {-0.2, -0.2, 0.2},             // Bottom Left
+    {-0.2, -0.2, -0.2, 1.0},           // Bottom left
+    {-0.2, 0.2, -0.2, 1.0},            // Top left
+    {0.2, 0.2, -0.2, 1.0},             // Top Right
+    {0.2, 0.2, -0.2, 1.0},              // Top Right
+    {0.2, -0.2, -0.2, 1.0},            // Bottom Right
+    {-0.2, -0.2, 0.2, 1.0},             // Bottom Left
     
     // Left Face 4
-    {-0.2, 0.2, 0.2},              // top right
-    {-0.2, 0.2, -0.2},             // top left
-    {-0.2, -0.2, -0.2},            // bottom left
-    {-0.2, 0.2, 0.2},              // top right
-    {-0.2, -0.2, -0.2},            // bottom left
-    {-0.2, -0.2, 0.2},              // bottom right
+    {-0.2, 0.2, 0.2, 1.0},              // top right
+    {-0.2, 0.2, -0.2, 1.0},             // top left
+    {-0.2, -0.2, -0.2, 1.0},            // bottom left
+    {-0.2, 0.2, 0.2, 1.0},              // top right
+    {-0.2, -0.2, -0.2, 1.0},            // bottom left
+    {-0.2, -0.2, 0.2, 1.0},              // bottom right
     
     // Top Face 5
-    {0.2, 0.2, -0.2},              // top right
-    {-0.2, 0.2, -0.2},             // top left
-    {-0.2, 0.2, 0.2},            // bottom left
-    {0.2, 0.2, -0.2,},              // top right
-    {-0.2, 0.2, 0.2},            // bottom left
-    {0.2, 0.2, 0.2},              // bottom right
+    {0.2, 0.2, -0.2, 1.0},              // top right
+    {-0.2, 0.2, -0.2, 1.0},             // top left
+    {-0.2, 0.2, 0.2, 1.0},            // bottom left
+    {0.2, 0.2, -0.2, 1.0},              // top right
+    {-0.2, 0.2, 0.2, 1.0},            // bottom left
+    {0.2, 0.2, 0.2, 1.0},              // bottom right
     
     // Botto Face 6
-    {-0.2, -0.2, 0.2},              // bottom left
-    {-0.2, -0.2, -0.2},             // top left
-    {0.2, -0.2, -0.2},            // top right
-    {0.2, -0.2, -0.2},              // top right
-    {0.2, -0.2, 0.2},            // bottom right
-    {-0.2, -0.2, 0.2}              // bottom left
+    {-0.2, -0.2, 0.2, 1.0},              // bottom left
+    {-0.2, -0.2, -0.2, 1.0},             // top left
+    {0.2, -0.2, -0.2, 1.0},            // top right
+    {0.2, -0.2, -0.2, 1.0},              // top right
+    {0.2, -0.2, 0.2, 1.0},            // bottom right
+    {-0.2, -0.2, 0.2, 1.0}              // bottom left
 };
 
 
@@ -134,10 +134,13 @@ int num_vertices = 36;
 
 
 // Declare point & vector pointing from initial mouse click to origin
-Vec4 originVector = {0.0,0.0,1.0,0.0};
+Vec4 originVector = {0.0,0.0,0.0,0.0};
 
 // Declare vector of motion starting from origin point
-Vec4 motionVector = {0.0,0.0,1.0,0.0};
+Vec4 motionVector = {0.0,0.0,0.0,0.0};
+
+// Declare axis of rotation
+Vec4 rotationAxis = {0.0,0.0,0.0,0.0};
 
 GLuint ctm_location;
 
@@ -171,7 +174,7 @@ void init(void)
     
     GLuint vPosition = glGetAttribLocation(program, "vPosition");
     glEnableVertexAttribArray(vPosition);
-    glVertexAttribPointer(vPosition, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+    glVertexAttribPointer(vPosition, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
     
     GLuint vColor = glGetAttribLocation(program, "vColor");
     glEnableVertexAttribArray(vColor);
@@ -300,9 +303,11 @@ void mouse(int button, int state, int x, int y)
            
             // Can get initial click point to use for
             // calculation of axis of rotation
-            originVector.x = (x/256.0) - 1.0;
-            originVector.y = (y/256.0) - 1.0;
 
+            originVector.x = x-256;
+            originVector.y = 256-y;
+            originVector.z = sqrt((256*256)-((x-256)*(x-256)));
+            
         }
     }
     
@@ -313,46 +318,44 @@ void mouse(int button, int state, int x, int y)
 void motion(int x, int y)
 {
     // Capture moving x,y
-    motionVector.x = (x/256.0) - 1.0;
-    motionVector.y = (y/256.0) - 1.0;
     
-    // Caclculate rotation axis
-    //rotationAxis = *crossProduct(&originVector, &motionVector, &rotationAxis);
+    motionVector.x = x-256;
+    motionVector.y = 256-y;
+    motionVector.z = sqrt((256*256)-((x-256)*(x-256)));
     
-    // Generate rotation matrix by calculating
-    // Rx, Ry, Rz, being rotation about x,y,z axes.
-    // Then, Rotation matrix R = RzRyRx
-    float theta = angleBetweenVectors(&originVector, &motionVector);
-    Mat4 rz =
+    // Caclculate rotation axis and normalize it
+    rotationAxis = *crossProduct(&originVector, &motionVector, &rotationAxis);
+    float rotationAxisMagnitude = vecMagnitude(&rotationAxis);
+    
+    if(rotationAxisMagnitude != 0)
     {
-        {cos(theta), sin(theta),0,0},
-        {-sin(theta),cos(theta),0,0},
-        {0,0,1,0},
-        {0,0,0,1}
-    };
+        rotationAxis = *scalarMultVector(1/rotationAxisMagnitude, &rotationAxis, &rotationAxis);
     
-    Mat4 ry =
-    {
-        {cos(theta),0, -sin(theta),0},
-        {0,1,0,0},
-        {sin(theta),0,cos(theta),0},
-        {0,0,0,1}
-    };
+        // Generate rotation matrix by calculating
+        // Rx, Ry, Rz, being rotation about x,y,z axes.
+        // Then, Rotation matrix R = R-xR-yRzRyRx
     
-    Mat4 rx =
-    {
-        {1, 0,0,0},
-        {0,cos(theta),sin(theta),0},
-        {0,-sin(theta),cos(theta),0},
-        {0,0,0,1}
-    };
     
-    Mat4 rotationMat = *matMultiplication(&rz, &ry, &rotationMat);
-    rotationMat = *matMultiplication(&rotationMat, &rx, &rotationMat);
+        float theta = angleBetweenVectors(&originVector, &motionVector);
     
-    // Try adding?
-    tr_matrix = *mat4addition(&tr_matrix, &rotationMat,&tr_matrix);
+        Mat4 rz =
+        {
+       
+        };
     
+        Mat4 ry =
+        {
+        
+        };
+    
+        Mat4 rx =
+        {
+         
+        };
+        
+        glutPostRedisplay();
+        
+    }
     
     glutPostRedisplay();
 }

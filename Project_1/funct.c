@@ -235,6 +235,21 @@ float angleBetweenVectors(Vec4 *vec1, Vec4 *vec2)
     return angle;
 }
 
+/*
+ Function:
+    This function calculates the magnitude of a vector
+ Inputs:
+     vec -->pointer to vector to calculate magnitude of
+ Outputs:
+     magnitude --> magnitude of vec
+ */
+float vecMagnitude(Vec4 *vec)
+{
+    float magnitude = sqrt((vec->x * vec->x) + (vec->y * vec->y) + (vec->z * vec->z));
+    
+    return magnitude;
+}
+
 
 /*
 Function:
