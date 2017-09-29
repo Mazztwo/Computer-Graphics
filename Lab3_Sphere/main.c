@@ -34,13 +34,13 @@ const float DegreesToRadians = M_PI / 180.0; // M_PI = 3.14159...
 
 
 // Create 3D object verticies
-Vec4 vertices[342];
+Vec4 vertices[1140];
 
 
 void initVertices()
 {
     int k = 0;
-    for (float phi = -80.0; phi <= 80.0; phi += 20.0)
+    for (float phi = -90.0; phi <= 90.0; phi += 20.0)
     {
         float phir = phi * DegreesToRadians;
         float phir20 = (phi + 20.0)*DegreesToRadians;
@@ -48,13 +48,39 @@ void initVertices()
         for(float theta = -180.0; theta <= 180.0; theta += 20.0)
         {
             float thetar = theta*DegreesToRadians;
+            float thetar20 = (theta+20.0)*DegreesToRadians;
               
+            vertices[k].x = sin(thetar)*cos(phir20);
+            vertices[k].y = cos(thetar)*cos(phir20);
+            vertices[k].z = sin(phir20);
+            vertices[k].w = 1.0;
+            k++;
+            
             vertices[k].x = sin(thetar)*cos(phir);
             vertices[k].y = cos(thetar)*cos(phir);
             vertices[k].z = sin(phir);
             vertices[k].w = 1.0;
             k++;
-              
+            
+            vertices[k].x = sin(thetar20)*cos(phir);
+            vertices[k].y = cos(thetar20)*cos(phir);
+            vertices[k].z = sin(phir);
+            vertices[k].w = 1.0;
+            k++;
+            
+            
+            vertices[k].x = sin(thetar20)*cos(phir);
+            vertices[k].y = cos(thetar20)*cos(phir);
+            vertices[k].z = sin(phir);
+            vertices[k].w = 1.0;
+            k++;
+            
+            vertices[k].x = sin(thetar20)*cos(phir20);
+            vertices[k].y = cos(thetar20)*cos(phir20);
+            vertices[k].z = sin(phir);
+            vertices[k].w = 1.0;
+            k++;
+            
             vertices[k].x = sin(thetar)*cos(phir20);
             vertices[k].y = cos(thetar)*cos(phir20);
             vertices[k].z = sin(phir20);
@@ -62,17 +88,19 @@ void initVertices()
             k++;
         }
     }
+    
+    printf("%d",k);
 }
 
 
 // Color each face of object
-Vec4 colors[342];
+Vec4 colors[1140];
 
 void initColors()
 {
     srand ( time(NULL) );
     
-    for(int i = 0; i < 342; i++)
+    for(int i = 0; i < 1140; i++)
     {
         colors[i].x = rand() / (float)RAND_MAX;
         colors[i].y = rand() / (float)RAND_MAX;
@@ -85,7 +113,7 @@ void initColors()
 
 
 // Declare number of verticies
-int num_vertices = 342;
+int num_vertices = 1140;
 
 
 GLuint ctm_location;
@@ -141,7 +169,7 @@ void display(void)
     
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_LINE);
-    glDrawArrays(GL_QUAD_STRIP, 0, num_vertices);
+    glDrawArrays(GL_TRIANGLES, 0, num_vertices);
     
     glutSwapBuffers();
 }
