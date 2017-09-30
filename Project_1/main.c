@@ -353,36 +353,48 @@ void motion(int x, int y)
     motionVector.z = sqrt((256*256)-((x-256)*(x-256)));
     
     // Caclculate rotation axis and normalize it
-    rotationAxis = *crossProduct(&originVector, &motionVector, &rotationAxis);
+    Vec4 tempVector = *crossProduct(&originVector, &motionVector, &tempVector);
+    rotationAxis = tempVector;
     float rotationAxisMagnitude = vecMagnitude(&rotationAxis);
     
     if(rotationAxisMagnitude != 0)
     {
-        rotationAxis = *scalarMultVector(1/rotationAxisMagnitude, &rotationAxis, &rotationAxis);
-    
+        // Nnormalize rotationAxis
+        tempVector = *scalarMultVector(1/rotationAxisMagnitude, &rotationAxis, &tempVector);
+        rotationAxis = tempVector;
+        
         // Generate rotation matrix by calculating
         // Rx, Ry, Rz, being rotation about x,y,z axes.
         // Then, Rotation matrix R = R-xR-yRzRyRx
-    
-    
         float theta = angleBetweenVectors(&originVector, &motionVector);
         float d = sqrt((rotationAxis.y*rotationAxis.y) + (rotationAxis.z*rotationAxis.z));
         
         
-        Mat4 rz =
-        {
-       
-        };
     
         Mat4 ry =
         {
-        
+            {d, 0.0, rotationAxis.x, 0.0},
+            {0.0,1.0,0.0,0.0},
+            {-rotationAxis.x,0.0,d,0.0},
+            {0.0,0.0,0.0,1.0}
         };
     
         Mat4 rx =
         {
-         
+            {1.0,0.0,0.0,0.0},
+            {0.0,rotationAxis.z/d,rotationAxis.y/d,0.0},
+            {0.0,-rotationAxis.y/d,rotationAxis.z/d,0.0},
+            {0.0,0.0,0.0,1.0}
         };
+        
+        // Generate rotations
+        Mat4 tempMatrix = *matMultiplication(&tr_matrix, &rx, &tempMatrix);
+        tr_matrix = tempMatrix;
+        tempMatrix = *matMultiplication(&tr_matrix, &ry, &tempMatrix);
+        tr_matrix = tempMatrix;
+        tempMatrix = *matRotateAboutZ(&tr_matrix,theta,&tempMatrix);
+        tr_matrix = tempMatrix;
+        
         
         glutPostRedisplay();
         
