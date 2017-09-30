@@ -35,50 +35,56 @@ Vec4 vertices[36] =
     // Front Face 1
     {0.2, 0.2, 0.2, 1.0},              // top right
     {-0.2, 0.2, 0.2, 1.0},             // top left
-    {-0.2, -0.2, 0.2, 1.0},            //  qbottom left
-    {0.2, 0.2, 0.2, 1.0},              // top right
     {-0.2, -0.2, 0.2, 1.0},            // bottom left
-    {0.2, -0.2, 0.2, 1.0},              // bottom right
+    
+    {-0.2, -0.2, 0.2, 1.0},              // top right
+    {0.2, -0.2, 0.2, 1.0},            // bottom left
+    {0.2, 0.2, 0.2, 1.0},             // bottom right
     
     // Right Face 2
     {0.2, 0.2, -0.2, 1.0},             // top right
     {0.2, 0.2, 0.2, 1.0},              // top left
     {0.2, -0.2, 0.2, 1.0},             // bottom left
-    {0.2, 0.2, -0.2, 1.0},             // top right
-    {0.2, -0.2, 0.2, 1.0},             // bottom left
-    {0.2, -0.2, -0.2, 1.0},            // bottom right
+    
+    {0.2, -0.2, 0.2, 1.0},             // top right
+    {0.2, -0.2, -0.2, 1.0},             // bottom left
+    {0.2, 0.2, -0.2, 1.0},            // bottom right
     
     // Back Face 3
-    {-0.2, -0.2, -0.2, 1.0},           // Bottom left
+    {0.2, 0.2, -0.2, 1.0},           // Bottom left
     {-0.2, 0.2, -0.2, 1.0},            // Top left
-    {0.2, 0.2, -0.2, 1.0},             // Top Right
-    {0.2, 0.2, -0.2, 1.0},              // Top Right
+    {-0.2, -0.2, -0.2, 1.0},             // Top Right
+    
+    {-0.2, -0.2, -0.2, 1.0},              // Top Right
     {0.2, -0.2, -0.2, 1.0},            // Bottom Right
-    {-0.2, -0.2, 0.2, 1.0},             // Bottom Left
+    {0.2, 0.2, -0.2, 1.0},             // Bottom Left
     
     // Left Face 4
-    {-0.2, 0.2, 0.2, 1.0},              // top right
-    {-0.2, 0.2, -0.2, 1.0},             // top left
+    {-0.2, 0.2, -0.2, 1.0},              // top right
+    {-0.2, 0.2, 0.2, 1.0},             // top left
+    {-0.2, -0.2, 0.2, 1.0},            // bottom left
+    
+    {-0.2, -0.2, 0.2, 1.0},              // top right
     {-0.2, -0.2, -0.2, 1.0},            // bottom left
-    {-0.2, 0.2, 0.2, 1.0},              // top right
-    {-0.2, -0.2, -0.2, 1.0},            // bottom left
-    {-0.2, -0.2, 0.2, 1.0},              // bottom right
+    {-0.2, 0.2, -0.2, 1.0},              // bottom right
     
     // Top Face 5
     {0.2, 0.2, -0.2, 1.0},              // top right
     {-0.2, 0.2, -0.2, 1.0},             // top left
     {-0.2, 0.2, 0.2, 1.0},            // bottom left
-    {0.2, 0.2, -0.2, 1.0},              // top right
-    {-0.2, 0.2, 0.2, 1.0},            // bottom left
-    {0.2, 0.2, 0.2, 1.0},              // bottom right
+    
+    {-0.2, 0.2, 0.2, 1.0},              // top right
+    {0.2, 0.2, 0.2, 1.0},            // bottom left
+    {0.2, 0.2, -0.2, 1.0},              // bottom right
     
     // Botto Face 6
-    {-0.2, -0.2, 0.2, 1.0},              // bottom left
+    {0.2, -0.2, -0.2, 1.0},              // bottom left
     {-0.2, -0.2, -0.2, 1.0},             // top left
-    {0.2, -0.2, -0.2, 1.0},            // top right
-    {0.2, -0.2, -0.2, 1.0},              // top right
+    {-0.2, -0.2, 0.2, 1.0},            // top right
+    
+    {-0.2, -0.2, 0.2, 1.0},              // top right
     {0.2, -0.2, 0.2, 1.0},            // bottom right
-    {-0.2, -0.2, 0.2, 1.0}              // bottom left
+    {0.2, -0.2, -0.2, 1.0}              // bottom left
 };
 
 
@@ -113,12 +119,12 @@ Vec4 colors[36] =
     {0.0, 0.0, 1.0, 1.0},
     {0.0, 0.0, 1.0, 1.0},
     
-    {1.0, 0.0, 0.0, 1.0},    // Green
-    {1.0, 0.0, 0.0, 1.0},
-    {1.0, 0.0, 0.0, 1.0},
-    {1.0, 0.0, 0.0, 1.0},
-    {1.0, 0.0, 0.0, 1.0},
-    {1.0, 0.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},    // Green
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
     
     {0.0, 1.0, 0.0, 1.0},    // Green
     {0.0, 1.0, 0.0, 1.0},
@@ -194,7 +200,7 @@ void display(void)
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &tr_matrix);
     
     glPolygonMode(GL_FRONT, GL_FILL);
-    glPolygonMode(GL_BACK, GL_LINE);
+    glPolygonMode(GL_BACK, GL_FILL);
     glDrawArrays(GL_TRIANGLES, 0, num_vertices);
     
     glutSwapBuffers();
@@ -268,17 +274,12 @@ void idle(void)
     }
 }
 
-
-
-// Listner for mouse scroll up or down.
-// Scroll up enlarges object, scroll down shrinks it.
+// Listener for mouse button events
 void mouse(int button, int state, int x, int y)
 {
     // Add scaling matrix to object
     // Scroll UP --> button = 3
     // Scroll DOWN --> button = 4
-    
-    printf("Button: %d\n",button);
     
     // Scroll up to enlarge
     /*
@@ -294,7 +295,6 @@ void mouse(int button, int state, int x, int y)
         glutPostRedisplay();
     }
     */
-    
     
     // If button is pressed
     // button = GLUT LEFT BUTTON
