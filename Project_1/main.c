@@ -387,6 +387,23 @@ void motion(int x, int y)
             {0.0,0.0,0.0,1.0}
         };
         
+        
+        Mat4 ryNeg =
+        {
+            {d, 0.0, -rotationAxis.x, 0.0},
+            {0.0,1.0,0.0,0.0},
+            {rotationAxis.x,0.0,d,0.0},
+            {0.0,0.0,0.0,1.0}
+        };
+        
+        Mat4 rxNeg =
+        {
+            {1.0,0.0,0.0,0.0},
+            {0.0,-rotationAxis.z/d,-rotationAxis.y/d,0.0},
+            {0.0,rotationAxis.y/d,-rotationAxis.z/d,0.0},
+            {0.0,0.0,0.0,1.0}
+        };
+        
         // Generate rotations
         Mat4 tempMatrix = *matMultiplication(&tr_matrix, &rx, &tempMatrix);
         tr_matrix = tempMatrix;
@@ -394,6 +411,11 @@ void motion(int x, int y)
         tr_matrix = tempMatrix;
         tempMatrix = *matRotateAboutZ(&tr_matrix,theta,&tempMatrix);
         tr_matrix = tempMatrix;
+        tempMatrix = *matMultiplication(&tr_matrix, &ryNeg, &tempMatrix);
+        tr_matrix = tempMatrix;
+        tempMatrix = *matMultiplication(&tr_matrix, &rxNeg, &tempMatrix);
+        tr_matrix = tempMatrix;
+        
         
         
         glutPostRedisplay();
