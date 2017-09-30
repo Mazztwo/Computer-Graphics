@@ -669,17 +669,22 @@ Mat4* transposeMatrix(Mat4 *mat1, Mat4 *transpose)
 
 /*
  Function:
- 
+     This function applies a rotation matrix in the x direction
+     to the current transformation matrix.
  Inputs:
- 
+     tr_matrix --> current transformation matrix
+     theta --> angle of rotation about x axis
+     productMatrix --> pointer to eventual location of altered tr_matrix
  Outputs:
-
+     productMatrix --> tr_matrix with rotation about x applied
  */
 Mat4* matRotateAboutX(Mat4 *tr_matrix, float theta, Mat4 *productMatrix)
 {
     float DegreesToRadians = M_PI / 180.0;
     float thetar = theta*DegreesToRadians;
     
+    
+    // Generate rotation matrix
     Mat4 rotationMatrix =
     {
         {1.0,0.0,0.0,0.0},
@@ -688,6 +693,7 @@ Mat4* matRotateAboutX(Mat4 *tr_matrix, float theta, Mat4 *productMatrix)
         {0.0,0.0,0.0,1.0},
     };
     
+    // Apply rotation matrix to current transfomration matrix
     productMatrix = matMultiplication(tr_matrix, &rotationMatrix, productMatrix);
     
     return productMatrix;
