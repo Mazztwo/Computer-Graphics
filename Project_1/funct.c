@@ -731,7 +731,37 @@ Mat4* matRotateAboutY(Mat4 *tr_matrix, float theta, Mat4 *productMatrix)
     return productMatrix;
 }
 
-
+/*
+ Function:
+     This function applies a rotation matrix in the z direction
+     to the current transformation matrix.
+ Inputs:
+     tr_matrix --> current transformation matrix
+     theta --> angle of rotation about z axis
+     productMatrix --> pointer to eventual location of altered tr_matrix
+ Outputs:
+     productMatrix --> tr_matrix with rotation about z applied
+ */
+Mat4* matRotateAboutZ(Mat4 *tr_matrix, float theta, Mat4 *productMatrix)
+{
+    float DegreesToRadians = M_PI / 180.0;
+    float thetar = theta*DegreesToRadians;
+    
+    
+    // Generate rotation matrix
+    Mat4 rotationMatrix =
+    {
+        {cos(thetar),sin(thetar),0.0,0.0},
+        {-sin(thetar),cos(thetar),0.0,0.0},
+        {0.0,0.0,1.0,0.0},
+        {0.0,0.0,0.0,1.0},
+    };
+    
+    // Apply rotation matrix to current transfomration matrix
+    productMatrix = matMultiplication(tr_matrix, &rotationMatrix, productMatrix);
+    
+    return productMatrix;
+}
 
 /*
  Function:

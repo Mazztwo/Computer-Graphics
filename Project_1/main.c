@@ -230,25 +230,37 @@ void keyboard(unsigned char key, int mousex, int mousey)
     }
     else if(key == 'x')
     {
-        Mat4 tempMatrix = *matRotateAboutX(&tr_matrix,25.0, &tempMatrix);
+        Mat4 tempMatrix = *matRotateAboutX(&tr_matrix,15.0, &tempMatrix);
         tr_matrix = tempMatrix;
         glutPostRedisplay();
     }
     else if(key == 'X')
     {
-        Mat4 tempMatrix = *matRotateAboutX(&tr_matrix,-25.0,&tempMatrix);
+        Mat4 tempMatrix = *matRotateAboutX(&tr_matrix,-15.0,&tempMatrix);
         tr_matrix = tempMatrix;
         glutPostRedisplay();
     }
     else if(key == 'y')
     {
-        Mat4 tempMatrix = *matRotateAboutY(&tr_matrix,25.0, &tempMatrix);
+        Mat4 tempMatrix = *matRotateAboutY(&tr_matrix,15.0, &tempMatrix);
         tr_matrix = tempMatrix;
         glutPostRedisplay();
     }
     else if(key == 'Y')
     {
-        Mat4 tempMatrix = *matRotateAboutY(&tr_matrix,-25.0,&tempMatrix);
+        Mat4 tempMatrix = *matRotateAboutY(&tr_matrix,-15.0,&tempMatrix);
+        tr_matrix = tempMatrix;
+        glutPostRedisplay();
+    }
+    else if(key == 'z')
+    {
+        Mat4 tempMatrix = *matRotateAboutZ(&tr_matrix,15.0, &tempMatrix);
+        tr_matrix = tempMatrix;
+        glutPostRedisplay();
+    }
+    else if(key == 'Z')
+    {
+        Mat4 tempMatrix = *matRotateAboutZ(&tr_matrix,-15.0,&tempMatrix);
         tr_matrix = tempMatrix;
         glutPostRedisplay();
     }
