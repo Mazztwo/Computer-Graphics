@@ -240,6 +240,18 @@ void keyboard(unsigned char key, int mousex, int mousey)
         tr_matrix = tempMatrix;
         glutPostRedisplay();
     }
+    else if(key == 'y')
+    {
+        Mat4 tempMatrix = *matRotateAboutY(&tr_matrix,25.0, &tempMatrix);
+        tr_matrix = tempMatrix;
+        glutPostRedisplay();
+    }
+    else if(key == 'Y')
+    {
+        Mat4 tempMatrix = *matRotateAboutY(&tr_matrix,-25.0,&tempMatrix);
+        tr_matrix = tempMatrix;
+        glutPostRedisplay();
+    }
     else if(key == ' ')
     {
         enableIdle = 1;
