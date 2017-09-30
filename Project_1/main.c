@@ -224,7 +224,13 @@ void keyboard(unsigned char key, int mousex, int mousey)
         }
         else if(key == 'x')
         {
-            tr_matrix = *rotateAboutX(&tr_matrix, 10.0, &tr_matrix);
+            tr_matrix = *matRotateAboutX(&tr_matrix,25.0, &tr_matrix);
+            glutPostRedisplay();
+        }
+        else if(key == 'X')
+        {
+            tr_matrix = *matRotateAboutX(&tr_matrix,-25.0, &tr_matrix);
+            glutPostRedisplay();
         }
         else if(key == ' ')
         {

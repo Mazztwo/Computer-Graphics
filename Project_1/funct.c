@@ -676,9 +676,21 @@ Mat4* transposeMatrix(Mat4 *mat1, Mat4 *transpose)
  Outputs:
  transpose --> transposed matrix
  */
-Mat4* rotateAboutX(Mat4 *matrixToRotate, float degrees, Mat4 productMatrix)
+Mat4* matRotateAboutX(Mat4 *matrixToRotate, float theta, Mat4 *productMatrix)
 {
+    float DegreesToRadians = M_PI / 180.0;
     
+    Mat4 rotationMatrix =
+    {
+        {1.0,0.0,0.0,0.0},
+        {0.0, cos(theta), sin(theta),0.0},
+        {0.0,-sin(theta),cos(theta),0.0},
+        {0.0,0.0,0.0,1.0}
+    };
+    
+    productMatrix = matMultiplication(matrixToRotate, &rotationMatrix, productMatrix);
+
+    return productMatrix;
 }
 
 
