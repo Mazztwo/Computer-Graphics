@@ -210,16 +210,12 @@ void keyboard(unsigned char key, int mousex, int mousey)
    
         if(key == 'o')
         {
-            tr_matrix.col1.x *= 1.02;
-            tr_matrix.col2.y *= 1.02;
-            tr_matrix.col3.z *= 1.02;
+            tr_matrix = *scaleMatrix(&tr_matrix, 1.02, &tr_matrix);
             glutPostRedisplay();
         }
         else if(key == 'l')
         {
-            tr_matrix.col1.x *= 1/1.02;
-            tr_matrix.col2.y *= 1/1.02;
-            tr_matrix.col3.z *= 1/1.02;
+            tr_matrix = *scaleMatrix(&tr_matrix, 1.0/1.02, &tr_matrix);
             glutPostRedisplay();
         }
         else if(key == 'x')
@@ -279,24 +275,20 @@ void mouse(int button, int state, int x, int y)
     // Scroll UP --> button = 3
     // Scroll DOWN --> button = 4
     
+    printf("Button: %d\n",button);
+    
     // Scroll up to enlarge
     /*
-    printf("Button = %d\n",button);
-    
     if(button == 3)
     {
-         tr_matrix.col1.x *= 1.02;
-         tr_matrix.col2.y *= 1.02;
-         tr_matrix.col3.z *= 1.02;
+         tr_matrix = *scaleMatrix(&tr_matrix, 1.02, &tr_matrix);
          glutPostRedisplay();
     }
     // Scroll down shrink
-   // else if (button == 4)
+    else if (button == 4)
     {
-         tr_matrix.col1.x *= 1/1.02;
-         tr_matrix.col2.y *= 1/1.02;
-         tr_matrix.col3.z *= 1/1.02;
-         glutPostRedisplay();
+        tr_matrix = *scaleMatrix(&tr_matrix, 1.0/1.02, &tr_matrix);
+        glutPostRedisplay();
     }
     */
     

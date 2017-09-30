@@ -53,6 +53,7 @@ Mat4* mat4subtraction(Mat4 *mat1, Mat4 *mat2, Mat4 *subMatrix);
 Mat4* matMultiplication(Mat4 *mat1, Mat4 *mat2, Mat4 *productMatrix);
 Mat4* inverseMatrix(Mat4 *mat1, Mat4 *inverse);
 Mat4* transposeMatrix(Mat4 *mat1, Mat4 *transpose);
-Mat4* matRotateAboutX(Mat4 *matrixToRotate, float theta, Mat4 *productMatrix);
+Mat4* matRotateAboutX(Mat4 *tr_matrix, float theta, Mat4 *productMatrix);
+Mat4* scaleMatrix(Mat4 *tr_matrix, float scalingFactor, Mat4 *productMatrix);
 
 

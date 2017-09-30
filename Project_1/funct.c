@@ -394,85 +394,85 @@ Mat4* matMultiplication(Mat4 *mat1, Mat4 *mat2, Mat4 *productMatrix)
     productMatrix->col1.x = (mat1->col1.x * mat2->col1.x) +
                             (mat1->col2.x * mat2->col1.y) + 
                             (mat1->col3.x * mat2->col1.z) +
-                            (mat1->col4.x * mat2->col1.z);
+                            (mat1->col4.x * mat2->col1.w);
 
     productMatrix->col2.x = (mat1->col1.x * mat2->col2.x) +
                             (mat1->col2.x * mat2->col2.y) + 
                             (mat1->col3.x * mat2->col2.z) +
-                            (mat1->col4.x * mat2->col2.z);
+                            (mat1->col4.x * mat2->col2.w);
 
     productMatrix->col3.x = (mat1->col1.x * mat2->col3.x) +
                             (mat1->col2.x * mat2->col3.y) + 
                             (mat1->col3.x * mat2->col3.z) +
-                            (mat1->col4.x * mat2->col3.z);
+                            (mat1->col4.x * mat2->col3.w);
 
     productMatrix->col4.x = (mat1->col1.x * mat2->col4.x) +
                             (mat1->col2.x * mat2->col4.y) + 
                             (mat1->col3.x * mat2->col4.z) +
-                            (mat1->col4.x * mat2->col4.z);
+                            (mat1->col4.x * mat2->col4.w);
 
     // Row 2
     productMatrix->col1.y = (mat1->col1.y * mat2->col1.x) +
                             (mat1->col2.y * mat2->col1.y) + 
                             (mat1->col3.y * mat2->col1.z) +
-                            (mat1->col4.y * mat2->col1.z);
+                            (mat1->col4.y * mat2->col1.w);
 
     productMatrix->col2.y = (mat1->col1.y * mat2->col2.x) +
                             (mat1->col2.y * mat2->col2.y) + 
                             (mat1->col3.y * mat2->col2.z) +
-                            (mat1->col4.y * mat2->col2.z);
+                            (mat1->col4.y * mat2->col2.w);
 
     productMatrix->col3.y = (mat1->col1.y * mat2->col3.x) +
                             (mat1->col2.y * mat2->col3.y) + 
                             (mat1->col3.y * mat2->col3.z) +
-                            (mat1->col4.y * mat2->col3.z);
+                            (mat1->col4.y * mat2->col3.w);
 
     productMatrix->col4.y = (mat1->col1.y * mat2->col4.x) +
                             (mat1->col2.y * mat2->col4.y) + 
                             (mat1->col3.y * mat2->col4.z) +
-                            (mat1->col4.y * mat2->col4.z);
+                            (mat1->col4.y * mat2->col4.w);
 
     // Row 3
     productMatrix->col1.z = (mat1->col1.z * mat2->col1.x) +
                             (mat1->col2.z * mat2->col1.y) + 
                             (mat1->col3.z * mat2->col1.z) +
-                            (mat1->col4.z * mat2->col1.z);
+                            (mat1->col4.z * mat2->col1.w);
 
     productMatrix->col2.z = (mat1->col1.z * mat2->col2.x) +
                             (mat1->col2.z * mat2->col2.y) + 
                             (mat1->col3.z * mat2->col2.z) +
-                            (mat1->col4.z * mat2->col2.z);
+                            (mat1->col4.z * mat2->col2.w);
 
     productMatrix->col3.z = (mat1->col1.z * mat2->col3.x) +
                             (mat1->col2.z * mat2->col3.y) + 
                             (mat1->col3.z * mat2->col3.z) +
-                            (mat1->col4.z * mat2->col3.z);
+                            (mat1->col4.z * mat2->col3.w);
 
     productMatrix->col4.z = (mat1->col1.z * mat2->col4.x) +
                             (mat1->col2.z * mat2->col4.y) + 
                             (mat1->col3.z * mat2->col4.z) +
-                            (mat1->col4.z * mat2->col4.z);
+                            (mat1->col4.z * mat2->col4.w);
 
     // Row 4
     productMatrix->col1.w = (mat1->col1.w * mat2->col1.x) +
                             (mat1->col2.w * mat2->col1.y) + 
                             (mat1->col3.w * mat2->col1.z) +
-                            (mat1->col4.w * mat2->col1.z);
+                            (mat1->col4.w * mat2->col1.w);
 
     productMatrix->col2.w = (mat1->col1.w * mat2->col2.x) +
                             (mat1->col2.w * mat2->col2.y) + 
                             (mat1->col3.w * mat2->col2.z) +
-                            (mat1->col4.w * mat2->col2.z);
+                            (mat1->col4.w * mat2->col2.w);
 
     productMatrix->col3.w = (mat1->col1.w * mat2->col3.x) +
                             (mat1->col2.w * mat2->col3.y) + 
                             (mat1->col3.w * mat2->col3.z) +
-                            (mat1->col4.w * mat2->col3.z);
+                            (mat1->col4.w * mat2->col3.w);
 
     productMatrix->col4.w = (mat1->col1.w * mat2->col4.x) +
                             (mat1->col2.w * mat2->col4.y) + 
                             (mat1->col3.w * mat2->col4.z) +
-                            (mat1->col4.w * mat2->col4.z);  
+                            (mat1->col4.w * mat2->col4.w);  
 
     return productMatrix;
 }
@@ -669,30 +669,49 @@ Mat4* transposeMatrix(Mat4 *mat1, Mat4 *transpose)
 
 /*
  Function:
- This function transposes a matrix.
+ 
  Inputs:
- mat1 --> matrix to be transposed
- transpose --> pointer where transpose will be placed
+ 
  Outputs:
- transpose --> transposed matrix
+
  */
-Mat4* matRotateAboutX(Mat4 *matrixToRotate, float theta, Mat4 *productMatrix)
+Mat4* matRotateAboutX(Mat4 *tr_matrix, float theta, Mat4 *productMatrix)
 {
     float DegreesToRadians = M_PI / 180.0;
     
-    Mat4 rotationMatrix =
-    {
-        {1.0,0.0,0.0,0.0},
-        {0.0, cos(theta), sin(theta),0.0},
-        {0.0,-sin(theta),cos(theta),0.0},
-        {0.0,0.0,0.0,1.0}
-    };
     
-    productMatrix = matMultiplication(matrixToRotate, &rotationMatrix, productMatrix);
-
+    
+    
     return productMatrix;
 }
 
+
+
+
+/*
+ Function:
+     This function scales the transofrmation matrix acording to the given scaling factor
+ Inputs:
+     tr_matrix --> transformation matrix
+     scalingFactor --> factor to scale transformation matrix by
+     productMatrix --> location to store resulting scaled matrix
+ Outputs:
+     productMatrix --> result of scaling matrix
+ */
+Mat4* scaleMatrix(Mat4 *tr_matrix, float scalingFactor, Mat4 *productMatrix)
+{
+    Mat4 scalingMatrix =
+    {
+        {scalingFactor, 0.0,0.0,0.0},
+        {0.0, scalingFactor,0.0,0.0},
+        {0.0,0.0,scalingFactor,0.0},
+        {0.0,0.0,0.0,1.0}
+    };
+    
+    productMatrix = matMultiplication(tr_matrix, &scalingMatrix, productMatrix);
+    
+    return productMatrix;
+}
 
 
 
