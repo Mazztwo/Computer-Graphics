@@ -203,40 +203,43 @@ void display(void)
 
 void keyboard(unsigned char key, int mousex, int mousey)
 {
+    // Quit program
     if(key == 'q')
-    exit(0);
-    
-    // ZOOM IN/OUT
-   
-        if(key == 'o')
-        {
-            tr_matrix = *scaleMatrix(&tr_matrix, 1.02, &tr_matrix);
-            glutPostRedisplay();
-        }
-        else if(key == 'l')
-        {
-            tr_matrix = *scaleMatrix(&tr_matrix, 1.0/1.02, &tr_matrix);
-            glutPostRedisplay();
-        }
-        else if(key == 'x')
-        {
-            tr_matrix = *matRotateAboutX(&tr_matrix,25.0, &tr_matrix);
-            glutPostRedisplay();
-        }
-        else if(key == 'X')
-        {
-            tr_matrix = *matRotateAboutX(&tr_matrix,-25.0, &tr_matrix);
-            glutPostRedisplay();
-        }
-        else if(key == ' ')
-        {
-            tr_matrix.col4.x = 0.5;
-            tr_matrix.col4.y = 0.5;
-            tr_matrix.col4.z = 0.0;
-            enableIdle = 1;
-        }
-        
+    {
+        exit(0);
+    }
+    // Zoom In
+    else if(key == 'o')
+    {
+        Mat4 tempMatrix = *scaleMatrix(&tr_matrix, 1.02, &tempMatrix);
+        tr_matrix = tempMatrix;
         glutPostRedisplay();
+    }
+    // Zoom Out
+    else if(key == 'l')
+    {
+        Mat4 tempMatrix = *scaleMatrix(&tr_matrix, 1.0/1.02, &tempMatrix);
+        tr_matrix = tempMatrix;
+        glutPostRedisplay();
+    }
+    else if(key == 'x')
+    {
+        Mat4 tempMatrix = *matRotateAboutX(&tr_matrix,25.0, &tempMatrix);
+        tr_matrix = tempMatrix;
+        glutPostRedisplay();
+    }
+    else if(key == 'X')
+    {
+        Mat4 tempMatrix = *matRotateAboutX(&tr_matrix,-25.0,&tempMatrix);
+        tr_matrix = tempMatrix;
+        glutPostRedisplay();
+    }
+    else if(key == ' ')
+    {
+        enableIdle = 1;
+    }
+    
+    glutPostRedisplay();
     
 }
 
