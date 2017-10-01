@@ -278,6 +278,16 @@ void keyboard(unsigned char key, int mousex, int mousey)
         tr_matrix = tempMatrix;
        
     }
+    else if(key == ' ')
+    {
+        R =
+        {
+            {0.0,0.0,0.0,0.0},
+            {0.0,0.0,0.0,0.0},
+            {0.0,0.0,0.0,0.0},
+            {0.0,0.0,0.0,0.0}
+        };
+    }
 
     glutPostRedisplay();
     
@@ -287,11 +297,11 @@ void idle(void)
 {
     if(enableIdle)
     {
-        
-        
+        Mat4 tempMatrix = *matMultiplication(&tr_matrix, &R, &tempMatrix);
+        tr_matrix = tempMatrix;
     }
-        glutPostRedisplay();
-    
+
+    glutPostRedisplay();
 }
 
 // Listener for mouse button events
@@ -336,8 +346,14 @@ void mouse(int button, int state, int x, int y)
         }
         else if(state == GLUT_UP)
         {
-            enableIdle = 1;
-            
+            if(originVector.x == motionVector.x &&
+               originVector.y == motionVector.y &&
+               originVector.z == motionVector.z
+               ){}
+            else
+            {
+                enableIdle = 1;
+            }
         }
             
     }
