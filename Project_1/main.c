@@ -353,75 +353,79 @@ void mouse(int button, int state, int x, int y)
 void motion(int x, int y)
 {
     // Capture moving x,y
-    
     motionVector.x = x-256;
     motionVector.y = 256-y;
     motionVector.z = sqrt((256*256)-((x-256)*(x-256)));
     
-    // Caclculate rotation axis and normalize it
-    Vec4 tempVector = *crossProduct(&originVector, &motionVector, &tempVector);
-    rotationAxis = tempVector;
-    float rotationAxisMagnitude = vecMagnitude(&rotationAxis);
-    
-    if(rotationAxisMagnitude != 0)
+    if(motionVector.x > 256 ||
+       motionVector.y > 256 ||
+       motionVector.z > 256 ||
+       motionVector.x < -256 ||
+       motionVector.y < -256 ||
+       motionVector.z < -256
+       ){}
+    else
     {
-        // Nnormalize rotationAxis
-        tempVector = *scalarMultVector(1/rotationAxisMagnitude, &rotationAxis, &tempVector);
+        // Caclculate rotation axis and normalize it
+        Vec4 tempVector = *crossProduct(&originVector, &motionVector, &tempVector);
         rotationAxis = tempVector;
+        float rotationAxisMagnitude = vecMagnitude(&rotationAxis);
         
-        // Generate rotation matrix by calculating
-        // Rx, Ry, Rz, being rotation about x,y,z axes.
-        // Then, Rotation matrix R = R-xR-yRzRyRx
-        float theta = angleBetweenVectors(&originVector, &motionVector);
-        float d = sqrt((rotationAxis.y*rotationAxis.y) + (rotationAxis.z*rotationAxis.z));
-        
-        Mat4 ry =
+        if(rotationAxisMagnitude != 0)
         {
-            {d, 0.0, rotationAxis.x, 0.0},
-            {0.0,1.0,0.0,0.0},
-            {-rotationAxis.x,0.0,d,0.0},
-            {0.0,0.0,0.0,1.0}
-        };
-    
-        Mat4 rx =
-        {
-            {1.0,0.0,0.0,0.0},
-            {0.0,rotationAxis.z/d,rotationAxis.y/d,0.0},
-            {0.0,-rotationAxis.y/d,rotationAxis.z/d,0.0},
-            {0.0,0.0,0.0,1.0}
-        };
+            // Normalize rotationAxis
+            tempVector = *scalarMultVector(1/rotationAxisMagnitude, &rotationAxis, &tempVector);
+            rotationAxis = tempVector;
+            
+            // Generate rotation matrix by calculating
+            // Rx, Ry, Rz, being rotation about x,y,z axes.
+            // Then, Rotation matrix R = R-xR-yRzRyRx
+            float theta = angleBetweenVectors(&originVector, &motionVector);
+            float d = sqrt((rotationAxis.y*rotationAxis.y) + (rotationAxis.z*rotationAxis.z));
+            
+            Mat4 ry =
+            {
+                {d, 0.0, rotationAxis.x, 0.0},
+                {0.0,1.0,0.0,0.0},
+                {-rotationAxis.x,0.0,d,0.0},
+                {0.0,0.0,0.0,1.0}
+            };
         
-        
-        Mat4 ryNeg =
-        {
-            {d, 0.0, -rotationAxis.x, 0.0},
-            {0.0,1.0,0.0,0.0},
-            {rotationAxis.x,0.0,d,0.0},
-            {0.0,0.0,0.0,1.0}
-        };
-        
-        Mat4 rxNeg =
-        {
-            {1.0,0.0,0.0,0.0},
-            {0.0,rotationAxis.z/d,-rotationAxis.y/d,0.0},
-            {0.0,rotationAxis.y/d,rotationAxis.z/d,0.0},
-            {0.0,0.0,0.0,1.0}
-        };
-        
-        // Generate R
-        Mat4 tempMatrix1 = *matMultiplication(&rxNeg, &ryNeg, &tempMatrix1);
-        Mat4 tempMatrix2 = *matRotateAboutZ(&tempMatrix1, theta, &tempMatrix2);
-        Mat4 tempMatrix3 = *matMultiplication(&tempMatrix2, &ry, &tempMatrix3);
-        Mat4 tempMatrix4 = *matMultiplication(&tempMatrix3, &rx, &tempMatrix4);
-        
-        // Apply R to current transformation matrix
-        Mat4 tempMatrix5 = *matMultiplication(&tr_matrix, &tempMatrix4, &tempMatrix5);
-        tr_matrix = tempMatrix5;
-        
-  
-        
-        glutPostRedisplay();
-        
+            Mat4 rx =
+            {
+                {1.0,0.0,0.0,0.0},
+                {0.0,rotationAxis.z/d,rotationAxis.y/d,0.0},
+                {0.0,-rotationAxis.y/d,rotationAxis.z/d,0.0},
+                {0.0,0.0,0.0,1.0}
+            };
+            
+            
+            Mat4 ryNeg =
+            {
+                {d, 0.0, -rotationAxis.x, 0.0},
+                {0.0,1.0,0.0,0.0},
+                {rotationAxis.x,0.0,d,0.0},
+                {0.0,0.0,0.0,1.0}
+            };
+            
+            Mat4 rxNeg =
+            {
+                {1.0,0.0,0.0,0.0},
+                {0.0,rotationAxis.z/d,-rotationAxis.y/d,0.0},
+                {0.0,rotationAxis.y/d,rotationAxis.z/d,0.0},
+                {0.0,0.0,0.0,1.0}
+            };
+            
+            // Generate R
+            Mat4 tempMatrix1 = *matMultiplication(&rxNeg, &ryNeg, &tempMatrix1);
+            Mat4 tempMatrix2 = *matRotateAboutZ(&tempMatrix1, theta, &tempMatrix2);
+            Mat4 tempMatrix3 = *matMultiplication(&tempMatrix2, &ry, &tempMatrix3);
+            Mat4 tempMatrix4 = *matMultiplication(&tempMatrix3, &rx, &tempMatrix4);
+            
+            // Apply R to current transformation matrix
+            Mat4 tempMatrix5 = *matMultiplication(&tr_matrix, &tempMatrix4, &tempMatrix5);
+            tr_matrix = tempMatrix5;
+        }
     }
     
     glutPostRedisplay();
