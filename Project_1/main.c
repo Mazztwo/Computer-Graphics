@@ -219,50 +219,56 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         Mat4 tempMatrix = *scaleMatrix(&tr_matrix, 1.02, &tempMatrix);
         tr_matrix = tempMatrix;
-        glutPostRedisplay();
+  
     }
     // Zoom Out
     else if(key == 'l')
     {
         Mat4 tempMatrix = *scaleMatrix(&tr_matrix, 1.0/1.02, &tempMatrix);
         tr_matrix = tempMatrix;
-        glutPostRedisplay();
+       
     }
     else if(key == 'x')
     {
+        printf("KEY: %c\n",key);
         Mat4 tempMatrix = *matRotateAboutX(&tr_matrix,15.0, &tempMatrix);
         tr_matrix = tempMatrix;
-        glutPostRedisplay();
+       
     }
     else if(key == 'X')
     {
+        printf("KEY: %c\n",key);
         Mat4 tempMatrix = *matRotateAboutX(&tr_matrix,-15.0,&tempMatrix);
         tr_matrix = tempMatrix;
-        glutPostRedisplay();
+
     }
     else if(key == 'y')
     {
+        printf("KEY: %c\n",key);
         Mat4 tempMatrix = *matRotateAboutY(&tr_matrix,15.0, &tempMatrix);
         tr_matrix = tempMatrix;
-        glutPostRedisplay();
+    
     }
     else if(key == 'Y')
     {
+        printf("KEY: %c\n",key);
         Mat4 tempMatrix = *matRotateAboutY(&tr_matrix,-15.0,&tempMatrix);
         tr_matrix = tempMatrix;
-        glutPostRedisplay();
+       
     }
     else if(key == 'z')
     {
+        printf("KEY: %c\n",key);
         Mat4 tempMatrix = *matRotateAboutZ(&tr_matrix,15.0, &tempMatrix);
         tr_matrix = tempMatrix;
-        glutPostRedisplay();
+      
     }
     else if(key == 'Z')
     {
+        printf("KEY: %c\n",key);
         Mat4 tempMatrix = *matRotateAboutZ(&tr_matrix,-15.0,&tempMatrix);
         tr_matrix = tempMatrix;
-        glutPostRedisplay();
+       
     }
     else if(key == ' ')
     {
@@ -369,8 +375,6 @@ void motion(int x, int y)
         float theta = angleBetweenVectors(&originVector, &motionVector);
         float d = sqrt((rotationAxis.y*rotationAxis.y) + (rotationAxis.z*rotationAxis.z));
         
-        
-    
         Mat4 ry =
         {
             {d, 0.0, rotationAxis.x, 0.0},
@@ -399,24 +403,22 @@ void motion(int x, int y)
         Mat4 rxNeg =
         {
             {1.0,0.0,0.0,0.0},
-            {0.0,-rotationAxis.z/d,-rotationAxis.y/d,0.0},
-            {0.0,rotationAxis.y/d,-rotationAxis.z/d,0.0},
+            {0.0,rotationAxis.z/d,-rotationAxis.y/d,0.0},
+            {0.0,rotationAxis.y/d,rotationAxis.z/d,0.0},
             {0.0,0.0,0.0,1.0}
         };
         
-        // Generate rotations
-        Mat4 tempMatrix = *matMultiplication(&tr_matrix, &rx, &tempMatrix);
-        tr_matrix = tempMatrix;
-        tempMatrix = *matMultiplication(&tr_matrix, &ry, &tempMatrix);
-        tr_matrix = tempMatrix;
-        tempMatrix = *matRotateAboutZ(&tr_matrix,theta,&tempMatrix);
-        tr_matrix = tempMatrix;
-        tempMatrix = *matMultiplication(&tr_matrix, &ryNeg, &tempMatrix);
-        tr_matrix = tempMatrix;
-        tempMatrix = *matMultiplication(&tr_matrix, &rxNeg, &tempMatrix);
-        tr_matrix = tempMatrix;
+        // Generate R
+        Mat4 tempMatrix1 = *matMultiplication(&rxNeg, &ryNeg, &tempMatrix1);
+        Mat4 tempMatrix2 = *matRotateAboutZ(&tempMatrix1, theta, &tempMatrix2);
+        Mat4 tempMatrix3 = *matMultiplication(&tempMatrix2, &ry, &tempMatrix3);
+        Mat4 tempMatrix4 = *matMultiplication(&tempMatrix3, &rx, &tempMatrix4);
         
+        // Apply R to current transformation matrix
+        Mat4 tempMatrix5 = *matMultiplication(&tr_matrix, &tempMatrix4, &tempMatrix5);
+        tr_matrix = tempMatrix5;
         
+  
         
         glutPostRedisplay();
         

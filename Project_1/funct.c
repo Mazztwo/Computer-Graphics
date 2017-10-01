@@ -694,7 +694,8 @@ Mat4* matRotateAboutX(Mat4 *tr_matrix, float theta, Mat4 *productMatrix)
     };
     
     // Apply rotation matrix to current transfomration matrix
-    productMatrix = matMultiplication(tr_matrix, &rotationMatrix, productMatrix);
+    Mat4 tempMatrix = *matMultiplication(tr_matrix, &rotationMatrix, &tempMatrix);
+    productMatrix = &tempMatrix;
     
     return productMatrix;
 }
@@ -726,7 +727,8 @@ Mat4* matRotateAboutY(Mat4 *tr_matrix, float theta, Mat4 *productMatrix)
     };
     
     // Apply rotation matrix to current transfomration matrix
-    productMatrix = matMultiplication(tr_matrix, &rotationMatrix, productMatrix);
+    Mat4 tempMatrix = *matMultiplication(tr_matrix, &rotationMatrix, &tempMatrix);
+    productMatrix = &tempMatrix;
     
     return productMatrix;
 }
@@ -758,7 +760,8 @@ Mat4* matRotateAboutZ(Mat4 *tr_matrix, float theta, Mat4 *productMatrix)
     };
     
     // Apply rotation matrix to current transfomration matrix
-    productMatrix = matMultiplication(tr_matrix, &rotationMatrix, productMatrix);
+    Mat4 tempMatrix = *matMultiplication(tr_matrix, &rotationMatrix, &tempMatrix);
+    productMatrix = &tempMatrix;
     
     return productMatrix;
 }
