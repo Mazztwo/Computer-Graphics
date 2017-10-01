@@ -159,6 +159,14 @@ Mat4 tr_matrix =
     
 };
 
+Mat4 R =
+{
+    {0.0,0.0,0.0,0.0},
+    {0.0,0.0,0.0,0.0},
+    {0.0,0.0,0.0,0.0},
+    {0.0,0.0,0.0,0.0}
+};
+
 int enableIdle = 0;
 int leftDown = 1;
 
@@ -270,11 +278,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
         tr_matrix = tempMatrix;
        
     }
-    else if(key == ' ')
-    {
-        enableIdle = 1;
-    }
-    
+
     glutPostRedisplay();
     
 }
@@ -283,25 +287,11 @@ void idle(void)
 {
     if(enableIdle)
     {
-        if(leftDown)
-        {
-            tr_matrix.col4.x -= 0.01;
-            tr_matrix.col4.y -= 0.01;
-            
-            if(tr_matrix.col4.x < -0.5)
-            leftDown = 0;
-        }
-        else
-        {
-            tr_matrix.col4.x += 0.01;
-            tr_matrix.col4.y += 0.01;
-            
-            if(tr_matrix.col4.x > 0.5)
-            leftDown = 1;
-        }
         
-        glutPostRedisplay();
+        
     }
+        glutPostRedisplay();
+    
 }
 
 // Listener for mouse button events
@@ -335,7 +325,7 @@ void mouse(int button, int state, int x, int y)
     {
         if(state == GLUT_DOWN)
         {
-           
+            enableIdle = 0;
             // Can get initial click point to use for
             // calculation of axis of rotation
 
@@ -344,6 +334,12 @@ void mouse(int button, int state, int x, int y)
             originVector.z = sqrt((256*256)-((x-256)*(x-256)));
             
         }
+        else if(state == GLUT_UP)
+        {
+            enableIdle = 1;
+            
+        }
+            
     }
     
     
@@ -357,6 +353,7 @@ void motion(int x, int y)
     motionVector.y = 256-y;
     motionVector.z = sqrt((256*256)-((x-256)*(x-256)));
     
+    // If user drag is outside window, do nothing
     if(motionVector.x > 256 ||
        motionVector.y > 256 ||
        motionVector.z > 256 ||
@@ -371,6 +368,8 @@ void motion(int x, int y)
         rotationAxis = tempVector;
         float rotationAxisMagnitude = vecMagnitude(&rotationAxis);
         
+        // As long as the magnitude is not 0, which is the case
+        // initially at the first moment of dragging
         if(rotationAxisMagnitude != 0)
         {
             // Normalize rotationAxis
@@ -379,7 +378,6 @@ void motion(int x, int y)
             
             // Generate rotation matrix by calculating
             // Rx, Ry, Rz, being rotation about x,y,z axes.
-            // Then, Rotation matrix R = R-xR-yRzRyRx
             float theta = angleBetweenVectors(&originVector, &motionVector);
             float d = sqrt((rotationAxis.y*rotationAxis.y) + (rotationAxis.z*rotationAxis.z));
             
@@ -420,18 +418,16 @@ void motion(int x, int y)
             Mat4 tempMatrix1 = *matMultiplication(&rxNeg, &ryNeg, &tempMatrix1);
             Mat4 tempMatrix2 = *matRotateAboutZ(&tempMatrix1, theta, &tempMatrix2);
             Mat4 tempMatrix3 = *matMultiplication(&tempMatrix2, &ry, &tempMatrix3);
-            Mat4 tempMatrix4 = *matMultiplication(&tempMatrix3, &rx, &tempMatrix4);
+            R = *matMultiplication(&tempMatrix3, &rx, &R);
             
             // Apply R to current transformation matrix
-            Mat4 tempMatrix5 = *matMultiplication(&tr_matrix, &tempMatrix4, &tempMatrix5);
+            Mat4 tempMatrix5 = *matMultiplication(&tr_matrix, &R, &tempMatrix5);
             tr_matrix = tempMatrix5;
         }
     }
     
     glutPostRedisplay();
 }
-
-
 
 int main(int argc, char **argv)
 {
