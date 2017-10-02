@@ -318,43 +318,49 @@ void keyboard(unsigned char key, int mousex, int mousey)
     else if(key == 'x')
     {
         printf("KEY: %c\n",key);
-        Mat4 tempMatrix = *matRotateAboutX(&tr_matrix,15.0, &tempMatrix);
-        tr_matrix = tempMatrix;
+        Mat4 rotation = *matRotateAboutX(15.0, &rotation);
+        Mat4 tempMatrix2 = *matMultiplication(&rotation, &tr_matrix, &tempMatrix2);
+        tr_matrix = tempMatrix2;
        
     }
     else if(key == 'X')
     {
         printf("KEY: %c\n",key);
-        Mat4 tempMatrix = *matRotateAboutX(&tr_matrix,-15.0,&tempMatrix);
-        tr_matrix = tempMatrix;
+        Mat4 rotation = *matRotateAboutX(-15.0, &rotation);
+        Mat4 tempMatrix2 = *matMultiplication(&rotation, &tr_matrix, &tempMatrix2);
+        tr_matrix = tempMatrix2;
 
     }
     else if(key == 'y')
     {
         printf("KEY: %c\n",key);
-        Mat4 tempMatrix = *matRotateAboutY(&tr_matrix,15.0, &tempMatrix);
-        tr_matrix = tempMatrix;
+        Mat4 rotation = *matRotateAboutY(15.0, &rotation);
+        Mat4 tempMatrix2 = *matMultiplication(&rotation, &tr_matrix, &tempMatrix2);
+        tr_matrix = tempMatrix2;
     
     }
     else if(key == 'Y')
     {
         printf("KEY: %c\n",key);
-        Mat4 tempMatrix = *matRotateAboutY(&tr_matrix,-15.0,&tempMatrix);
-        tr_matrix = tempMatrix;
+        Mat4 rotation = *matRotateAboutY(-15.0, &rotation);
+        Mat4 tempMatrix2 = *matMultiplication(&rotation, &tr_matrix, &tempMatrix2);
+        tr_matrix = tempMatrix2;
        
     }
     else if(key == 'z')
     {
         printf("KEY: %c\n",key);
-        Mat4 tempMatrix = *matRotateAboutZ(&tr_matrix,15.0, &tempMatrix);
-        tr_matrix = tempMatrix;
+        Mat4 rotation = *matRotateAboutZ(15.0, &rotation);
+        Mat4 tempMatrix2 = *matMultiplication(&rotation, &tr_matrix, &tempMatrix2);
+        tr_matrix = tempMatrix2;
       
     }
     else if(key == 'Z')
     {
         printf("KEY: %c\n",key);
-        Mat4 tempMatrix = *matRotateAboutZ(&tr_matrix,-15.0,&tempMatrix);
-        tr_matrix = tempMatrix;
+        Mat4 rotation = *matRotateAboutZ(-15.0, &rotation);
+        Mat4 tempMatrix2 = *matMultiplication(&rotation, &tr_matrix, &tempMatrix2);
+        tr_matrix = tempMatrix2;
        
     }
     else if(key == ' ')
@@ -374,7 +380,7 @@ void idle(void)
 {
     if(enableIdle)
     {
-        Mat4 tempMatrix = *matMultiplication(&tr_matrix, &R, &tempMatrix);
+        Mat4 tempMatrix = *matMultiplication(&R, &tr_matrix,&tempMatrix);
         tr_matrix = tempMatrix;
     }
 
@@ -384,28 +390,6 @@ void idle(void)
 // Listener for mouse button events
 void mouse(int button, int state, int x, int y)
 {
-    // Add scaling matrix to object
-    // Scroll UP --> button = 3
-    // Scroll DOWN --> button = 4
-    
-    // Scroll up to enlarge
-    /*
-    if(button == 3)
-    {
-         tr_matrix = *scaleMatrix(&tr_matrix, 1.02, &tr_matrix);
-         glutPostRedisplay();
-    }
-    // Scroll down shrink
-    else if (button == 4)
-    {
-        tr_matrix = *scaleMatrix(&tr_matrix, 1.0/1.02, &tr_matrix);
-        glutPostRedisplay();
-    }
-    */
-    
-    printf("BUTTON : %d\n",button);
-    fflush(stdout);
-    
     // If button is pressed
     // button = GLUT LEFT BUTTON
     // state = GLUT_UP or GLUT_DOWN
@@ -510,22 +494,29 @@ void motion(int x, int y)
                 {0.0,0.0,0.0,1.0}
             };
             
-            // Generate R
-            Mat4 tempMatrix1 = *matMultiplication(&rxNeg, &ryNeg, &tempMatrix1);
-            Mat4 tempMatrix2 = *matRotateAboutZ(&tempMatrix1, theta, &tempMatrix2);
-            Mat4 tempMatrix3 = *matMultiplication(&tempMatrix2, &ry, &tempMatrix3);
-            R = *matMultiplication(&tempMatrix3, &rx, &R);
             
-            
+            //Generate R
+            Mat4 tempMatrix1 = *matMultiplication(&ry, &rx, &tempMatrix1);
+            Mat4 tempMatrix2 = *matRotateAboutZ(theta, &tempMatrix2);
+            Mat4 tempMatrix3 = *matMultiplication(&tempMatrix2, &tempMatrix1,&tempMatrix3);
+            Mat4 tempMatrix4 = *matMultiplication(&ryNeg, &tempMatrix3, &tempMatrix4);
+            R = *matMultiplication(&rxNeg, &tempMatrix4, &R);
             
             
             // Apply R to current transformation matrix
-            Mat4 tempMatrix5 = *matMultiplication(&tr_matrix, &R, &tempMatrix5);
+            Mat4 tempMatrix5 = *matMultiplication(&R,&tr_matrix,&tempMatrix5);
             tr_matrix = tempMatrix5;
+            
+            // Reset initial point to last point in motion
+            // in order to allow user to change axis of rotation
+            // on demand
+            originVector.x = motionVector.x;
+            originVector.y = motionVector.y;
+            originVector.z = motionVector.z;
+         
+            
         }
     }
-    
-    ////UPDATE p0
     
     
     glutPostRedisplay();

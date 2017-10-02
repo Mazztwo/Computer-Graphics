@@ -678,11 +678,10 @@ Mat4* transposeMatrix(Mat4 *mat1, Mat4 *transpose)
  Outputs:
      productMatrix --> tr_matrix with rotation about x applied
  */
-Mat4* matRotateAboutX(Mat4 *tr_matrix, float theta, Mat4 *productMatrix)
+Mat4* matRotateAboutX(float theta, Mat4 *productMatrix)
 {
     float DegreesToRadians = M_PI / 180.0;
     float thetar = theta*DegreesToRadians;
-    
     
     // Generate rotation matrix
     Mat4 rotationMatrix =
@@ -693,9 +692,7 @@ Mat4* matRotateAboutX(Mat4 *tr_matrix, float theta, Mat4 *productMatrix)
         {0.0,0.0,0.0,1.0},
     };
     
-    // Apply rotation matrix to current transfomration matrix
-    Mat4 tempMatrix = *matMultiplication(&rotationMatrix,tr_matrix,&tempMatrix);
-    productMatrix = &tempMatrix;
+    productMatrix = &rotationMatrix;
     
     return productMatrix;
 }
@@ -711,7 +708,7 @@ Mat4* matRotateAboutX(Mat4 *tr_matrix, float theta, Mat4 *productMatrix)
  Outputs:
      productMatrix --> tr_matrix with rotation about y applied
  */
-Mat4* matRotateAboutY(Mat4 *tr_matrix, float theta, Mat4 *productMatrix)
+Mat4* matRotateAboutY(float theta, Mat4 *productMatrix)
 {
     float DegreesToRadians = M_PI / 180.0;
     float thetar = theta*DegreesToRadians;
@@ -725,10 +722,8 @@ Mat4* matRotateAboutY(Mat4 *tr_matrix, float theta, Mat4 *productMatrix)
         {sin(thetar),0.0,cos(thetar),0.0},
         {0.0,0.0,0.0,1.0},
     };
-    
-    // Apply rotation matrix to current transfomration matrix
-    Mat4 tempMatrix = *matMultiplication(&rotationMatrix,tr_matrix,&tempMatrix);
-    productMatrix = &tempMatrix;
+ 
+    productMatrix = &rotationMatrix;
     
     return productMatrix;
 }
@@ -744,7 +739,7 @@ Mat4* matRotateAboutY(Mat4 *tr_matrix, float theta, Mat4 *productMatrix)
  Outputs:
      productMatrix --> tr_matrix with rotation about z applied
  */
-Mat4* matRotateAboutZ(Mat4 *tr_matrix, float theta, Mat4 *productMatrix)
+Mat4* matRotateAboutZ(float theta, Mat4 *productMatrix)
 {
     float DegreesToRadians = M_PI / 180.0;
     float thetar = theta*DegreesToRadians;
@@ -760,10 +755,7 @@ Mat4* matRotateAboutZ(Mat4 *tr_matrix, float theta, Mat4 *productMatrix)
     };
     
     
-    // FLIP!!!!!
-    // Apply rotation matrix to current transfomration matrix
-    Mat4 tempMatrix = *matMultiplication(&rotationMatrix,tr_matrix,&tempMatrix);
-    productMatrix = &tempMatrix;
+    productMatrix = &rotationMatrix;
     
     return productMatrix;
 }
