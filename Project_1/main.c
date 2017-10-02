@@ -24,11 +24,15 @@
 #include <stdio.h>
 #include "funct.h"
 #include <math.h>
+#include <time.h>
+#include <stdlib.h>
+
 
 #define BUFFER_OFFSET( offset )   ((GLvoid*) (offset))
 
 
 
+/*// CUBE ///////////////////////////////////////////////
 // Create 3D object verticies
 Vec4 vertices[36] =
 {
@@ -87,7 +91,6 @@ Vec4 vertices[36] =
     {0.2, -0.2, -0.2, 1.0}              // bottom left
 };
 
-
 // Color each face of object
 Vec4 colors[36] =
 {
@@ -136,7 +139,85 @@ Vec4 colors[36] =
  
 // Declare number of verticies
 int num_vertices = 36;
+////////////////////////////////////////////////////////////////*/
 
+// Create 3D object verticies
+Vec4 vertices[1140];
+
+
+void initVertices()
+{
+    float DegreesToRadians = M_PI / 180.0;
+    int k = 0;
+    for (float phi = -90.0; phi <= 90.0; phi += 20.0)
+    {
+        float phir = phi * DegreesToRadians;
+        float phir20 = (phi + 20.0)*DegreesToRadians;
+        
+        for(float theta = -180.0; theta <= 180.0; theta += 20.0)
+        {
+            float thetar = theta*DegreesToRadians;
+            float thetar20 = (theta+20.0)*DegreesToRadians;
+            
+            vertices[k].x = sin(thetar)*cos(phir);
+            vertices[k].y = cos(thetar)*cos(phir);
+            vertices[k].z = sin(phir);
+            vertices[k].w = 1.0;
+            k++;
+            
+            vertices[k].x = sin(thetar)*cos(phir20);
+            vertices[k].y = cos(thetar)*cos(phir20);
+            vertices[k].z = sin(phir20);
+            vertices[k].w = 1.0;
+            k++;
+            
+            vertices[k].x = sin(thetar20)*cos(phir20);
+            vertices[k].y = cos(thetar20)*cos(phir20);
+            vertices[k].z = sin(phir20);
+            vertices[k].w = 1.0;
+            k++;
+            
+            
+            vertices[k].x = sin(thetar20)*cos(phir20);
+            vertices[k].y = cos(thetar20)*cos(phir20);
+            vertices[k].z = sin(phir20);
+            vertices[k].w = 1.0;
+            k++;
+            
+            vertices[k].x = sin(thetar20)*cos(phir);
+            vertices[k].y = cos(thetar20)*cos(phir);
+            vertices[k].z = sin(phir);
+            vertices[k].w = 1.0;
+            k++;
+            
+            vertices[k].x = sin(thetar)*cos(phir);
+            vertices[k].y = cos(thetar)*cos(phir);
+            vertices[k].z = sin(phir);
+            vertices[k].w = 1.0;
+            k++;
+        }
+    }
+}
+
+
+// Color each face of object
+Vec4 colors[1140];
+
+void initColors()
+{
+    srand ( time(NULL) );
+    
+    for(int i = 0; i < 1140; i++)
+    {
+        colors[i].x = rand() / (float)RAND_MAX;
+        colors[i].y = rand() / (float)RAND_MAX;
+        colors[i].z = rand() / (float)RAND_MAX;
+        colors[i].w = 1.0;
+    }
+}
+
+// Declare number of verticies
+int num_vertices = 1140;
 
 
 // Declare point & vector pointing from initial mouse click to origin
@@ -449,8 +530,8 @@ void motion(int x, int y)
 int main(int argc, char **argv)
 {
     
-    
-    
+    initVertices();
+    initColors();
     
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
