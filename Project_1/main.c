@@ -280,13 +280,11 @@ void keyboard(unsigned char key, int mousex, int mousey)
     }
     else if(key == ' ')
     {
-        R =
-        {
-            {0.0,0.0,0.0,0.0},
-            {0.0,0.0,0.0,0.0},
-            {0.0,0.0,0.0,0.0},
-            {0.0,0.0,0.0,0.0}
-        };
+        R.col1.x = 1.0; R.col2.x = 0.0; R.col3.x = 0.0; R.col4.x = 0.0;
+        R.col1.y = 0.0; R.col2.y = 1.0; R.col3.y = 0.0; R.col4.y = 0.0;
+        R.col1.z = 0.0; R.col2.z = 0.0; R.col3.z = 1.0; R.col4.z = 0.0;
+        R.col1.w = 0.0; R.col2.w = 0.0; R.col3.w = 0.0; R.col4.w = 1.0;
+        
     }
 
     glutPostRedisplay();
@@ -325,6 +323,9 @@ void mouse(int button, int state, int x, int y)
         glutPostRedisplay();
     }
     */
+    
+    printf("BUTTON : %d\n",button);
+    fflush(stdout);
     
     // If button is pressed
     // button = GLUT LEFT BUTTON
