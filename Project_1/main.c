@@ -30,9 +30,7 @@
 
 #define BUFFER_OFFSET( offset )   ((GLvoid*) (offset))
 
-
-
-/*// CUBE ///////////////////////////////////////////////
+// CUBE ///////////////////////////////////////////////
 // Create 3D object verticies
 Vec4 vertices[36] =
 {
@@ -139,8 +137,8 @@ Vec4 colors[36] =
  
 // Declare number of verticies
 int num_vertices = 36;
-////////////////////////////////////////////////////////////////*/
-
+////////////////////////////////////////////////////////////////
+/*
 // Create 3D object verticies
 Vec4 vertices[1140];
 
@@ -218,7 +216,7 @@ void initColors()
 
 // Declare number of verticies
 int num_vertices = 1140;
-
+*/
 
 // Declare point & vector pointing from initial mouse click to origin
 Vec4 originVector = {0.0,0.0,0.0,0.0};
@@ -242,10 +240,10 @@ Mat4 tr_matrix =
 
 Mat4 R =
 {
-    {0.0,0.0,0.0,0.0},
-    {0.0,0.0,0.0,0.0},
-    {0.0,0.0,0.0,0.0},
-    {0.0,0.0,0.0,0.0}
+    {1.0,0.0,0.0,0.0},
+    {0.0,1.0,0.0,0.0},
+    {0.0,0.0,1.0,0.0},
+    {0.0,0.0,0.0,1.0}
 };
 
 int enableIdle = 0;
@@ -518,11 +516,17 @@ void motion(int x, int y)
             Mat4 tempMatrix3 = *matMultiplication(&tempMatrix2, &ry, &tempMatrix3);
             R = *matMultiplication(&tempMatrix3, &rx, &R);
             
+            
+            
+            
             // Apply R to current transformation matrix
             Mat4 tempMatrix5 = *matMultiplication(&tr_matrix, &R, &tempMatrix5);
             tr_matrix = tempMatrix5;
         }
     }
+    
+    ////UPDATE p0
+    
     
     glutPostRedisplay();
 }
@@ -530,8 +534,8 @@ void motion(int x, int y)
 int main(int argc, char **argv)
 {
     
-    initVertices();
-    initColors();
+    //initVertices();
+    //initColors();
     
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
