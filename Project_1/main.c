@@ -30,7 +30,7 @@
 
 #define BUFFER_OFFSET( offset )   ((GLvoid*) (offset))
 
-// CUBE ///////////////////////////////////////////////
+/*// CUBE ///////////////////////////////////////////////
 // Create 3D object verticies
 Vec4 vertices[36] =
 {
@@ -137,8 +137,8 @@ Vec4 colors[36] =
  
 // Declare number of verticies
 int num_vertices = 36;
-////////////////////////////////////////////////////////////////
-/*
+////////////////////////////////////////////////////////////////*/
+
 // Create 3D object verticies
 Vec4 vertices[1140];
 
@@ -216,7 +216,7 @@ void initColors()
 
 // Declare number of verticies
 int num_vertices = 1140;
-*/
+
 
 // Declare point & vector pointing from initial mouse click to origin
 Vec4 originVector = {0.0,0.0,0.0,0.0};
@@ -408,18 +408,7 @@ void mouse(int button, int state, int x, int y)
             originVector.z = sqrt((256*256)-((x-256)*(x-256)));
             
         }
-        else if(state == GLUT_UP)
-        {
-            if(originVector.x == motionVector.x &&
-               originVector.y == motionVector.y &&
-               originVector.z == motionVector.z
-               ){}
-            else
-            {
-                enableIdle = 1;
-            }
-        }
-            
+        
     }
     
     
@@ -494,14 +483,12 @@ void motion(int x, int y)
                 {0.0,0.0,0.0,1.0}
             };
             
-            
             //Generate R
             Mat4 tempMatrix1 = *matMultiplication(&ry, &rx, &tempMatrix1);
             Mat4 tempMatrix2 = *matRotateAboutZ(theta, &tempMatrix2);
             Mat4 tempMatrix3 = *matMultiplication(&tempMatrix2, &tempMatrix1,&tempMatrix3);
             Mat4 tempMatrix4 = *matMultiplication(&ryNeg, &tempMatrix3, &tempMatrix4);
             R = *matMultiplication(&rxNeg, &tempMatrix4, &R);
-            
             
             // Apply R to current transformation matrix
             Mat4 tempMatrix5 = *matMultiplication(&R,&tr_matrix,&tempMatrix5);
@@ -513,9 +500,11 @@ void motion(int x, int y)
             originVector.x = motionVector.x;
             originVector.y = motionVector.y;
             originVector.z = motionVector.z;
-         
             
         }
+        
+        enableIdle = 1;
+        
     }
     
     
@@ -524,9 +513,9 @@ void motion(int x, int y)
 
 int main(int argc, char **argv)
 {
-    
-    //initVertices();
-    //initColors();
+    // Initialize multi-color sphere
+    initVertices();
+    initColors();
     
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
