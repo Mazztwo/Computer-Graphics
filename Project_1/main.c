@@ -400,18 +400,15 @@ void mouse(int button, int state, int x, int y)
         if(state == GLUT_DOWN)
         {
             enableIdle = 0;
-            // Can get initial click point to use for
+            // Get initial click point to use for
             // calculation of axis of rotation
-
             originVector.x = x-256;
             originVector.y = 256-y;
             originVector.z = sqrt((256*256)-((x-256)*(x-256)));
-            
         }
         
     }
-    
-    
+
     glutPostRedisplay();
 }
 
@@ -450,63 +447,63 @@ void motion(int x, int y)
             float theta = angleBetweenVectors(&originVector, &motionVector);
             float d = sqrt((rotationAxis.y*rotationAxis.y) + (rotationAxis.z*rotationAxis.z));
             
-            Mat4 ry =
+            if(d != 0)
             {
-                {d, 0.0, rotationAxis.x, 0.0},
-                {0.0,1.0,0.0,0.0},
-                {-rotationAxis.x,0.0,d,0.0},
-                {0.0,0.0,0.0,1.0}
-            };
-        
-            Mat4 rx =
-            {
-                {1.0,0.0,0.0,0.0},
-                {0.0,rotationAxis.z/d,rotationAxis.y/d,0.0},
-                {0.0,-rotationAxis.y/d,rotationAxis.z/d,0.0},
-                {0.0,0.0,0.0,1.0}
-            };
+                Mat4 ry =
+                {
+                    {d, 0.0, rotationAxis.x, 0.0},
+                    {0.0,1.0,0.0,0.0},
+                    {-rotationAxis.x,0.0,d,0.0},
+                    {0.0,0.0,0.0,1.0}
+                };
             
+                Mat4 rx =
+                {
+                    {1.0,0.0,0.0,0.0},
+                    {0.0,rotationAxis.z/d,rotationAxis.y/d,0.0},
+                    {0.0,-rotationAxis.y/d,rotationAxis.z/d,0.0},
+                    {0.0,0.0,0.0,1.0}
+                };
             
-            Mat4 ryNeg =
-            {
-                {d, 0.0, -rotationAxis.x, 0.0},
-                {0.0,1.0,0.0,0.0},
-                {rotationAxis.x,0.0,d,0.0},
-                {0.0,0.0,0.0,1.0}
-            };
+                Mat4 ryNeg =
+                {
+                    {d, 0.0, -rotationAxis.x, 0.0},
+                    {0.0,1.0,0.0,0.0},
+                    {rotationAxis.x,0.0,d,0.0},
+                    {0.0,0.0,0.0,1.0}
+                };
             
-            Mat4 rxNeg =
-            {
-                {1.0,0.0,0.0,0.0},
-                {0.0,rotationAxis.z/d,-rotationAxis.y/d,0.0},
-                {0.0,rotationAxis.y/d,rotationAxis.z/d,0.0},
-                {0.0,0.0,0.0,1.0}
-            };
+                Mat4 rxNeg =
+                {
+                    {1.0,0.0,0.0,0.0},
+                    {0.0,rotationAxis.z/d,-rotationAxis.y/d,0.0},
+                    {0.0,rotationAxis.y/d,rotationAxis.z/d,0.0},
+                    {0.0,0.0,0.0,1.0}
+                };
             
-            //Generate R
-            Mat4 tempMatrix1 = *matMultiplication(&ry, &rx, &tempMatrix1);
-            Mat4 tempMatrix2 = *matRotateAboutZ(theta, &tempMatrix2);
-            Mat4 tempMatrix3 = *matMultiplication(&tempMatrix2, &tempMatrix1,&tempMatrix3);
-            Mat4 tempMatrix4 = *matMultiplication(&ryNeg, &tempMatrix3, &tempMatrix4);
-            R = *matMultiplication(&rxNeg, &tempMatrix4, &R);
+                //Generate R
+                Mat4 tempMatrix1 = *matMultiplication(&ry, &rx, &tempMatrix1);
+                Mat4 tempMatrix2 = *matRotateAboutZ(theta, &tempMatrix2);
+                Mat4 tempMatrix3 = *matMultiplication(&tempMatrix2, &tempMatrix1,&tempMatrix3);
+                Mat4 tempMatrix4 = *matMultiplication(&ryNeg, &tempMatrix3, &tempMatrix4);
+                R = *matMultiplication(&rxNeg, &tempMatrix4, &R);
             
-            // Apply R to current transformation matrix
-            Mat4 tempMatrix5 = *matMultiplication(&R,&tr_matrix,&tempMatrix5);
-            tr_matrix = tempMatrix5;
+                // Apply R to current transformation matrix
+                Mat4 tempMatrix5 = *matMultiplication(&R,&tr_matrix,&tempMatrix5);
+                tr_matrix = tempMatrix5;
             
-            // Reset initial point to last point in motion
-            // in order to allow user to change axis of rotation
-            // on demand
-            originVector.x = motionVector.x;
-            originVector.y = motionVector.y;
-            originVector.z = motionVector.z;
-            
+                // Reset initial point to last point in motion
+                // in order to allow user to change axis of rotation
+                // on demand
+                originVector.x = motionVector.x;
+                originVector.y = motionVector.y;
+                originVector.z = motionVector.z;
+            }
         }
         
+        // Allows button click to stop rotation
         enableIdle = 1;
-        
     }
-    
     
     glutPostRedisplay();
 }
