@@ -406,7 +406,11 @@ void mouse(int button, int state, int x, int y)
             originVector.y = 256-y;
             originVector.z = sqrt((256*256)-((x-256)*(x-256)));
         }
-        
+        else if(state == GLUT_UP)
+        {
+            // allows spin animation to start
+            enableIdle = 1;
+        }
     }
 
     glutPostRedisplay();
@@ -495,7 +499,7 @@ void motion(int x, int y)
                 // determines the speed at which the object
                 // rotates about the rotation axis.
                 // Scale down theta to 60% to smooth rotation
-                Mat4 tempMatrix2 = *matRotateAboutZ(0.6*theta, &tempMatrix2);
+                Mat4 tempMatrix2 = *matRotateAboutZ(theta, &tempMatrix2);
                 
                 Mat4 tempMatrix3 = *matMultiplication(&tempMatrix2, &tempMatrix1,&tempMatrix3);
                 Mat4 tempMatrix4 = *matMultiplication(&ryNeg, &tempMatrix3, &tempMatrix4);
@@ -514,9 +518,14 @@ void motion(int x, int y)
                 
             }
         }
+        else
+        {
+            R.col1.x = 1.0; R.col2.x = 0.0; R.col3.x = 0.0; R.col4.x = 0.0;
+            R.col1.y = 0.0; R.col2.y = 1.0; R.col3.y = 0.0; R.col4.y = 0.0;
+            R.col1.z = 0.0; R.col2.z = 0.0; R.col3.z = 1.0; R.col4.z = 0.0;
+            R.col1.w = 0.0; R.col2.w = 0.0; R.col3.w = 0.0; R.col4.w = 1.0;
+        }
         
-        // Allows button click to stop rotation
-        enableIdle = 1;
     }
     
     glutPostRedisplay();
