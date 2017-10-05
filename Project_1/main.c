@@ -382,6 +382,7 @@ void idle(void)
     {
         Mat4 tempMatrix = *matMultiplication(&R, &tr_matrix,&tempMatrix);
         tr_matrix = tempMatrix;
+        glutPostRedisplay();
     }
 
     glutPostRedisplay();
@@ -405,6 +406,7 @@ void mouse(int button, int state, int x, int y)
             originVector.x = x-256;
             originVector.y = 256-y;
             originVector.z = sqrt((256*256)-((x-256)*(x-256)));
+            originVector.w = 0.0;
         }
         else if(state == GLUT_UP)
         {
@@ -422,6 +424,7 @@ void motion(int x, int y)
     motionVector.x = x-256;
     motionVector.y = 256-y;
     motionVector.z = sqrt((256*256)-((x-256)*(x-256)));
+    motionVector.w = 0.0;
     
     // If user drag is outside window, do nothing
     if(motionVector.x > 256 ||
@@ -456,7 +459,7 @@ void motion(int x, int y)
             printVec4(&rotationAxis);
             
             
-            printf("THETA: %f\n",theta);
+            printf("THETA: %.2f Degrees\n",theta*(180.0/M_PI));
             
             if(d != 0)
             {
@@ -509,13 +512,15 @@ void motion(int x, int y)
                 Mat4 tempMatrix5 = *matMultiplication(&R,&tr_matrix,&tempMatrix5);
                 tr_matrix = tempMatrix5;
             
+                glutPostRedisplay();
                 // Reset initial point to last point in motion
                 // in order to allow user to change axis of rotation
                 // on demand
                 originVector.x = motionVector.x;
                 originVector.y = motionVector.y;
                 originVector.z = motionVector.z;
-                
+                originVector.w = motionVector.w;
+                glutPostRedisplay();
             }
         }
         else
@@ -524,6 +529,7 @@ void motion(int x, int y)
             R.col1.y = 0.0; R.col2.y = 1.0; R.col3.y = 0.0; R.col4.y = 0.0;
             R.col1.z = 0.0; R.col2.z = 0.0; R.col3.z = 1.0; R.col4.z = 0.0;
             R.col1.w = 0.0; R.col2.w = 0.0; R.col3.w = 0.0; R.col4.w = 1.0;
+            glutPostRedisplay();
         }
         
     }

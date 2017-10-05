@@ -38,7 +38,7 @@ void printVec4(Vec4 *vectorToPrint)
     wComp = vectorToPrint->w;
     
     // Print each component of vector
-    printf("[%f,%f,%f,%f]\n", xComp,yComp,zComp,wComp);
+    printf("[%.2f,%.2f,%.2f,%.2f]\n", xComp,yComp,zComp,wComp);
 }
 
 /*
@@ -275,10 +275,10 @@ void printMat4(Mat4 *mat)
    | x.w | y.w | z.w | w.w |
     */
 
-    printf("| %f | %f | %f | %f |\n",mat->col1.x,mat->col2.x,mat->col3.x,mat->col4.x);
-    printf("| %f | %f | %f | %f |\n",mat->col1.y,mat->col2.y,mat->col3.y,mat->col4.y);
-    printf("| %f | %f | %f | %f |\n",mat->col1.z,mat->col2.z,mat->col3.z,mat->col4.z);
-    printf("| %f | %f | %f | %f |\n",mat->col1.w,mat->col2.w,mat->col3.w,mat->col4.w);
+    printf("| %.2f | %.2f | %.2f | %.2f |\n",mat->col1.x,mat->col2.x,mat->col3.x,mat->col4.x);
+    printf("| %.2f | %.2f | %.2f | %.2f |\n",mat->col1.y,mat->col2.y,mat->col3.y,mat->col4.y);
+    printf("| %.2f | %.2f | %.2f | %.2f |\n",mat->col1.z,mat->col2.z,mat->col3.z,mat->col4.z);
+    printf("| %.2f | %.2f | %.2f | %.2f |\n",mat->col1.w,mat->col2.w,mat->col3.w,mat->col4.w);
 }
 
 /*
