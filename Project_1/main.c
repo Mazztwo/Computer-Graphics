@@ -447,6 +447,8 @@ void motion(int x, int y)
             float theta = angleBetweenVectors(&originVector, &motionVector);
             float d = sqrt((rotationAxis.y*rotationAxis.y) + (rotationAxis.z*rotationAxis.z));
             
+            printf("THETA: %f\n",theta);
+            
             if(d != 0)
             {
                 Mat4 ry =

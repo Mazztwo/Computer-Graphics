@@ -222,6 +222,11 @@ float angleBetweenVectors(Vec4 *vec1, Vec4 *vec2)
     float magVec1 = 0.0;
     float magVec2 = 0.0;
     
+    printf("RAWRRRRR\n");
+    printVec4(vec1);
+    printf("\n");
+    printVec4(vec2);
+    
     // First calculate dot product between vectors
     dotProd = dotProduct(vec1, vec2);
     
