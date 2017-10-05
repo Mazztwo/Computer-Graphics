@@ -447,6 +447,11 @@ void motion(int x, int y)
             float theta = angleBetweenVectors(&originVector, &motionVector);
             float d = sqrt((rotationAxis.y*rotationAxis.y) + (rotationAxis.z*rotationAxis.z));
             
+            
+            printf("AxisOfRotation: ");
+            printVec4(&rotationAxis);
+            
+            
             printf("THETA: %f\n",theta);
             
             if(d != 0)
@@ -485,7 +490,13 @@ void motion(int x, int y)
             
                 //Generate R
                 Mat4 tempMatrix1 = *matMultiplication(&ry, &rx, &tempMatrix1);
-                Mat4 tempMatrix2 = *matRotateAboutZ(theta, &tempMatrix2);
+                
+                // The factor in which theta is multiplied by
+                // determines the speed at which the object
+                // rotates about the rotation axis.
+                // Scale down theta to 60% to smooth rotation
+                Mat4 tempMatrix2 = *matRotateAboutZ(0.6*theta, &tempMatrix2);
+                
                 Mat4 tempMatrix3 = *matMultiplication(&tempMatrix2, &tempMatrix1,&tempMatrix3);
                 Mat4 tempMatrix4 = *matMultiplication(&ryNeg, &tempMatrix3, &tempMatrix4);
                 R = *matMultiplication(&rxNeg, &tempMatrix4, &R);
@@ -500,6 +511,7 @@ void motion(int x, int y)
                 originVector.x = motionVector.x;
                 originVector.y = motionVector.y;
                 originVector.z = motionVector.z;
+                
             }
         }
         
