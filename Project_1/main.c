@@ -407,6 +407,8 @@ void mouse(int button, int state, int x, int y)
             originVector.y = 256-y;
             originVector.z = sqrt((256*256)-((x-256)*(x-256)));
             originVector.w = 0.0;
+
+            
         }
         else if(state == GLUT_UP)
         {
@@ -425,6 +427,7 @@ void motion(int x, int y)
     motionVector.y = 256-y;
     motionVector.z = sqrt((256*256)-((x-256)*(x-256)));
     motionVector.w = 0.0;
+   
     
     // If user drag is outside window, do nothing
     if(motionVector.x > 256 ||
@@ -501,8 +504,8 @@ void motion(int x, int y)
                 // The factor in which theta is multiplied by
                 // determines the speed at which the object
                 // rotates about the rotation axis.
-                // Scale down theta to 60% to smooth rotation
-                Mat4 tempMatrix2 = *matRotateAboutZ(theta, &tempMatrix2);
+                //
+                Mat4 tempMatrix2 = *matRotateAboutZ(theta*(180.0/M_PI), &tempMatrix2);
                 
                 Mat4 tempMatrix3 = *matMultiplication(&tempMatrix2, &tempMatrix1,&tempMatrix3);
                 Mat4 tempMatrix4 = *matMultiplication(&ryNeg, &tempMatrix3, &tempMatrix4);

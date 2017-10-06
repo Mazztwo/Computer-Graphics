@@ -217,7 +217,6 @@ Vec4* vec4subtraction(Vec4* vec1, Vec4* vec2, Vec4 *subVec)
 float angleBetweenVectors(Vec4 *vec1, Vec4 *vec2)
 {
     float angle = 0.0;
-    float DegreesToRadians = M_PI / 180.0;
     float dotProd = 0.0;
     float magVec1 = 0.0;
     float magVec2 = 0.0;
@@ -236,7 +235,7 @@ float angleBetweenVectors(Vec4 *vec1, Vec4 *vec2)
     magVec2 = vecMagnitude(vec2);
     
     // Calcuate angle and convert to radians
-    angle = acos((dotProd/(magVec1 * magVec2)) * DegreesToRadians) ;
+    angle = acos((dotProd/(magVec1 * magVec2))) ;
     
     return angle;
 }
