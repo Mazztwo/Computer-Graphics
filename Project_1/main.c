@@ -318,7 +318,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     else if(key == 'x')
     {
         printf("KEY: %c\n",key);
-        Mat4 rotation = *matRotateAboutX(15.0, &rotation);
+        Mat4 rotation = *matRotateAboutX(5.0, &rotation);
         Mat4 tempMatrix2 = *matMultiplication(&rotation, &tr_matrix, &tempMatrix2);
         tr_matrix = tempMatrix2;
        
@@ -326,7 +326,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     else if(key == 'X')
     {
         printf("KEY: %c\n",key);
-        Mat4 rotation = *matRotateAboutX(-15.0, &rotation);
+        Mat4 rotation = *matRotateAboutX(-5.0, &rotation);
         Mat4 tempMatrix2 = *matMultiplication(&rotation, &tr_matrix, &tempMatrix2);
         tr_matrix = tempMatrix2;
 
@@ -334,7 +334,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     else if(key == 'y')
     {
         printf("KEY: %c\n",key);
-        Mat4 rotation = *matRotateAboutY(15.0, &rotation);
+        Mat4 rotation = *matRotateAboutY(5.0, &rotation);
         Mat4 tempMatrix2 = *matMultiplication(&rotation, &tr_matrix, &tempMatrix2);
         tr_matrix = tempMatrix2;
     
@@ -342,7 +342,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     else if(key == 'Y')
     {
         printf("KEY: %c\n",key);
-        Mat4 rotation = *matRotateAboutY(-15.0, &rotation);
+        Mat4 rotation = *matRotateAboutY(-5.0, &rotation);
         Mat4 tempMatrix2 = *matMultiplication(&rotation, &tr_matrix, &tempMatrix2);
         tr_matrix = tempMatrix2;
        
@@ -350,7 +350,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     else if(key == 'z')
     {
         printf("KEY: %c\n",key);
-        Mat4 rotation = *matRotateAboutZ(15.0, &rotation);
+        Mat4 rotation = *matRotateAboutZ(5.0, &rotation);
         Mat4 tempMatrix2 = *matMultiplication(&rotation, &tr_matrix, &tempMatrix2);
         tr_matrix = tempMatrix2;
       
@@ -358,7 +358,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     else if(key == 'Z')
     {
         printf("KEY: %c\n",key);
-        Mat4 rotation = *matRotateAboutZ(-15.0, &rotation);
+        Mat4 rotation = *matRotateAboutZ(-5.0, &rotation);
         Mat4 tempMatrix2 = *matMultiplication(&rotation, &tr_matrix, &tempMatrix2);
         tr_matrix = tempMatrix2;
        
@@ -499,7 +499,7 @@ void motion(int x, int y)
                 // determines the speed at which the object
                 // rotates about the rotation axis.
                 // Convert degrees to radians by multiplying by 180/pi
-                Mat4 tempMatrix2 = *matRotateAboutZ(theta*(180.0/M_PI), &tempMatrix2);
+                Mat4 tempMatrix2 = *matRotateAboutZ(theta*(180/M_PI), &tempMatrix2);
                 
                 Mat4 tempMatrix3 = *matMultiplication(&tempMatrix2, &tempMatrix1,&tempMatrix3);
                 Mat4 tempMatrix4 = *matMultiplication(&ryNeg, &tempMatrix3, &tempMatrix4);

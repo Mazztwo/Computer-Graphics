@@ -229,7 +229,7 @@ float angleBetweenVectors(Vec4 *vec1, Vec4 *vec2)
     magVec1 = vecMagnitude(vec1);
     magVec2 = vecMagnitude(vec2);
     
-    // Calcuate angle and convert to radians
+    // Calcuate angle
     angle = acos((dotProd/(magVec1 * magVec2))) ;
     
     return angle;
@@ -680,8 +680,7 @@ Mat4* transposeMatrix(Mat4 *mat1, Mat4 *transpose)
  */
 Mat4* matRotateAboutX(float theta, Mat4 *productMatrix)
 {
-    float DegreesToRadians = M_PI/180.0;
-    float thetar = theta*DegreesToRadians;
+    float thetar = theta*M_PI/180.0;
     
     // Generate rotation matrix
     Mat4 rotationMatrix =
@@ -710,9 +709,7 @@ Mat4* matRotateAboutX(float theta, Mat4 *productMatrix)
  */
 Mat4* matRotateAboutY(float theta, Mat4 *productMatrix)
 {
-    float DegreesToRadians = M_PI/180.0;
-    float thetar = theta*DegreesToRadians;
-    
+    float thetar = theta*M_PI/180.0;
     
     // Generate rotation matrix
     Mat4 rotationMatrix =
@@ -741,8 +738,7 @@ Mat4* matRotateAboutY(float theta, Mat4 *productMatrix)
  */
 Mat4* matRotateAboutZ(float theta, Mat4 *productMatrix)
 {
-    float DegreesToRadians = M_PI/180.0;
-    float thetar = theta*DegreesToRadians;
+    float thetar = theta*M_PI/180.0;
     
     
     // Generate rotation matrix
