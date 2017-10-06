@@ -1,10 +1,10 @@
 /*
- * triangle.c
- *
- *  Created on: Aug 28, 2017
- *      Author: Thumrongsak Kosiyatrakul
+ Alessio Mazzone
+ CS1566 Computer Graphics
+ University of Pittsburgh
+ 
+Main file for Project 1
  */
-
 
 #ifdef __APPLE__  // include Mac OS X verions of headers
 
@@ -456,13 +456,7 @@ void motion(int x, int y)
             // Rx, Ry, Rz, being rotation about x,y,z axes.
             float theta = angleBetweenVectors(&originVector, &motionVector);
             float d = sqrt((rotationAxis.y*rotationAxis.y) + (rotationAxis.z*rotationAxis.z));
-            
-            
-            printf("AxisOfRotation: ");
-            printVec4(&rotationAxis);
-            
-            
-            printf("THETA: %.2f Degrees\n",theta*(180.0/M_PI));
+
             
             if(d != 0)
             {
@@ -504,7 +498,7 @@ void motion(int x, int y)
                 // The factor in which theta is multiplied by
                 // determines the speed at which the object
                 // rotates about the rotation axis.
-                //
+                // Convert degrees to radians by multiplying by 180/pi
                 Mat4 tempMatrix2 = *matRotateAboutZ(theta*(180.0/M_PI), &tempMatrix2);
                 
                 Mat4 tempMatrix3 = *matMultiplication(&tempMatrix2, &tempMatrix1,&tempMatrix3);
@@ -515,7 +509,6 @@ void motion(int x, int y)
                 Mat4 tempMatrix5 = *matMultiplication(&R,&tr_matrix,&tempMatrix5);
                 tr_matrix = tempMatrix5;
             
-                glutPostRedisplay();
                 // Reset initial point to last point in motion
                 // in order to allow user to change axis of rotation
                 // on demand
@@ -523,7 +516,6 @@ void motion(int x, int y)
                 originVector.y = motionVector.y;
                 originVector.z = motionVector.z;
                 originVector.w = motionVector.w;
-                glutPostRedisplay();
             }
         }
         else
@@ -532,7 +524,6 @@ void motion(int x, int y)
             R.col1.y = 0.0; R.col2.y = 1.0; R.col3.y = 0.0; R.col4.y = 0.0;
             R.col1.z = 0.0; R.col2.z = 0.0; R.col3.z = 1.0; R.col4.z = 0.0;
             R.col1.w = 0.0; R.col2.w = 0.0; R.col3.w = 0.0; R.col4.w = 1.0;
-            glutPostRedisplay();
         }
         
     }

@@ -3,7 +3,7 @@ Alessio Mazzone
 CS1566 Computer Graphics
 University of Pittsburgh
  
-Lab Assignment 1 functions
+Linear Algebra functions
 This file will contain all the implementations of the 
 functions required of the Lab Assignment: 1 
 instruction pdf.
@@ -220,12 +220,7 @@ float angleBetweenVectors(Vec4 *vec1, Vec4 *vec2)
     float dotProd = 0.0;
     float magVec1 = 0.0;
     float magVec2 = 0.0;
-    
-    printf("\n");
-    printf("OriginVector: ");
-    printVec4(vec1);
-    printf("MotionVector: ");
-    printVec4(vec2);
+
     
     // First calculate dot product between vectors
     dotProd = dotProduct(vec1, vec2);
@@ -685,7 +680,7 @@ Mat4* transposeMatrix(Mat4 *mat1, Mat4 *transpose)
  */
 Mat4* matRotateAboutX(float theta, Mat4 *productMatrix)
 {
-    float DegreesToRadians = M_PI / 180.0;
+    float DegreesToRadians = M_PI/180.0;
     float thetar = theta*DegreesToRadians;
     
     // Generate rotation matrix
@@ -715,7 +710,7 @@ Mat4* matRotateAboutX(float theta, Mat4 *productMatrix)
  */
 Mat4* matRotateAboutY(float theta, Mat4 *productMatrix)
 {
-    float DegreesToRadians = M_PI / 180.0;
+    float DegreesToRadians = M_PI/180.0;
     float thetar = theta*DegreesToRadians;
     
     
@@ -746,7 +741,7 @@ Mat4* matRotateAboutY(float theta, Mat4 *productMatrix)
  */
 Mat4* matRotateAboutZ(float theta, Mat4 *productMatrix)
 {
-    float DegreesToRadians = M_PI / 180.0;
+    float DegreesToRadians = M_PI/180.0;
     float thetar = theta*DegreesToRadians;
     
     
