@@ -26,181 +26,50 @@ Main file for Project 2
 #include <math.h>
 #include <time.h>
 #include <stdlib.h>
+#include "genMaze.h"
 
 
 #define BUFFER_OFFSET( offset )   ((GLvoid*) (offset))
 
-/*// CUBE ///////////////////////////////////////////////
+/// CUBE ///////////////////////////////////////////////
 // Create 3D object verticies
-Vec4 vertices[36] =
+
+// Botto Face 6
+Vec4 vertices[6] =
 {
-    // Front Face 1
-    {0.2, 0.2, 0.2, 1.0},              // top right
-    {-0.2, 0.2, 0.2, 1.0},             // top left
-    {-0.2, -0.2, 0.2, 1.0},            // bottom left
-    
-    {-0.2, -0.2, 0.2, 1.0},              // top right
-    {0.2, -0.2, 0.2, 1.0},            // bottom left
-    {0.2, 0.2, 0.2, 1.0},             // bottom right
-    
-    // Right Face 2
-    {0.2, 0.2, -0.2, 1.0},             // top right
-    {0.2, 0.2, 0.2, 1.0},              // top left
-    {0.2, -0.2, 0.2, 1.0},             // bottom left
-    
-    {0.2, -0.2, 0.2, 1.0},             // top right
-    {0.2, -0.2, -0.2, 1.0},             // bottom left
-    {0.2, 0.2, -0.2, 1.0},            // bottom right
-    
-    // Back Face 3
-    {0.2, 0.2, -0.2, 1.0},           // Bottom left
-    {-0.2, 0.2, -0.2, 1.0},            // Top left
-    {-0.2, -0.2, -0.2, 1.0},             // Top Right
-    
-    {-0.2, -0.2, -0.2, 1.0},              // Top Right
-    {0.2, -0.2, -0.2, 1.0},            // Bottom Right
-    {0.2, 0.2, -0.2, 1.0},             // Bottom Left
-    
-    // Left Face 4
-    {-0.2, 0.2, -0.2, 1.0},              // top right
-    {-0.2, 0.2, 0.2, 1.0},             // top left
-    {-0.2, -0.2, 0.2, 1.0},            // bottom left
-    
-    {-0.2, -0.2, 0.2, 1.0},              // top right
-    {-0.2, -0.2, -0.2, 1.0},            // bottom left
-    {-0.2, 0.2, -0.2, 1.0},              // bottom right
-    
-    // Top Face 5
-    {0.2, 0.2, -0.2, 1.0},              // top right
-    {-0.2, 0.2, -0.2, 1.0},             // top left
-    {-0.2, 0.2, 0.2, 1.0},            // bottom left
-    
-    {-0.2, 0.2, 0.2, 1.0},              // top right
-    {0.2, 0.2, 0.2, 1.0},            // bottom left
-    {0.2, 0.2, -0.2, 1.0},              // bottom right
-    
-    // Botto Face 6
-    {0.2, -0.2, -0.2, 1.0},              // bottom left
-    {-0.2, -0.2, -0.2, 1.0},             // top left
-    {-0.2, -0.2, 0.2, 1.0},            // top right
-    
-    {-0.2, -0.2, 0.2, 1.0},              // top right
-    {0.2, -0.2, 0.2, 1.0},            // bottom right
-    {0.2, -0.2, -0.2, 1.0}              // bottom left
+{1.0, -1.0, -1.0, 1.0},
+{-1.0, -1.0, -1.0, 1.0},
+{1.0, -1.0, 1.0, 1.0},
+
+{1.0, -1.0, 1.0, 1.0},
+{-1.0, -1.0, -1.0, 1.0},
+{-1.0, -1.0, 1.0, 1.0}
+
 };
 
+
 // Color each face of object
-Vec4 colors[36] =
+Vec4 colors[6] =
 {
-    {1.0, 0.0, 0.0, 1.0},    // red
-    {1.0, 0.0, 0.0, 1.0},
-    {1.0, 0.0, 0.0, 1.0},
-    {1.0, 0.0, 0.0, 1.0},
-    {1.0, 0.0, 0.0, 1.0},
-    {1.0, 0.0, 0.0, 1.0},
-    
-    {0.0, 0.0, 1.0, 1.0},    // Blue
-    {0.0, 0.0, 1.0, 1.0},
-    {0.0, 0.0, 1.0, 1.0},
-    {0.0, 0.0, 1.0, 1.0},
-    {0.0, 0.0, 1.0, 1.0},
-    {0.0, 0.0, 1.0, 1.0},
-    
-    {1.0, 0.0, 0.0, 1.0},    // red
-    {1.0, 0.0, 0.0, 1.0},
-    {1.0, 0.0, 0.0, 1.0},
-    {1.0, 0.0, 0.0, 1.0},
-    {1.0, 0.0, 0.0, 1.0},
-    {1.0, 0.0, 0.0, 1.0},
-    
-    {0.0, 0.0, 1.0, 1.0},    // Blue
-    {0.0, 0.0, 1.0, 1.0},
-    {0.0, 0.0, 1.0, 1.0},
-    {0.0, 0.0, 1.0, 1.0},
-    {0.0, 0.0, 1.0, 1.0},
-    {0.0, 0.0, 1.0, 1.0},
-    
-    {0.0, 1.0, 0.0, 1.0},    // Green
-    {0.0, 1.0, 0.0, 1.0},
-    {0.0, 1.0, 0.0, 1.0},
-    {0.0, 1.0, 0.0, 1.0},
-    {0.0, 1.0, 0.0, 1.0},
-    {0.0, 1.0, 0.0, 1.0},
-    
-    {0.0, 1.0, 0.0, 1.0},    // Green
-    {0.0, 1.0, 0.0, 1.0},
-    {0.0, 1.0, 0.0, 1.0},
-    {0.0, 1.0, 0.0, 1.0},
-    {0.0, 1.0, 0.0, 1.0},
-    {0.0, 1.0, 0.0, 1.0}
+     {0.0, 1.0, 0.0, 1.0},    // Green
+     {0.0, 1.0, 0.0, 1.0},
+     {0.0, 1.0, 0.0, 1.0},
+     {0.0, 1.0, 0.0, 1.0},
+     {0.0, 1.0, 0.0, 1.0},
+     {0.0, 1.0, 0.0, 1.0},
 };
  
 // Declare number of verticies
-int num_vertices = 36;
-////////////////////////////////////////////////////////////////*/
+int num_vertices = 6;
+////////////////////////////////////////////////////////////////
 
 // Create 3D object verticies
-Vec4 vertices[1140];
-
-
-void initVertices()
-{
-    float DegreesToRadians = M_PI / 180.0;
-    int k = 0;
-    for (float phi = -90.0; phi <= 90.0; phi += 20.0)
-    {
-        float phir = phi * DegreesToRadians;
-        float phir20 = (phi + 20.0)*DegreesToRadians;
-        
-        for(float theta = -180.0; theta <= 180.0; theta += 20.0)
-        {
-            float thetar = theta*DegreesToRadians;
-            float thetar20 = (theta+20.0)*DegreesToRadians;
-            
-            vertices[k].x = sin(thetar)*cos(phir);
-            vertices[k].y = cos(thetar)*cos(phir);
-            vertices[k].z = sin(phir);
-            vertices[k].w = 1.0;
-            k++;
-            
-            vertices[k].x = sin(thetar)*cos(phir20);
-            vertices[k].y = cos(thetar)*cos(phir20);
-            vertices[k].z = sin(phir20);
-            vertices[k].w = 1.0;
-            k++;
-            
-            vertices[k].x = sin(thetar20)*cos(phir20);
-            vertices[k].y = cos(thetar20)*cos(phir20);
-            vertices[k].z = sin(phir20);
-            vertices[k].w = 1.0;
-            k++;
-            
-            
-            vertices[k].x = sin(thetar20)*cos(phir20);
-            vertices[k].y = cos(thetar20)*cos(phir20);
-            vertices[k].z = sin(phir20);
-            vertices[k].w = 1.0;
-            k++;
-            
-            vertices[k].x = sin(thetar20)*cos(phir);
-            vertices[k].y = cos(thetar20)*cos(phir);
-            vertices[k].z = sin(phir);
-            vertices[k].w = 1.0;
-            k++;
-            
-            vertices[k].x = sin(thetar)*cos(phir);
-            vertices[k].y = cos(thetar)*cos(phir);
-            vertices[k].z = sin(phir);
-            vertices[k].w = 1.0;
-            k++;
-        }
-    }
-}
+Vec4 vertices[6];
 
 
 // Color each face of object
+/*
 Vec4 colors[1140];
-
 void initColors()
 {
     srand ( time(NULL) );
@@ -213,9 +82,9 @@ void initColors()
         colors[i].w = 1.0;
     }
 }
-
+*/
 // Declare number of verticies
-int num_vertices = 1140;
+//int num_vertices = 1140;
 
 
 // Declare point & vector pointing from initial mouse click to origin
@@ -276,7 +145,7 @@ void init(void)
     ctm_location = glGetUniformLocation(program, "ctm");
     
     glEnable(GL_DEPTH_TEST);
-    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClearColor(0.0, 0.0, 1.0, 1.0);
     glDepthRange(1,0);
 }
 
@@ -287,7 +156,7 @@ void display(void)
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &tr_matrix);
     
     glPolygonMode(GL_FRONT, GL_FILL);
-    glPolygonMode(GL_BACK, GL_FILL);
+    glPolygonMode(GL_BACK, GL_LINE);
     glDrawArrays(GL_TRIANGLES, 0, num_vertices);
     
     glutSwapBuffers();
@@ -388,6 +257,7 @@ void idle(void)
     glutPostRedisplay();
 }
 
+
 // Listener for mouse button events
 void mouse(int button, int state, int x, int y)
 {
@@ -419,6 +289,7 @@ void mouse(int button, int state, int x, int y)
 
     glutPostRedisplay();
 }
+
 
 void motion(int x, int y)
 {
@@ -531,17 +402,57 @@ void motion(int x, int y)
     glutPostRedisplay();
 }
 
+
 int main(int argc, char **argv)
 {
-    // Initialize multi-color sphere
-    initVertices();
-    initColors();
+    /*
+    // GENERATE MAZE ///////////////////////////////////////////
+    int numRows, numColumns, row, column;
+    
+    srand(time(0));
+    
+    printf("Enter a number of rows: ");
+    scanf("%i", &numRows);
+    fflush(stdout);
+    printf("Enter a number of columns: ");
+    fflush(stdout);
+    scanf("%i", &numColumns);
+    
+    cell *cells = (cell *) malloc(sizeof(cell) * numRows * numColumns);
+    
+    gen_maze(numRows, numColumns, cells);
+    
+    print_maze(numRows, numColumns, cells);
+    
+    int num_walls = get_num_walls(numRows, numColumns, cells);
+    
+    printf("The number of walls is %i.\n", num_walls);
+    
+    // Cast the one-dimensional array of cells into two-dimensional
+    // array of cells
+    
+    cell (*cells2D)[numColumns] = (cell (*)[numColumns]) cells;
+    
+    // Show the north variables of each cell
+    
+    printf("The north component of each cell are as follows:\n");
+    
+    for(row = 0; row < numRows; row++)
+    {
+        for(column = 0; column < numColumns; column++)
+        {
+            printf("%i ", cells2D[row][column].north);
+        }
+        
+        printf("\n");
+    }
+    /////////////////////////////////////////////////////////////*/
     
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
     glutInitWindowSize(512, 512);
     glutInitWindowPosition(100,100);
-    glutCreateWindow("Project 1");
+    glutCreateWindow("Project 2");
     glewInit();
     init();
     glutDisplayFunc(display);

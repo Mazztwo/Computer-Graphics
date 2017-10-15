@@ -12,6 +12,7 @@
 		CA941E861F93C50900331F3A /* funct.c in Sources */ = {isa = PBXBuildFile; fileRef = CA941E831F93C50900331F3A /* funct.c */; };
 		CA941E891F93C51200331F3A /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA941E881F93C51200331F3A /* GLUT.framework */; };
 		CA941E8B1F93C51700331F3A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA941E8A1F93C51700331F3A /* OpenGL.framework */; };
+		CA941E901F93CAF900331F3A /* genMaze.c in Sources */ = {isa = PBXBuildFile; fileRef = CA941E8F1F93CAF900331F3A /* genMaze.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -38,6 +39,8 @@
 		CA941E8A1F93C51700331F3A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		CA941E8C1F93C5E500331F3A /* vshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = vshader.glsl; path = "../../../../../../Library/Developer/Xcode/DerivedData/Project_2-fqmnaysfodxyymdgvtrdsafvqhio/Build/Products/Debug/vshader.glsl"; sourceTree = "<group>"; };
 		CA941E8D1F93C5E500331F3A /* fshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = fshader.glsl; path = "../../../../../../Library/Developer/Xcode/DerivedData/Project_2-fqmnaysfodxyymdgvtrdsafvqhio/Build/Products/Debug/fshader.glsl"; sourceTree = "<group>"; };
+		CA941E8E1F93CAF900331F3A /* genMaze.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = genMaze.h; sourceTree = "<group>"; };
+		CA941E8F1F93CAF900331F3A /* genMaze.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = genMaze.c; sourceTree = "<group>"; };
 		CAB7C8D51F93BEE500372971 /* Project_2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Project_2; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -66,6 +69,8 @@
 		CAB7C8CC1F93BEE500372971 = {
 			isa = PBXGroup;
 			children = (
+				CA941E8E1F93CAF900331F3A /* genMaze.h */,
+				CA941E8F1F93CAF900331F3A /* genMaze.c */,
 				CA941E821F93C50900331F3A /* fshader.glsl */,
 				CA941E831F93C50900331F3A /* funct.c */,
 				CA941E7E1F93C50800331F3A /* funct.h */,
@@ -146,6 +151,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA941E861F93C50900331F3A /* funct.c in Sources */,
+				CA941E901F93CAF900331F3A /* genMaze.c in Sources */,
 				CA941E851F93C50900331F3A /* initShader.c in Sources */,
 				CA941E841F93C50900331F3A /* main.c in Sources */,
 			);
