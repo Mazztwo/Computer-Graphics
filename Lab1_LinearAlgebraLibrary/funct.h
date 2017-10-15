@@ -1,15 +1,21 @@
 /*
-Alessio Mazzone
-CS1566 Computer Graphics
-University of Pittsburgh
+ Alessio Mazzone
+ CS1566 Computer Graphics
+ University of Pittsburgh
  
- Header file for Lab Assignment 1
-*/
+ Header file Linear Algebra functions
+ */
+
+
+#include <OpenGL/OpenGL.h>
+#include <OpenGL/gl3.h>
+#include <math.h>
+
 
 typedef struct
 {
     float x;
-    float y; 
+    float y;
     float z;
     float w;
 }Vec4;
@@ -22,6 +28,14 @@ typedef struct
     Vec4 col4;
 }Mat4;
 
+typedef struct
+{
+    float x;
+    float y;
+    float z;
+} Vec3;
+
+
 
 void printVec4(Vec4 *vectorToPrint);
 Vec4* crossProduct(Vec4 *vec1, Vec4 *vec2, Vec4 *productVector);
@@ -29,6 +43,8 @@ float dotProduct(Vec4 *vec1, Vec4 *vec2);
 Vec4* scalarMultVector(float scalar, Vec4 *vec, Vec4 *productVector);
 Vec4* vec4addition(Vec4* vec1, Vec4* vec2, Vec4 *sumVec);
 Vec4* vec4subtraction(Vec4* vec1, Vec4* vec2, Vec4 *subVec);
+float angleBetweenVectors(Vec4 *vec1, Vec4 *vec2);
+float vecMagnitude(Vec4 *vec);
 
 void printMat4(Mat4 *mat);
 Mat4* scalarMultMatrix(float scalar, Mat4 *mat, Mat4 *productMatrix);
@@ -37,3 +53,10 @@ Mat4* mat4subtraction(Mat4 *mat1, Mat4 *mat2, Mat4 *subMatrix);
 Mat4* matMultiplication(Mat4 *mat1, Mat4 *mat2, Mat4 *productMatrix);
 Mat4* inverseMatrix(Mat4 *mat1, Mat4 *inverse);
 Mat4* transposeMatrix(Mat4 *mat1, Mat4 *transpose);
+Mat4* matRotateAboutX(float theta, Mat4 *productMatrix);
+Mat4* matRotateAboutY(float theta, Mat4 *productMatrix);
+Mat4* matRotateAboutZ(float theta, Mat4 *productMatrix);
+Mat4* scaleMatrix(Mat4 *tr_matrix, float scalingFactor, Mat4 *productMatrix);
+
+
+
