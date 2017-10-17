@@ -30,42 +30,152 @@ Main file for Project 2
 
 
 #define BUFFER_OFFSET( offset )   ((GLvoid*) (offset))
+#define sizeOfGround 6
+#define sizeOfWall 3
+#define num_vertices sizeOfGround+sizeOfWall
 
 /// CUBE ///////////////////////////////////////////////
 // Create 3D object verticies
-
-// Botto Face 6
-Vec4 vertices[6] =
+/*
+// Green base
+Vec4 ground[sizeOfGround] =
 {
-{1.0, -1.0, -1.0, 1.0},
-{-1.0, -1.0, -1.0, 1.0},
-{1.0, -1.0, 1.0, 1.0},
+    {1.0, -1.0, -1.0, 1.0},
+    {-1.0, -1.0, -1.0, 1.0},
+    {1.0, -1.0, 1.0, 1.0},
 
-{1.0, -1.0, 1.0, 1.0},
-{-1.0, -1.0, -1.0, 1.0},
-{-1.0, -1.0, 1.0, 1.0}
-
+    {1.0, -1.0, 1.0, 1.0},
+    {-1.0, -1.0, -1.0, 1.0},
+    {-1.0, -1.0, 1.0, 1.0}
 };
+
+
+Vec4 wall[sizeOfWall] =
+{
+    // Front Face 1
+    {-0.8, -0.6, -0.8, 1.0},
+    {-0.8, -1.0, -0.8, 1.0},
+    {-0.6, -0.6, 0.8, 1.0}
+};
+*/
+
+
+Vec4 vertices[num_vertices] =
+{
+    {1.5, -1.0, -1.5, 1.0},
+    {-1.5, -1.0, -1.5, 1.0},
+    {1.5, -1.0, 1.5, 1.0},
+    
+    {1.5, -1.0, 1.5, 1.0},
+    {-1.5, -1.0, -1.5, 1.0},
+    {-1.5, -1.0, 1.5, 1.0},
+    
+    {-0.8, -0.6, -0.8, 1.0},
+    {-0.8, -1.0, -0.8, 1.0},
+    {-0.6, -0.6, -0.8, 1.0}
+};
+ 
+/*
+    {-0.2, -0.2, 0.2, 1.0},              // top right
+    {0.2, -0.2, 0.2, 1.0},            // bottom left
+    {0.2, 0.2, 0.2, 1.0},             // bottom right
+
+    // Right Face 2
+    {0.2, 0.2, -0.2, 1.0},             // top right
+    {0.2, 0.2, 0.2, 1.0},              // top left
+    {0.2, -0.2, 0.2, 1.0},             // bottom left
+
+    {0.2, -0.2, 0.2, 1.0},             // top right
+    {0.2, -0.2, -0.2, 1.0},             // bottom left
+    {0.2, 0.2, -0.2, 1.0},            // bottom right
+
+    // Back Face 3
+    {0.2, 0.2, -0.2, 1.0},           // Bottom left
+    {-0.2, 0.2, -0.2, 1.0},            // Top left
+    {-0.2, -0.2, -0.2, 1.0},             // Top Right
+
+    {-0.2, -0.2, -0.2, 1.0},              // Top Right
+    {0.2, -0.2, -0.2, 1.0},            // Bottom Right
+    {0.2, 0.2, -0.2, 1.0},             // Bottom Left
+
+    // Left Face 4
+    {-0.2, 0.2, -0.2, 1.0},              // top right
+    {-0.2, 0.2, 0.2, 1.0},             // top left
+    {-0.2, -0.2, 0.2, 1.0},            // bottom left
+
+    {-0.2, -0.2, 0.2, 1.0},              // top right
+    {-0.2, -0.2, -0.2, 1.0},            // bottom left
+    {-0.2, 0.2, -0.2, 1.0},              // bottom right
+
+    // Top Face 5
+    {0.2, 0.2, -0.2, 1.0},              // top right
+    {-0.2, 0.2, -0.2, 1.0},             // top left
+    {-0.2, 0.2, 0.2, 1.0},            // bottom left
+
+    {-0.2, 0.2, 0.2, 1.0},              // top right
+    {0.2, 0.2, 0.2, 1.0},            // bottom left
+    {0.2, 0.2, -0.2, 1.0},              // bottom right
+
+    // Botto Face 6
+    {0.2, -0.2, -0.2, 1.0},              // bottom left
+    {-0.2, -0.2, -0.2, 1.0},             // top left
+    {-0.2, -0.2, 0.2, 1.0},            // top right
+
+    {-0.2, -0.2, 0.2, 1.0},              // top right
+    {0.2, -0.2, 0.2, 1.0},            // bottom right
+    {0.2, -0.2, -0.2, 1.0}              // bottom left
+};*/
 
 
 // Color each face of object
-Vec4 colors[6] =
+/*
+Vec4 groundColors[sizeOfGround] =
 {
-     {0.0, 1.0, 0.0, 1.0},    // Green
-     {0.0, 1.0, 0.0, 1.0},
-     {0.0, 1.0, 0.0, 1.0},
-     {0.0, 1.0, 0.0, 1.0},
-     {0.0, 1.0, 0.0, 1.0},
-     {0.0, 1.0, 0.0, 1.0},
+    // Green
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0}
 };
- 
+
+Vec4 wallColors[sizeOfWall] =
+{
+    // Red
+    {1.0, 0.0, 0.0, 1.0},
+    {1.0, 0.0, 0.0, 1.0},
+    {1.0, 0.0, 0.0, 1.0}
+};*/
+
+
+
+Vec4 colors[num_vertices] =
+{
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
+    
+    {1.0, 0.0, 0.0, 1.0},
+    {1.0, 0.0, 0.0, 1.0},
+    {1.0, 0.0, 0.0, 1.0}
+};
+
+
 // Declare number of verticies
-int num_vertices = 6;
+//num_vertices = sizeOfWall + sizeOfGround;
 ////////////////////////////////////////////////////////////////
 
-// Create 3D object verticies
-Vec4 vertices[6];
+// Create 3D object verticies by combining objects from above
+//Vec4 vertices[num_vertices];
 
+//memcpy(vertices,ground, sizeOfGround * sizeof(Vec4) );
+
+// Create colors of each object by combining objects from above
+//Vec4 colors[6];
 
 // Color each face of object
 /*
@@ -118,6 +228,43 @@ Mat4 R =
 int enableIdle = 0;
 int leftDown = 1;
 
+
+
+
+
+
+
+
+
+
+
+
+
+void gen3Dmaze(cell *cells2D)
+{
+    
+
+
+               
+               
+               
+}
+               
+               
+               
+
+
+
+
+
+
+
+
+
+
+
+
+
 void init(void)
 {
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
@@ -156,7 +303,7 @@ void display(void)
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &tr_matrix);
     
     glPolygonMode(GL_FRONT, GL_FILL);
-    glPolygonMode(GL_BACK, GL_LINE);
+    glPolygonMode(GL_BACK, GL_FILL);
     glDrawArrays(GL_TRIANGLES, 0, num_vertices);
     
     glutSwapBuffers();
@@ -405,20 +552,38 @@ void motion(int x, int y)
 
 int main(int argc, char **argv)
 {
-    /*
+    
     // GENERATE MAZE ///////////////////////////////////////////
+    
     int numRows, numColumns, row, column;
     
     srand(time(0));
     
+    /*
+    fflush(stdout);
     printf("Enter a number of rows: ");
+    fflush(stdout);
     scanf("%i", &numRows);
     fflush(stdout);
     printf("Enter a number of columns: ");
     fflush(stdout);
     scanf("%i", &numColumns);
+    fflush(stdout);
+    */
     
+    numRows = 8;
+    numColumns = 8;
     cell *cells = (cell *) malloc(sizeof(cell) * numRows * numColumns);
+    
+    // Clear malloc'ed memory
+    int i;
+    for (i = 0; i < numRows * numColumns; i++)
+    {
+        cells[i].north = 0;
+        cells[i].south = 0;
+        cells[i].east = 0;
+        cells[i].west = 0;
+    }
     
     gen_maze(numRows, numColumns, cells);
     
@@ -446,7 +611,8 @@ int main(int argc, char **argv)
         
         printf("\n");
     }
-    /////////////////////////////////////////////////////////////*/
+    ////////////////////////////////////////////////////////////
+     
     
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);

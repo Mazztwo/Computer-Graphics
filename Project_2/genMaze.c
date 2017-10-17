@@ -1,4 +1,5 @@
 #include "genMaze.h"
+#include <time.h>
 
 /*
  * int get_num_walls(int numRows, int numColumns, cell *cells)
@@ -15,6 +16,7 @@
  */
 int get_num_walls(int numRows, int numColumns, cell *cells)
 {
+
     int row, column, numWalls = 0;
     
     cell (*cells2D)[numColumns] = (cell (*)[numColumns]) cells;
@@ -215,7 +217,6 @@ void gen_maze(int numRows, int numColumns, cell *cells)
     cell (*cells2D)[numColumns] = (cell (*)[numColumns]) cells;
     
     // Set surrounding walls
-    
     for(column = 0; column < numColumns; column++)
     {
         cells2D[0][column].north = 1;
