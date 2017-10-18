@@ -30,9 +30,10 @@ Main file for Project 2
 
 
 #define BUFFER_OFFSET( offset )   ((GLvoid*) (offset))
+
 #define sizeOfGround 6
-#define sizeOfWall 3
-#define num_vertices sizeOfGround+sizeOfWall
+#define sizeOfWall 6
+#define num_vertices sizeOfGround+(79*sizeOfWall)
 
 /// CUBE ///////////////////////////////////////////////
 // Create 3D object verticies
@@ -228,38 +229,32 @@ Mat4 R =
 int enableIdle = 0;
 int leftDown = 1;
 
+int numRows, numColumns;
 
 
-
-
-
-
-
-
-
-
-
-
+// Generate vertices for maze
 void gen3Dmaze(cell *cells2D)
 {
+    int row, column;
     
-
-
-               
-               
-               
+    // Top left corner is {-1,-1,-1}
+    
+    for(row = 0; row < numRows; row++)
+    {
+        for(column = 0; column < numColumns; column++)
+        {
+            // Add every West wall if wall present
+       //     if(cells2D[row][column].west)
+            {
+                printf("West wall present!\n");
+            }
+        }
+        
+        // Add every North wall if wall present
+    
+    }
+    
 }
-               
-               
-               
-
-
-
-
-
-
-
-
 
 
 
@@ -308,7 +303,6 @@ void display(void)
     
     glutSwapBuffers();
 }
-
 
 void keyboard(unsigned char key, int mousex, int mousey)
 {
@@ -553,23 +547,22 @@ void motion(int x, int y)
 int main(int argc, char **argv)
 {
     
-    // GENERATE MAZE ///////////////////////////////////////////
-    
-    int numRows, numColumns, row, column;
-    
+   // GENERATE MAZE /////////////////////////////////////////////////////////////////////////////////
+   
+    int row, column;
     srand(time(0));
     
     /*
-    fflush(stdout);
-    printf("Enter a number of rows: ");
-    fflush(stdout);
-    scanf("%i", &numRows);
-    fflush(stdout);
-    printf("Enter a number of columns: ");
-    fflush(stdout);
-    scanf("%i", &numColumns);
-    fflush(stdout);
-    */
+        fflush(stdout);
+        printf("Enter a number of rows: ");
+        fflush(stdout);
+        scanf("%i", &numRows);
+        fflush(stdout);
+        printf("Enter a number of columns: ");
+        fflush(stdout);
+        scanf("%i", &numColumns);
+        fflush(stdout);
+     */
     
     numRows = 8;
     numColumns = 8;
@@ -586,7 +579,6 @@ int main(int argc, char **argv)
     }
     
     gen_maze(numRows, numColumns, cells);
-    
     print_maze(numRows, numColumns, cells);
     
     int num_walls = get_num_walls(numRows, numColumns, cells);
@@ -599,7 +591,6 @@ int main(int argc, char **argv)
     cell (*cells2D)[numColumns] = (cell (*)[numColumns]) cells;
     
     // Show the north variables of each cell
-    
     printf("The north component of each cell are as follows:\n");
     
     for(row = 0; row < numRows; row++)
@@ -608,11 +599,11 @@ int main(int argc, char **argv)
         {
             printf("%i ", cells2D[row][column].north);
         }
-        
         printf("\n");
     }
-    ////////////////////////////////////////////////////////////
-     
+    /////////////////////////////////////////////////////////////////////////////////////////
+    
+    gen3Dmaze(cells2D);
     
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
