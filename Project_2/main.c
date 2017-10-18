@@ -233,8 +233,9 @@ int numRows, numColumns;
 
 
 // Generate vertices for maze
-void gen3Dmaze(cell *cells2D)
+void gen3Dmaze(cell *cells)
 {
+    cell (*cells2D)[numColumns] = (cell (*)[numColumns]) cells;
     int row, column;
     
     // Top left corner is {-1,-1,-1}
@@ -244,13 +245,15 @@ void gen3Dmaze(cell *cells2D)
         for(column = 0; column < numColumns; column++)
         {
             // Add every West wall if wall present
-       //     if(cells2D[row][column].west)
+            if(cells2D[row][column].west)
             {
                 printf("West wall present!\n");
             }
+            
+             // Add every North wall if wall present
         }
         
-        // Add every North wall if wall present
+        // Add ending East wall every time
     
     }
     
