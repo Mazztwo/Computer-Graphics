@@ -3,10 +3,7 @@ Alessio Mazzone
 CS1566 Computer Graphics
 University of Pittsburgh
  
-Linear Algebra functions
-This file will contain all the implementations of the 
-functions required of the Lab Assignment: 1 
-instruction pdf.
+Linear Algebra & helper functions.
  */
 
 
@@ -800,6 +797,21 @@ Vec4* vecArrayAdd(Vec4 *array, int index, float xVal, float yVal, float zVal, fl
     array[index].w = wVal;
     
     return array;
+}
+
+/*
+ Function:
+     This function returns the max of two floats. If floats
+     are equal, returns the second of the two.
+ Inputs:
+     num1, num2 --> floats to compare
+ Outputs:
+     returns --> num1 if > num2, or num2 if num1==num2
+ */
+float maxNum(float num1, float num2)
+{
+    if(num1>num2) return num1;
+    else return num2;
 }
 
 

@@ -37,7 +37,7 @@ Main file for Project 2
 #define sizeOfWall 6
 #define num_vertices sizeOfGround+(79*sizeOfWall)
 
-
+/*
 // Start with ground vertices
 Vec4 vertices[num_vertices] =
 {
@@ -62,10 +62,10 @@ Vec4 colors[num_vertices] =
     {0.0, 0.6, 0.0, 1.0},
     {0.0, 0.6, 0.0, 1.0},
 };
+*/
 
-
-//Vec4 *vertices;
-//Vec4 *colors;
+Vec4 *vertices;
+Vec4 *colors;
 
 
 
@@ -101,17 +101,6 @@ int enableIdle = 0;
 int leftDown = 1;
 
 int numRows, numColumns;
-
-
-// Returns maximum of two floats. If numbers are equal,
-// function just returns num2.
-float maxNum(float num1, float num2)
-{
-    if(num1>num2) return num1;
-    else return num2;
-}
-
-//FIGURE OUT DYNAMIC NUM_VERTICES
 
 
 // Generate vertices for maze
@@ -597,6 +586,7 @@ int main(int argc, char **argv)
     
     cell (*cells2D)[numColumns] = (cell (*)[numColumns]) cells;
     
+    /*
     // Show the north variables of each cell
     printf("The north component of each cell are as follows:\n");
     
@@ -608,6 +598,7 @@ int main(int argc, char **argv)
         }
         printf("\n");
     }
+     */
     /////////////////////////////////////////////////////////////////////////////////////////
     
     gen3Dmaze(cells2D);
@@ -617,7 +608,7 @@ int main(int argc, char **argv)
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
     glutInitWindowSize(windowSize, windowSize);
     glutInitWindowPosition(100,100);
-    glutCreateWindow("Project 2");
+    glutCreateWindow("Project 2 - Maze");
     glewInit();
     init();
     glutDisplayFunc(display);
