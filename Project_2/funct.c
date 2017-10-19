@@ -793,8 +793,6 @@ void vecArrayAdd(Vec4 *array, int index, float xVal, float yVal, float zVal, flo
     array[index].y = yVal;
     array[index].z = zVal;
     array[index].w = wVal;
-    
-    return array;
 }
 
 /*
@@ -811,14 +809,6 @@ float maxNum(float num1, float num2)
     if(num1>num2) return num1;
     else return num2;
 }
-
-
-void initVerticesAndColors(Vec4 *vertices, Vec4 *colors, int num_vertices)
-{
-    vertices = (Vec4 *) malloc(sizeof(Vec4) * num_vertices);
-    colors = (Vec4 *) malloc(sizeof(Vec4) * num_vertices);
-}
-
 
 
 

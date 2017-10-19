@@ -36,35 +36,17 @@ Main file for Project 2
 #define sizeOfGround 6
 #define sizeOfWall 6
 
+
+
+Vec4 vertices[10000];
+Vec4 colors[10000];
+
+
 /*
-// Start with ground vertices
-Vec4 vertices[num_vertices] =
-{
-    {1.0, -1.0, -1.0, 1.0},
-    {-1.0, -1.0, -1.0, 1.0},
-    {1.0, -1.0, 1.0, 1.0},
-    
-    {1.0, -1.0, 1.0, 1.0},
-    {-1.0, -1.0, -1.0, 1.0},
-    {-1.0, -1.0, 1.0, 1.0},
-};
-
-
-// Start with ground color (green)
-Vec4 colors[num_vertices] =
-{
-    {0.0, 0.6, 0.0, 1.0},
-    {0.0, 0.6, 0.0, 1.0},
-    {0.0, 0.6, 0.0, 1.0},
-    
-    {0.0, 0.6, 0.0, 1.0},
-    {0.0, 0.6, 0.0, 1.0},
-    {0.0, 0.6, 0.0, 1.0},
-};
-*/
-
 Vec4 *vertices;
 Vec4 *colors;
+ */
+
 int num_vertices;
 
 
@@ -135,18 +117,45 @@ void gen3Dmaze()
     int num_walls = get_num_walls(numRows, numColumns, cells);
     printf("The number of walls is %i.\n", num_walls);
     
-    // Set number of vertices and initialize vertices
-    // and colors arrays
+    // Set number of vertices and initialize vertex
+    // and color arrays.
     num_vertices = sizeOfGround + (num_walls*sizeOfWall);
-    initVerticesAndColors(vertices, colors, num_vertices);
+    //vertices = (Vec4 *)malloc(sizeof(Vec4) * num_vertices);
+    //colors = (Vec4 *)malloc(sizeof(Vec4) * num_vertices);
+    
+    // Clear malloc'ed memory
+    for (i = 0; i < num_vertices; i++)
+    {
+        vecArrayAdd(vertices, i, 0.0, 0.0, 0.0, 0.0);
+        vecArrayAdd(colors, i, 0.0, 0.0, 0.0, 0.0);
+    }
     
      // Cast the one-dimensional array of cells into two-dimensional
     cell (*cells2D)[numColumns] = (cell (*)[numColumns]) cells;
-    int row, column, v_index;
+    int row, column, v_index = 0;
     float wallSize = 0;
     
-    // V index is 6 because ground has already been added
-    v_index = 6;
+    
+    // Set ground and ground color
+    vecArrayAdd(vertices, v_index, 1.0, -1.0 , -1.0, 1.0);
+    vecArrayAdd(colors, v_index, 0.0, 0.6, 0.0, 1.0);
+    v_index++;
+    vecArrayAdd(vertices, v_index, -1.0, -1.0, -1.0, 1.0);
+    vecArrayAdd(colors, v_index, 0.0, 0.6, 0.0, 1.0);
+    v_index++;
+    vecArrayAdd(vertices, v_index, 1.0, -1.0, 1.0, 1.0);
+    vecArrayAdd(colors, v_index, 0.0, 0.6, 0.0, 1.0);
+    v_index++;
+    // Second Triangle
+    vecArrayAdd(vertices, v_index, 1.0, -1.0, 1.0, 1.0);
+    vecArrayAdd(colors, v_index, 0.0, 0.6, 0.0, 1.0);
+    v_index++;
+    vecArrayAdd(vertices, v_index, -1.0, -1.0, -1.0, 1.0);
+    vecArrayAdd(colors, v_index, 0.0, 0.6, 0.0, 1.0);
+    v_index++;
+    vecArrayAdd(vertices, v_index, -1.0, -1.0, 1.0, 1.0);
+    vecArrayAdd(colors, v_index, 0.0, 0.6, 0.0, 1.0);
+    v_index++;
     
     // Top left corner is {-1,-1,-1}
     float currX = -1.0;
