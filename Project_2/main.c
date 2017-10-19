@@ -39,13 +39,13 @@ Main file for Project 2
 // Start with ground vertices
 Vec4 vertices[num_vertices] =
 {
-    {1.5, -1.0, -1.5, 1.0},
-    {-1.5, -1.0, -1.5, 1.0},
-    {1.5, -1.0, 1.5, 1.0},
+    {1.0, -1.0, -1.0, 1.0},
+    {-1.0, -1.0, -1.0, 1.0},
+    {1.0, -1.0, 1.0, 1.0},
     
-    {1.5, -1.0, 1.5, 1.0},
-    {-1.5, -1.0, -1.5, 1.0},
-    {-1.5, -1.0, 1.5, 1.0},
+    {1.0, -1.0, 1.0, 1.0},
+    {-1.0, -1.0, -1.0, 1.0},
+    {-1.0, -1.0, 1.0, 1.0},
 };
 
 
@@ -191,11 +191,31 @@ void gen3Dmaze(cell *cells)
             }
             
         }
-        
         // Add ending East wall every time
-    
+        vecArrayAdd(vertices, v_index, currX+wallSize, currY+wallSize, currZ, 1.0);
+        vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+        v_index++;
+        vecArrayAdd(vertices, v_index, currX+wallSize, currY, currZ, 1.0);
+        vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+        v_index++;
+        vecArrayAdd(vertices, v_index, currX+wallSize, currY+wallSize, currZ+wallSize, 1.0);
+        vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+        v_index++;
+        // Second Triangle
+        vecArrayAdd(vertices, v_index, currX+wallSize, currY+wallSize, currZ+wallSize, 1.0);
+        vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+        v_index++;
+        vecArrayAdd(vertices, v_index, currX+wallSize, currY, currZ, 1.0);
+        vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+        v_index++;
+        vecArrayAdd(vertices, v_index, currX+wallSize, currY, currZ+wallSize, 1.0);
+        vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+        v_index++;
+        
+        // Increment curr
     }
     
+   
 }
 
 
