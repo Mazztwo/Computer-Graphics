@@ -31,6 +31,8 @@ Main file for Project 2
 
 #define BUFFER_OFFSET( offset )   ((GLvoid*) (offset))
 
+#define windowSize 750
+
 #define sizeOfGround 6
 #define sizeOfWall 6
 #define num_vertices sizeOfGround+(79*sizeOfWall)
@@ -60,6 +62,11 @@ Vec4 colors[num_vertices] =
     {0.0, 0.6, 0.0, 1.0},
     {0.0, 0.6, 0.0, 1.0},
 };
+
+
+//Vec4 *vertices;
+//Vec4 *colors;
+
 
 
 // Declare point & vector pointing from initial mouse click to origin
@@ -258,7 +265,6 @@ void gen3Dmaze(cell *cells)
 
 
 
-
 void init(void)
 {
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
@@ -290,6 +296,7 @@ void init(void)
     glDepthRange(1,0);
 }
 
+
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -302,6 +309,7 @@ void display(void)
     
     glutSwapBuffers();
 }
+
 
 void keyboard(unsigned char key, int mousex, int mousey)
 {
@@ -385,6 +393,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     
 }
 
+
 void idle(void)
 {
     if(enableIdle)
@@ -413,9 +422,9 @@ void mouse(int button, int state, int x, int y)
             enableIdle = 0;
             // Get initial click point to use for
             // calculation of axis of rotation
-            originVector.x = x-256;
-            originVector.y = 256-y;
-            originVector.z = sqrt((256*256)-((x-256)*(x-256)));
+            originVector.x = x-windowSize;
+            originVector.y = windowSize-y;
+            originVector.z = sqrt((windowSize*windowSize)-((x-windowSize)*(x-windowSize)));
             originVector.w = 0.0;
 
             
@@ -434,19 +443,19 @@ void mouse(int button, int state, int x, int y)
 void motion(int x, int y)
 {
     // Capture moving x,y
-    motionVector.x = x-256;
-    motionVector.y = 256-y;
-    motionVector.z = sqrt((256*256)-((x-256)*(x-256)));
+    motionVector.x = x-windowSize;
+    motionVector.y = windowSize-y;
+    motionVector.z = sqrt((windowSize*windowSize)-((x-windowSize)*(x-windowSize)));
     motionVector.w = 0.0;
    
     
     // If user drag is outside window, do nothing
-    if(motionVector.x > 256 ||
-       motionVector.y > 256 ||
-       motionVector.z > 256 ||
-       motionVector.x < -256 ||
-       motionVector.y < -256 ||
-       motionVector.z < -256
+    if(motionVector.x > windowSize ||
+       motionVector.y > windowSize ||
+       motionVector.z > windowSize ||
+       motionVector.x < -windowSize ||
+       motionVector.y < -windowSize ||
+       motionVector.z < -windowSize
        ){}
     else
     {
@@ -547,11 +556,10 @@ int main(int argc, char **argv)
 {
     
    // GENERATE MAZE /////////////////////////////////////////////////////////////////////////////////
-   
     int row, column;
     srand(time(0));
     
-    /*
+    
         fflush(stdout);
         printf("Enter a number of rows: ");
         fflush(stdout);
@@ -561,10 +569,10 @@ int main(int argc, char **argv)
         fflush(stdout);
         scanf("%i", &numColumns);
         fflush(stdout);
-     */
     
-    numRows = 8;
-    numColumns = 8;
+    
+    //numRows = 8;
+    //numColumns = 8;
     cell *cells = (cell *) malloc(sizeof(cell) * numRows * numColumns);
     
     // Clear malloc'ed memory
@@ -604,9 +612,10 @@ int main(int argc, char **argv)
     
     gen3Dmaze(cells2D);
     
+    // OpenGL initializaiton code
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-    glutInitWindowSize(512, 512);
+    glutInitWindowSize(windowSize, windowSize);
     glutInitWindowPosition(100,100);
     glutCreateWindow("Project 2");
     glewInit();
