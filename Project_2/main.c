@@ -62,24 +62,6 @@ Vec4 colors[num_vertices] =
 };
 
 
-// Color each face of object
-/*
-Vec4 colors[1140];
-void initColors()
-{
-    srand ( time(NULL) );
-    
-    for(int i = 0; i < 1140; i++)
-    {
-        colors[i].x = rand() / (float)RAND_MAX;
-        colors[i].y = rand() / (float)RAND_MAX;
-        colors[i].z = rand() / (float)RAND_MAX;
-        colors[i].w = 1.0;
-    }
-}
-*/
-
-
 // Declare point & vector pointing from initial mouse click to origin
 Vec4 originVector = {0.0,0.0,0.0,0.0};
 
@@ -135,12 +117,7 @@ void gen3Dmaze(cell *cells)
     // V index is 6 because ground has already been added
     v_index = 6;
     
-    
     // Top left corner is {-1,-1,-1}
-    float startX = -1.0;
-    float startY = -1.0;
-    float startZ = -1.0;
-    
     float currX = -1.0;
     float currY = -1.0;
     float currZ = -1.0;
@@ -157,6 +134,7 @@ void gen3Dmaze(cell *cells)
         exit(0);
     }
     
+    
     for(row = 0; row < numRows; row++)
     {
         for(column = 0; column < numColumns; column++)
@@ -164,115 +142,52 @@ void gen3Dmaze(cell *cells)
             // Add every North wall if wall present
             if(cells2D[row][column].north)
             {
-                // Make all north walls blue
-                //v1
-                vertices[v_index].x = currX;
-                vertices[v_index].y = currY;
-                vertices[v_index].z = currZ;
-                vertices[v_index].w = 1.0;
+                // First triangle. Vertex, followed by color (yellow --> 1,1,0)
+                vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
                 v_index++;
-                vertices[v_index].x
-                vertices[v_index].y
-                vertices[v_index].z
-                vertices[v_index].w
+                vecArrayAdd(vertices, v_index, currX, currY, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
                 v_index++;
-                vertices[v_index].x
-                vertices[v_index].y
-                vertices[v_index].z
-                vertices[v_index].w
+                vecArrayAdd(vertices, v_index, currX+wallSize, currY+wallSize, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
                 v_index++;
-                //v2
-                vertices[v_index].x
-                vertices[v_index].y
-                vertices[v_index].z
-                vertices[v_index].w
+                // Second Triangle
+                vecArrayAdd(vertices, v_index, currX+wallSize, currY+wallSize, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
                 v_index++;
-                vertices[v_index].x
-                vertices[v_index].y
-                vertices[v_index].z
-                vertices[v_index].w
+                vecArrayAdd(vertices, v_index, currX, currY, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
                 v_index++;
-                vertices[v_index].x
-                vertices[v_index].y
-                vertices[v_index].z
-                vertices[v_index].w
+                vecArrayAdd(vertices, v_index, currX+wallSize, currY, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
                 v_index++;
-                //v3
-                vertices[v_index].x
-                vertices[v_index].y
-                vertices[v_index].z
-                vertices[v_index].w
-                v_index++;
-                vertices[v_index].x
-                vertices[v_index].y
-                vertices[v_index].z
-                vertices[v_index].w
-                v_index++;
-                vertices[v_index].x
-                vertices[v_index].y
-                vertices[v_index].z
-                vertices[v_index].w
-                v_index++;
-                //v4
-                vertices[v_index].x
-                vertices[v_index].y
-                vertices[v_index].z
-                vertices[v_index].w
-                v_index++;
-                vertices[v_index].x
-                vertices[v_index].y
-                vertices[v_index].z
-                vertices[v_index].w
-                v_index++;
-                vertices[v_index].x
-                vertices[v_index].y
-                vertices[v_index].z
-                vertices[v_index].w
-                v_index++;
-                //v5
-                vertices[v_index].x
-                vertices[v_index].y
-                vertices[v_index].z
-                vertices[v_index].w
-                v_index++;
-                vertices[v_index].x
-                vertices[v_index].y
-                vertices[v_index].z
-                vertices[v_index].w
-                v_index++;
-                vertices[v_index].x
-                vertices[v_index].y
-                vertices[v_index].z
-                vertices[v_index].w
-                v_index++;
-                //v6
-                vertices[v_index].x
-                vertices[v_index].y
-                vertices[v_index].z
-                vertices[v_index].w
-                v_index++;
-                vertices[v_index].x
-                vertices[v_index].y
-                vertices[v_index].z
-                vertices[v_index].w
-                v_index++;
-                vertices[v_index].x
-                vertices[v_index].y
-                vertices[v_index].z
-                vertices[v_index].w
-                v_index++;
-                
-                //c1, c2, c3, c4, c5, c6
                 
             }
             
             // Add every West wall if wall present
             if(cells2D[row][column].west)
             {
-                // Make all west walls red
-                //v1, v2, v3, v4, v5, v6
-                
-                //c1, c2, c3, c4, c5, c6
+                // First triangle. Vertex, followed by color (red --> 1,0,0)
+                vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ+wallSize, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY, currZ+wallSize, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+                v_index++;
+                // Second Triangle
+                vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY, currZ+wallSize, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+                v_index++;
             }
             
         }
