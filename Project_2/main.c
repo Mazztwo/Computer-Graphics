@@ -35,32 +35,8 @@ Main file for Project 2
 #define sizeOfWall 6
 #define num_vertices sizeOfGround+(79*sizeOfWall)
 
-/// CUBE ///////////////////////////////////////////////
-// Create 3D object verticies
-/*
-// Green base
-Vec4 ground[sizeOfGround] =
-{
-    {1.0, -1.0, -1.0, 1.0},
-    {-1.0, -1.0, -1.0, 1.0},
-    {1.0, -1.0, 1.0, 1.0},
 
-    {1.0, -1.0, 1.0, 1.0},
-    {-1.0, -1.0, -1.0, 1.0},
-    {-1.0, -1.0, 1.0, 1.0}
-};
-
-
-Vec4 wall[sizeOfWall] =
-{
-    // Front Face 1
-    {-0.8, -0.6, -0.8, 1.0},
-    {-0.8, -1.0, -0.8, 1.0},
-    {-0.6, -0.6, 0.8, 1.0}
-};
-*/
-
-
+// Start with ground vertices
 Vec4 vertices[num_vertices] =
 {
     {1.5, -1.0, -1.5, 1.0},
@@ -70,113 +46,21 @@ Vec4 vertices[num_vertices] =
     {1.5, -1.0, 1.5, 1.0},
     {-1.5, -1.0, -1.5, 1.0},
     {-1.5, -1.0, 1.5, 1.0},
-    
-    {-0.8, -0.6, -0.8, 1.0},
-    {-0.8, -1.0, -0.8, 1.0},
-    {-0.6, -0.6, -0.8, 1.0}
-};
- 
-/*
-    {-0.2, -0.2, 0.2, 1.0},              // top right
-    {0.2, -0.2, 0.2, 1.0},            // bottom left
-    {0.2, 0.2, 0.2, 1.0},             // bottom right
-
-    // Right Face 2
-    {0.2, 0.2, -0.2, 1.0},             // top right
-    {0.2, 0.2, 0.2, 1.0},              // top left
-    {0.2, -0.2, 0.2, 1.0},             // bottom left
-
-    {0.2, -0.2, 0.2, 1.0},             // top right
-    {0.2, -0.2, -0.2, 1.0},             // bottom left
-    {0.2, 0.2, -0.2, 1.0},            // bottom right
-
-    // Back Face 3
-    {0.2, 0.2, -0.2, 1.0},           // Bottom left
-    {-0.2, 0.2, -0.2, 1.0},            // Top left
-    {-0.2, -0.2, -0.2, 1.0},             // Top Right
-
-    {-0.2, -0.2, -0.2, 1.0},              // Top Right
-    {0.2, -0.2, -0.2, 1.0},            // Bottom Right
-    {0.2, 0.2, -0.2, 1.0},             // Bottom Left
-
-    // Left Face 4
-    {-0.2, 0.2, -0.2, 1.0},              // top right
-    {-0.2, 0.2, 0.2, 1.0},             // top left
-    {-0.2, -0.2, 0.2, 1.0},            // bottom left
-
-    {-0.2, -0.2, 0.2, 1.0},              // top right
-    {-0.2, -0.2, -0.2, 1.0},            // bottom left
-    {-0.2, 0.2, -0.2, 1.0},              // bottom right
-
-    // Top Face 5
-    {0.2, 0.2, -0.2, 1.0},              // top right
-    {-0.2, 0.2, -0.2, 1.0},             // top left
-    {-0.2, 0.2, 0.2, 1.0},            // bottom left
-
-    {-0.2, 0.2, 0.2, 1.0},              // top right
-    {0.2, 0.2, 0.2, 1.0},            // bottom left
-    {0.2, 0.2, -0.2, 1.0},              // bottom right
-
-    // Botto Face 6
-    {0.2, -0.2, -0.2, 1.0},              // bottom left
-    {-0.2, -0.2, -0.2, 1.0},             // top left
-    {-0.2, -0.2, 0.2, 1.0},            // top right
-
-    {-0.2, -0.2, 0.2, 1.0},              // top right
-    {0.2, -0.2, 0.2, 1.0},            // bottom right
-    {0.2, -0.2, -0.2, 1.0}              // bottom left
-};*/
-
-
-// Color each face of object
-/*
-Vec4 groundColors[sizeOfGround] =
-{
-    // Green
-    {0.0, 1.0, 0.0, 1.0},
-    {0.0, 1.0, 0.0, 1.0},
-    {0.0, 1.0, 0.0, 1.0},
-    {0.0, 1.0, 0.0, 1.0},
-    {0.0, 1.0, 0.0, 1.0},
-    {0.0, 1.0, 0.0, 1.0}
 };
 
-Vec4 wallColors[sizeOfWall] =
-{
-    // Red
-    {1.0, 0.0, 0.0, 1.0},
-    {1.0, 0.0, 0.0, 1.0},
-    {1.0, 0.0, 0.0, 1.0}
-};*/
 
-
-
+// Start with ground color
 Vec4 colors[num_vertices] =
 {
     {0.0, 1.0, 0.0, 1.0},
     {0.0, 1.0, 0.0, 1.0},
     {0.0, 1.0, 0.0, 1.0},
-    {0.0, 1.0, 0.0, 1.0},
-    {0.0, 1.0, 0.0, 1.0},
-    {0.0, 1.0, 0.0, 1.0},
     
-    {1.0, 0.0, 0.0, 1.0},
-    {1.0, 0.0, 0.0, 1.0},
-    {1.0, 0.0, 0.0, 1.0}
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
 };
 
-
-// Declare number of verticies
-//num_vertices = sizeOfWall + sizeOfGround;
-////////////////////////////////////////////////////////////////
-
-// Create 3D object verticies by combining objects from above
-//Vec4 vertices[num_vertices];
-
-//memcpy(vertices,ground, sizeOfGround * sizeof(Vec4) );
-
-// Create colors of each object by combining objects from above
-//Vec4 colors[6];
 
 // Color each face of object
 /*
@@ -194,8 +78,6 @@ void initColors()
     }
 }
 */
-// Declare number of verticies
-//int num_vertices = 1140;
 
 
 // Declare point & vector pointing from initial mouse click to origin
@@ -232,25 +114,167 @@ int leftDown = 1;
 int numRows, numColumns;
 
 
+// Returns maximum of two floats. If numbers are equal,
+// function just returns num2.
+float maxNum(float num1, float num2)
+{
+    if(num1>num2) return num1;
+    else return num2;
+}
+
+//FIGURE OUT DYNAMIC NUM_VERTICES
+
+
 // Generate vertices for maze
 void gen3Dmaze(cell *cells)
 {
     cell (*cells2D)[numColumns] = (cell (*)[numColumns]) cells;
-    int row, column;
+    int row, column, v_index;
+    float wallSize = 0;
+    
+    // V index is 6 because ground has already been added
+    v_index = 6;
+    
     
     // Top left corner is {-1,-1,-1}
+    float startX = -1.0;
+    float startY = -1.0;
+    float startZ = -1.0;
+    
+    float currX = -1.0;
+    float currY = -1.0;
+    float currZ = -1.0;
+    
+    // Figure out size of wall based on how many rows/cols there are
+    // to accomodate for different size mazes. Length of ground is 2.0
+    if(numRows != 0 || numColumns !=0)
+    {
+        wallSize = 2.0 / maxNum(numRows,numColumns);
+    }
+    else
+    {
+        printf("ERROR: Row or Column number is 0.\n");
+        exit(0);
+    }
     
     for(row = 0; row < numRows; row++)
     {
         for(column = 0; column < numColumns; column++)
         {
+            // Add every North wall if wall present
+            if(cells2D[row][column].north)
+            {
+                // Make all north walls blue
+                //v1
+                vertices[v_index].x = currX;
+                vertices[v_index].y = currY;
+                vertices[v_index].z = currZ;
+                vertices[v_index].w = 1.0;
+                v_index++;
+                vertices[v_index].x
+                vertices[v_index].y
+                vertices[v_index].z
+                vertices[v_index].w
+                v_index++;
+                vertices[v_index].x
+                vertices[v_index].y
+                vertices[v_index].z
+                vertices[v_index].w
+                v_index++;
+                //v2
+                vertices[v_index].x
+                vertices[v_index].y
+                vertices[v_index].z
+                vertices[v_index].w
+                v_index++;
+                vertices[v_index].x
+                vertices[v_index].y
+                vertices[v_index].z
+                vertices[v_index].w
+                v_index++;
+                vertices[v_index].x
+                vertices[v_index].y
+                vertices[v_index].z
+                vertices[v_index].w
+                v_index++;
+                //v3
+                vertices[v_index].x
+                vertices[v_index].y
+                vertices[v_index].z
+                vertices[v_index].w
+                v_index++;
+                vertices[v_index].x
+                vertices[v_index].y
+                vertices[v_index].z
+                vertices[v_index].w
+                v_index++;
+                vertices[v_index].x
+                vertices[v_index].y
+                vertices[v_index].z
+                vertices[v_index].w
+                v_index++;
+                //v4
+                vertices[v_index].x
+                vertices[v_index].y
+                vertices[v_index].z
+                vertices[v_index].w
+                v_index++;
+                vertices[v_index].x
+                vertices[v_index].y
+                vertices[v_index].z
+                vertices[v_index].w
+                v_index++;
+                vertices[v_index].x
+                vertices[v_index].y
+                vertices[v_index].z
+                vertices[v_index].w
+                v_index++;
+                //v5
+                vertices[v_index].x
+                vertices[v_index].y
+                vertices[v_index].z
+                vertices[v_index].w
+                v_index++;
+                vertices[v_index].x
+                vertices[v_index].y
+                vertices[v_index].z
+                vertices[v_index].w
+                v_index++;
+                vertices[v_index].x
+                vertices[v_index].y
+                vertices[v_index].z
+                vertices[v_index].w
+                v_index++;
+                //v6
+                vertices[v_index].x
+                vertices[v_index].y
+                vertices[v_index].z
+                vertices[v_index].w
+                v_index++;
+                vertices[v_index].x
+                vertices[v_index].y
+                vertices[v_index].z
+                vertices[v_index].w
+                v_index++;
+                vertices[v_index].x
+                vertices[v_index].y
+                vertices[v_index].z
+                vertices[v_index].w
+                v_index++;
+                
+                //c1, c2, c3, c4, c5, c6
+                
+            }
+            
             // Add every West wall if wall present
             if(cells2D[row][column].west)
             {
-                printf("West wall present!\n");
+                // Make all west walls red
+                //v1, v2, v3, v4, v5, v6
+                
+                //c1, c2, c3, c4, c5, c6
             }
             
-             // Add every North wall if wall present
         }
         
         // Add ending East wall every time

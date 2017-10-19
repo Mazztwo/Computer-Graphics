@@ -782,6 +782,27 @@ Mat4* scaleMatrix(Mat4 *tr_matrix, float scalingFactor, Mat4 *productMatrix)
 }
 
 
+/*
+ Function:
+    This function adds a specified vector/point to the given array
+ Inputs:
+     array --> vec4 array to be added to
+     index --> index to add value to
+     xVal, yVal, zVal, wVal --> values to add to Vec4 array
+ Outputs:
+     array --> return pointer to vec4 array
+ */
+Vec4* vecArrayAdd(Vec4 *array, int index, float xVal, float yVal, float zVal, float wVal)
+{
+    array[index].x = xVal;
+    array[index].y = yVal;
+    array[index].z = zVal;
+    array[index].w = wVal;
+    
+    return array;
+}
+
+
 
 
 
