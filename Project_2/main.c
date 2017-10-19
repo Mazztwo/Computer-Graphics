@@ -35,7 +35,6 @@ Main file for Project 2
 
 #define sizeOfGround 6
 #define sizeOfWall 6
-#define num_vertices sizeOfGround+(79*sizeOfWall)
 
 /*
 // Start with ground vertices
@@ -66,7 +65,7 @@ Vec4 colors[num_vertices] =
 
 Vec4 *vertices;
 Vec4 *colors;
-
+int num_vertices;
 
 
 // Declare point & vector pointing from initial mouse click to origin
@@ -103,9 +102,45 @@ int leftDown = 1;
 int numRows, numColumns;
 
 
-// Generate vertices for maze
-void gen3Dmaze(cell *cells)
+// Generate 3D maze
+void gen3Dmaze()
 {
+    srand(time(0));
+    
+    
+    fflush(stdout);
+    printf("Enter a number of rows: ");
+    fflush(stdout);
+    scanf("%i", &numRows);
+    fflush(stdout);
+    printf("Enter a number of columns: ");
+    fflush(stdout);
+    scanf("%i", &numColumns);
+    fflush(stdout);
+    
+    cell *cells = (cell *) malloc(sizeof(cell) * numRows * numColumns);
+    
+    // Clear malloc'ed memory
+    int i;
+    for (i = 0; i < numRows * numColumns; i++)
+    {
+        cells[i].north = 0;
+        cells[i].south = 0;
+        cells[i].east = 0;
+        cells[i].west = 0;
+    }
+    
+    gen_maze(numRows, numColumns, cells);
+    print_maze(numRows, numColumns, cells);
+    int num_walls = get_num_walls(numRows, numColumns, cells);
+    printf("The number of walls is %i.\n", num_walls);
+    
+    // Set number of vertices and initialize vertices
+    // and colors arrays
+    num_vertices = sizeOfGround + (num_walls*sizeOfWall);
+    initVerticesAndColors(vertices, colors, num_vertices);
+    
+     // Cast the one-dimensional array of cells into two-dimensional
     cell (*cells2D)[numColumns] = (cell (*)[numColumns]) cells;
     int row, column, v_index;
     float wallSize = 0;
@@ -208,8 +243,6 @@ void gen3Dmaze(cell *cells)
                 vecArrayAdd(vertices, v_index, currX+wallSize, currY, currZ+wallSize, 1.0);
                 vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
                 v_index++;
-                
-                
             }
             
             // Move to next column by moving along X direction
@@ -254,6 +287,7 @@ void gen3Dmaze(cell *cells)
 
 
 
+
 void init(void)
 {
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
@@ -284,6 +318,7 @@ void init(void)
     glClearColor(0.0, 0.5, 1.0, 1.0);
     glDepthRange(1,0);
 }
+
 
 
 void display(void)
@@ -543,65 +578,7 @@ void motion(int x, int y)
 
 int main(int argc, char **argv)
 {
-    
-   // GENERATE MAZE /////////////////////////////////////////////////////////////////////////////////
-    int row, column;
-    srand(time(0));
-    
-    
-        fflush(stdout);
-        printf("Enter a number of rows: ");
-        fflush(stdout);
-        scanf("%i", &numRows);
-        fflush(stdout);
-        printf("Enter a number of columns: ");
-        fflush(stdout);
-        scanf("%i", &numColumns);
-        fflush(stdout);
-    
-    
-    //numRows = 8;
-    //numColumns = 8;
-    cell *cells = (cell *) malloc(sizeof(cell) * numRows * numColumns);
-    
-    // Clear malloc'ed memory
-    int i;
-    for (i = 0; i < numRows * numColumns; i++)
-    {
-        cells[i].north = 0;
-        cells[i].south = 0;
-        cells[i].east = 0;
-        cells[i].west = 0;
-    }
-    
-    gen_maze(numRows, numColumns, cells);
-    print_maze(numRows, numColumns, cells);
-    
-    int num_walls = get_num_walls(numRows, numColumns, cells);
-    
-    printf("The number of walls is %i.\n", num_walls);
-    
-    // Cast the one-dimensional array of cells into two-dimensional
-    // array of cells
-    
-    cell (*cells2D)[numColumns] = (cell (*)[numColumns]) cells;
-    
-    /*
-    // Show the north variables of each cell
-    printf("The north component of each cell are as follows:\n");
-    
-    for(row = 0; row < numRows; row++)
-    {
-        for(column = 0; column < numColumns; column++)
-        {
-            printf("%i ", cells2D[row][column].north);
-        }
-        printf("\n");
-    }
-     */
-    /////////////////////////////////////////////////////////////////////////////////////////
-    
-    gen3Dmaze(cells2D);
+    gen3Dmaze();
     
     // OpenGL initializaiton code
     glutInit(&argc, argv);

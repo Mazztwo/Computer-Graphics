@@ -58,7 +58,7 @@ Mat4* matRotateAboutY(float theta, Mat4 *productMatrix);
 Mat4* matRotateAboutZ(float theta, Mat4 *productMatrix);
 Mat4* scaleMatrix(Mat4 *tr_matrix, float scalingFactor, Mat4 *productMatrix);
 
-Vec4* vecArrayAdd(Vec4 *array, int index, float xVal, float yVal, float zVal, float wVal);
+void vecArrayAdd(Vec4 *array, int index, float xVal, float yVal, float zVal, float wVal);
 float maxNum(float num1, float num2);
-
+void initVerticesAndColors(Vec4 *vertices, Vec4 *colors, int num_vertices);
 
