@@ -49,7 +49,7 @@ Vec4 vertices[num_vertices] =
 };
 
 
-// Start with ground color
+// Start with ground color (green)
 Vec4 colors[num_vertices] =
 {
     {0.0, 0.6, 0.0, 1.0},
@@ -142,50 +142,50 @@ void gen3Dmaze(cell *cells)
             // Add every North wall if wall present
             if(cells2D[row][column].north)
             {
-                // First triangle. Vertex, followed by color (yellow --> 1,1,0)
+                // First triangle. Vertex, followed by color (yellow)
                 vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
-                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
                 v_index++;
                 vecArrayAdd(vertices, v_index, currX, currY, currZ, 1.0);
-                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
                 v_index++;
                 vecArrayAdd(vertices, v_index, currX+wallSize, currY+wallSize, currZ, 1.0);
-                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
                 v_index++;
                 // Second Triangle
                 vecArrayAdd(vertices, v_index, currX+wallSize, currY+wallSize, currZ, 1.0);
-                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
                 v_index++;
                 vecArrayAdd(vertices, v_index, currX, currY, currZ, 1.0);
-                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
                 v_index++;
                 vecArrayAdd(vertices, v_index, currX+wallSize, currY, currZ, 1.0);
-                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
                 v_index++;
             }
             
             // Add every West wall if wall present
             if(cells2D[row][column].west)
             {
-                // First triangle. Vertex, followed by color (red --> 1,0,0)
+                // First triangle. Vertex, followed by color (red)
                 vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ+wallSize, 1.0);
-                vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
                 v_index++;
                 vecArrayAdd(vertices, v_index, currX, currY, currZ+wallSize, 1.0);
-                vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
                 v_index++;
                 vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
-                vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
                 v_index++;
                 // Second Triangle
                 vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
-                vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
                 v_index++;
                 vecArrayAdd(vertices, v_index, currX, currY, currZ+wallSize, 1.0);
-                vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
                 v_index++;
                 vecArrayAdd(vertices, v_index, currX, currY, currZ, 1.0);
-                vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
                 v_index++;
             }
             
@@ -194,23 +194,23 @@ void gen3Dmaze(cell *cells)
             {
                 // First triangle. Vertex, followed by color (yellow --> 1,1,0)
                 vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ+wallSize, 1.0);
-                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
                 v_index++;
                 vecArrayAdd(vertices, v_index, currX, currY, currZ+wallSize, 1.0);
-                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
                 v_index++;
                 vecArrayAdd(vertices, v_index, currX+wallSize, currY+wallSize, currZ+wallSize, 1.0);
-                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
                 v_index++;
                 // Second Triangle
                 vecArrayAdd(vertices, v_index, currX+wallSize, currY+wallSize, currZ+wallSize, 1.0);
-                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
                 v_index++;
                 vecArrayAdd(vertices, v_index, currX, currY, currZ+wallSize, 1.0);
-                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
                 v_index++;
                 vecArrayAdd(vertices, v_index, currX+wallSize, currY, currZ+wallSize, 1.0);
-                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
                 v_index++;
                 
                 
@@ -227,23 +227,23 @@ void gen3Dmaze(cell *cells)
         {
             // Add ending East wall every time
             vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ+wallSize, 1.0);
-            vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+            vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
             v_index++;
             vecArrayAdd(vertices, v_index, currX, currY, currZ+wallSize, 1.0);
-            vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+            vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
             v_index++;
             vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
-            vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+            vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
             v_index++;
             // Second Triangle
             vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
-            vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+            vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
             v_index++;
             vecArrayAdd(vertices, v_index, currX, currY, currZ+wallSize, 1.0);
-            vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+            vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
             v_index++;
             vecArrayAdd(vertices, v_index, currX, currY, currZ, 1.0);
-            vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+            vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
             v_index++;
             
             // Reset X to be all the way on the left, move Z down one row
@@ -286,7 +286,7 @@ void init(void)
     ctm_location = glGetUniformLocation(program, "ctm");
     
     glEnable(GL_DEPTH_TEST);
-    glClearColor(0.0, 0.0, 1.0, 1.0);
+    glClearColor(0.0, 0.5, 1.0, 1.0);
     glDepthRange(1,0);
 }
 
