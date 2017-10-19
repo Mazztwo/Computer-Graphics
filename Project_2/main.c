@@ -162,7 +162,6 @@ void gen3Dmaze(cell *cells)
                 vecArrayAdd(vertices, v_index, currX+wallSize, currY, currZ, 1.0);
                 vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
                 v_index++;
-                
             }
             
             // Add every West wall if wall present
@@ -190,34 +189,70 @@ void gen3Dmaze(cell *cells)
                 v_index++;
             }
             
+            // If we are on the last row, must add south wall to each column
+            if(row == numRows-1)
+            {
+                // First triangle. Vertex, followed by color (yellow --> 1,1,0)
+                vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ+wallSize, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY, currZ+wallSize, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX+wallSize, currY+wallSize, currZ+wallSize, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
+                v_index++;
+                // Second Triangle
+                vecArrayAdd(vertices, v_index, currX+wallSize, currY+wallSize, currZ+wallSize, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY, currZ+wallSize, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX+wallSize, currY, currZ+wallSize, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.0, 1.0);
+                v_index++;
+                
+                
+            }
+            
             // Move to next column by moving along X direction
             currX += wallSize;
         }
-        // Add ending East wall every time
-        vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ+wallSize, 1.0);
-        vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
-        v_index++;
-        vecArrayAdd(vertices, v_index, currX, currY, currZ+wallSize, 1.0);
-        vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
-        v_index++;
-        vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
-        vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
-        v_index++;
-        // Second Triangle
-        vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
-        vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
-        v_index++;
-        vecArrayAdd(vertices, v_index, currX, currY, currZ+wallSize, 1.0);
-        vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
-        v_index++;
-        vecArrayAdd(vertices, v_index, currX, currY, currZ, 1.0);
-        vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
-        v_index++;
         
-        // Reset X to be all the way on the left, move Z down one row
-        currX = -1.0;
-        currZ += wallSize;
+        // Keep adding an east wall at the end of the row unless
+        // you are on the last row. Then don't add a east wall to
+        // make hole for exit.
+        if(row != numRows -1)
+        {
+            // Add ending East wall every time
+            vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ+wallSize, 1.0);
+            vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+            v_index++;
+            vecArrayAdd(vertices, v_index, currX, currY, currZ+wallSize, 1.0);
+            vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+            v_index++;
+            vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
+            vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+            v_index++;
+            // Second Triangle
+            vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
+            vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+            v_index++;
+            vecArrayAdd(vertices, v_index, currX, currY, currZ+wallSize, 1.0);
+            vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+            v_index++;
+            vecArrayAdd(vertices, v_index, currX, currY, currZ, 1.0);
+            vecArrayAdd(colors, v_index, 1.0, 0, 0, 1.0);
+            v_index++;
+            
+            // Reset X to be all the way on the left, move Z down one row
+            currX = -1.0;
+            currZ += wallSize;
+        }
+        
     }
+    /////////////////////////////////
 }
 
 
