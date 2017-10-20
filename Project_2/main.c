@@ -42,10 +42,9 @@ Vec4 vertices[10000];
 Vec4 colors[10000];
 
 
-/*
-Vec4 *vertices;
-Vec4 *colors;
- */
+//Vec4 *vertices;
+//Vec4 *colors;
+
 
 int num_vertices;
 
@@ -59,7 +58,11 @@ Vec4 motionVector = {0.0,0.0,0.0,0.0};
 // Declare axis of rotation
 Vec4 rotationAxis = {0.0,0.0,0.0,0.0};
 
-GLuint ctm_location;
+//GLuint ctm_location;
+
+GLuint projection_matrix_location;
+GLuint model_view_matrix_location;
+
 
 Mat4 tr_matrix =
 {
@@ -120,6 +123,7 @@ void gen3Dmaze()
     // Set number of vertices and initialize vertex
     // and color arrays.
     num_vertices = sizeOfGround + (num_walls*sizeOfWall);
+    
     //vertices = (Vec4 *)malloc(sizeof(Vec4) * num_vertices);
     //colors = (Vec4 *)malloc(sizeof(Vec4) * num_vertices);
     
@@ -290,7 +294,6 @@ void gen3Dmaze()
         }
         
     }
-    /////////////////////////////////
 }
 
 
@@ -321,7 +324,11 @@ void init(void)
     glEnableVertexAttribArray(vColor);
     glVertexAttribPointer(vColor, 4, GL_FLOAT, GL_FALSE, 0, (GLvoid *) sizeof(vertices));
     
-    ctm_location = glGetUniformLocation(program, "ctm");
+    //ctm_location = glGetUniformLocation(program, "ctm");
+    projection_matrix_location = glGetUniformLocation(program, "projection_matrix");
+    model_view_matrix_location = glGetUniformLocation(program, "model_view_matrix");
+
+    
     
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.0, 0.5, 1.0, 1.0);
@@ -334,7 +341,13 @@ void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &tr_matrix);
+    //glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &tr_matrix);
+    glUniformMatrix4fv(projection_matrix_location, 1, GL_FALSE, (GLfloat *) &tr_matrix);
+    glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &tr_matrix);
+    //////////////// is tr_matrix model view or projection?
+    
+    
+    
     
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_FILL);

@@ -31,7 +31,6 @@
 		CA941E7D1F93C50800331F3A /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		CA941E7E1F93C50800331F3A /* funct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = funct.h; sourceTree = "<group>"; };
 		CA941E7F1F93C50800331F3A /* initShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = initShader.h; sourceTree = "<group>"; };
-		CA941E801F93C50900331F3A /* vshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vshader.glsl; sourceTree = "<group>"; };
 		CA941E811F93C50900331F3A /* initShader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = initShader.c; sourceTree = "<group>"; };
 		CA941E821F93C50900331F3A /* fshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fshader.glsl; sourceTree = "<group>"; };
 		CA941E831F93C50900331F3A /* funct.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = funct.c; sourceTree = "<group>"; };
@@ -78,7 +77,6 @@
 				CA941E7F1F93C50800331F3A /* initShader.h */,
 				CA941E7D1F93C50800331F3A /* main.c */,
 				CA941E8D1F93C5E500331F3A /* fshader.glsl */,
-				CA941E801F93C50900331F3A /* vshader.glsl */,
 				CAB7C8D61F93BEE500372971 /* Products */,
 				CA941E8C1F93C5E500331F3A /* vshader.glsl */,
 				CA941E871F93C51200331F3A /* Frameworks */,
