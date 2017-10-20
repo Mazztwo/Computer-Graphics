@@ -25,16 +25,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		CA41650A1F7B103200A44FDF /* Lab3_Sphere */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Lab3_Sphere; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA41650A1F7B103200A44FDF /* Lab2_Sphere */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Lab2_Sphere; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA4165141F7B107000A44FDF /* initShader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = initShader.c; sourceTree = "<group>"; };
 		CA4165151F7B107000A44FDF /* initShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = initShader.h; sourceTree = "<group>"; };
-		CA4165161F7B107000A44FDF /* fshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fshader.glsl; sourceTree = "<group>"; };
 		CA4165171F7B107000A44FDF /* funct.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = funct.c; sourceTree = "<group>"; };
-		CA4165181F7B107000A44FDF /* vshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vshader.glsl; sourceTree = "<group>"; };
 		CA4165191F7B107100A44FDF /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		CA41651A1F7B107100A44FDF /* funct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = funct.h; sourceTree = "<group>"; };
-		CA5A703F1F7DB9DC009FC615 /* vshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = vshader.glsl; path = "../../../../../../Library/Developer/Xcode/DerivedData/Lab3_Sphere-atltvmywjvghxpekceovzdvovbtn/Build/Products/Debug/vshader.glsl"; sourceTree = "<group>"; };
-		CA5A70401F7DB9DC009FC615 /* fshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = fshader.glsl; path = "../../../../../../Library/Developer/Xcode/DerivedData/Lab3_Sphere-atltvmywjvghxpekceovzdvovbtn/Build/Products/Debug/fshader.glsl"; sourceTree = "<group>"; };
+		CA6295981F9A892800BF6713 /* vshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = vshader.glsl; path = "../../../../../../Library/Developer/Xcode/DerivedData/Lab2_Sphere-aneiyvehyrhqwqdiyrkofmvxmrgs/Build/Products/Debug/vshader.glsl"; sourceTree = "<group>"; };
+		CA6295991F9A892800BF6713 /* fshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = fshader.glsl; path = "../../../../../../Library/Developer/Xcode/DerivedData/Lab2_Sphere-aneiyvehyrhqwqdiyrkofmvxmrgs/Build/Products/Debug/fshader.glsl"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,23 +49,21 @@
 		CA4165011F7B103200A44FDF = {
 			isa = PBXGroup;
 			children = (
-				CA4165161F7B107000A44FDF /* fshader.glsl */,
-				CA5A70401F7DB9DC009FC615 /* fshader.glsl */,
-				CA4165181F7B107000A44FDF /* vshader.glsl */,
 				CA4165171F7B107000A44FDF /* funct.c */,
 				CA41651A1F7B107100A44FDF /* funct.h */,
 				CA4165141F7B107000A44FDF /* initShader.c */,
 				CA4165151F7B107000A44FDF /* initShader.h */,
 				CA4165191F7B107100A44FDF /* main.c */,
 				CA41650B1F7B103200A44FDF /* Products */,
-				CA5A703F1F7DB9DC009FC615 /* vshader.glsl */,
+				CA6295991F9A892800BF6713 /* fshader.glsl */,
+				CA6295981F9A892800BF6713 /* vshader.glsl */,
 			);
 			sourceTree = "<group>";
 		};
 		CA41650B1F7B103200A44FDF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CA41650A1F7B103200A44FDF /* Lab3_Sphere */,
+				CA41650A1F7B103200A44FDF /* Lab2_Sphere */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -75,9 +71,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		CA4165091F7B103200A44FDF /* Lab3_Sphere */ = {
+		CA4165091F7B103200A44FDF /* Lab2_Sphere */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CA4165111F7B103200A44FDF /* Build configuration list for PBXNativeTarget "Lab3_Sphere" */;
+			buildConfigurationList = CA4165111F7B103200A44FDF /* Build configuration list for PBXNativeTarget "Lab2_Sphere" */;
 			buildPhases = (
 				CA4165061F7B103200A44FDF /* Sources */,
 				CA4165071F7B103200A44FDF /* Frameworks */,
@@ -87,9 +83,9 @@
 			);
 			dependencies = (
 			);
-			name = Lab3_Sphere;
+			name = Lab2_Sphere;
 			productName = Lab3_Sphere;
-			productReference = CA41650A1F7B103200A44FDF /* Lab3_Sphere */;
+			productReference = CA41650A1F7B103200A44FDF /* Lab2_Sphere */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -107,7 +103,7 @@
 					};
 				};
 			};
-			buildConfigurationList = CA4165051F7B103200A44FDF /* Build configuration list for PBXProject "Lab3_Sphere" */;
+			buildConfigurationList = CA4165051F7B103200A44FDF /* Build configuration list for PBXProject "Lab2_Sphere" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -119,7 +115,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				CA4165091F7B103200A44FDF /* Lab3_Sphere */,
+				CA4165091F7B103200A44FDF /* Lab2_Sphere */,
 			);
 		};
 /* End PBXProject section */
@@ -266,7 +262,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		CA4165051F7B103200A44FDF /* Build configuration list for PBXProject "Lab3_Sphere" */ = {
+		CA4165051F7B103200A44FDF /* Build configuration list for PBXProject "Lab2_Sphere" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CA41650F1F7B103200A44FDF /* Debug */,
@@ -275,7 +271,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CA4165111F7B103200A44FDF /* Build configuration list for PBXNativeTarget "Lab3_Sphere" */ = {
+		CA4165111F7B103200A44FDF /* Build configuration list for PBXNativeTarget "Lab2_Sphere" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CA4165121F7B103200A44FDF /* Debug */,
