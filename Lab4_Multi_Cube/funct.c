@@ -779,39 +779,6 @@ Mat4* scaleMatrix(Mat4 *tr_matrix, float scalingFactor, Mat4 *productMatrix)
 }
 
 
-Mat4 look_at(GLfloat eyex, GLfloat eyey, GLfloat eyez,
-             GLfloat atx, GLfloat aty, GLfloat atz,
-             GLfloat upx, GLfloat upy, GLfloat upz)
-{
-    
-}
-
-Mat4 frustum(GLfloat left, GLfloat right,
-             GLfloat bottom, GLfloat top,
-             GLfloat near, GLfloat far)
-{
-    
-    
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
  Function:
     This function adds a specified vector/point to the given array
