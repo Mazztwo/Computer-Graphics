@@ -31,7 +31,7 @@ Main file for Project 2
 
 #define BUFFER_OFFSET( offset )   ((GLvoid*) (offset))
 
-#define windowSize 750
+#define windowSize 375
 
 #define sizeOfGround 6
 #define sizeOfWall 6
@@ -605,7 +605,7 @@ int main(int argc, char **argv)
     // OpenGL initializaiton code
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-    glutInitWindowSize(windowSize, windowSize);
+    glutInitWindowSize(windowSize*2, windowSize*2);
     glutInitWindowPosition(100,100);
     glutCreateWindow("Project 2 - Maze");
     glewInit();

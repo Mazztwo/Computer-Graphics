@@ -783,7 +783,9 @@ Mat4 look_at(GLfloat eyex, GLfloat eyey, GLfloat eyez,
              GLfloat atx, GLfloat aty, GLfloat atz,
              GLfloat upx, GLfloat upy, GLfloat upz)
 {
+    Mat4 rawr = {};
     
+    return rawr;
 }
 
 Mat4 frustum(GLfloat left, GLfloat right,
@@ -791,7 +793,9 @@ Mat4 frustum(GLfloat left, GLfloat right,
              GLfloat near, GLfloat far)
 {
     
+    Mat4 rawr = {};
     
+    return rawr;
 }
 
 
