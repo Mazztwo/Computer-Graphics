@@ -58,13 +58,23 @@ Vec4 motionVector = {0.0,0.0,0.0,0.0};
 // Declare axis of rotation
 Vec4 rotationAxis = {0.0,0.0,0.0,0.0};
 
-//GLuint ctm_location;
+GLuint ctm_location;
 
 GLuint projection_matrix_location;
 GLuint model_view_matrix_location;
 
+// Changes worldview to be at angle
+Mat4 projection_matrix =
+{
+    {1.0, 0.0, 0.0, 0.0},
+    {0.0, 1.0, 0.0, 0.0},
+    {0.0, 0.0, 1.0, 0.0},
+    {0.0, 0.0, 0.0, 1.0}
+    
+};
 
-Mat4 tr_matrix =
+// Changes view of world in relationship to camera
+Mat4 model_view_matrix =
 {
     {1.0, 0.0, 0.0, 0.0},
     {0.0, 1.0, 0.0, 0.0},
@@ -298,8 +308,6 @@ void gen3Dmaze()
 
 
 
-
-
 void init(void)
 {
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
@@ -342,12 +350,8 @@ void display(void)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     //glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &tr_matrix);
-    glUniformMatrix4fv(projection_matrix_location, 1, GL_FALSE, (GLfloat *) &tr_matrix);
-    glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &tr_matrix);
-    //////////////// is tr_matrix model view or projection?
-    
-    
-    
+    glUniformMatrix4fv(projection_matrix_location, 1, GL_FALSE, (GLfloat *) &projection_matrix);
+    glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &model_view_matrix);
     
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_FILL);
@@ -367,63 +371,63 @@ void keyboard(unsigned char key, int mousex, int mousey)
     // Zoom In
     else if(key == 'o')
     {
-        Mat4 tempMatrix = *scaleMatrix(&tr_matrix, 1.02, &tempMatrix);
-        tr_matrix = tempMatrix;
+        Mat4 tempMatrix = *scaleMatrix(&model_view_matrix, 1.02, &tempMatrix);
+        model_view_matrix = tempMatrix;
   
     }
     // Zoom Out
     else if(key == 'l')
     {
-        Mat4 tempMatrix = *scaleMatrix(&tr_matrix, 1.0/1.02, &tempMatrix);
-        tr_matrix = tempMatrix;
+        Mat4 tempMatrix = *scaleMatrix(&model_view_matrix, 1.0/1.02, &tempMatrix);
+        model_view_matrix = tempMatrix;
        
     }
     else if(key == 'x')
     {
         printf("KEY: %c\n",key);
         Mat4 rotation = *matRotateAboutX(5.0, &rotation);
-        Mat4 tempMatrix2 = *matMultiplication(&rotation, &tr_matrix, &tempMatrix2);
-        tr_matrix = tempMatrix2;
+        Mat4 tempMatrix2 = *matMultiplication(&rotation, &model_view_matrix, &tempMatrix2);
+        model_view_matrix = tempMatrix2;
        
     }
     else if(key == 'X')
     {
         printf("KEY: %c\n",key);
         Mat4 rotation = *matRotateAboutX(-5.0, &rotation);
-        Mat4 tempMatrix2 = *matMultiplication(&rotation, &tr_matrix, &tempMatrix2);
-        tr_matrix = tempMatrix2;
+        Mat4 tempMatrix2 = *matMultiplication(&rotation, &model_view_matrix, &tempMatrix2);
+        model_view_matrix = tempMatrix2;
 
     }
     else if(key == 'y')
     {
         printf("KEY: %c\n",key);
         Mat4 rotation = *matRotateAboutY(5.0, &rotation);
-        Mat4 tempMatrix2 = *matMultiplication(&rotation, &tr_matrix, &tempMatrix2);
-        tr_matrix = tempMatrix2;
+        Mat4 tempMatrix2 = *matMultiplication(&rotation, &model_view_matrix, &tempMatrix2);
+        model_view_matrix = tempMatrix2;
     
     }
     else if(key == 'Y')
     {
         printf("KEY: %c\n",key);
         Mat4 rotation = *matRotateAboutY(-5.0, &rotation);
-        Mat4 tempMatrix2 = *matMultiplication(&rotation, &tr_matrix, &tempMatrix2);
-        tr_matrix = tempMatrix2;
+        Mat4 tempMatrix2 = *matMultiplication(&rotation, &model_view_matrix, &tempMatrix2);
+        model_view_matrix = tempMatrix2;
        
     }
     else if(key == 'z')
     {
         printf("KEY: %c\n",key);
         Mat4 rotation = *matRotateAboutZ(5.0, &rotation);
-        Mat4 tempMatrix2 = *matMultiplication(&rotation, &tr_matrix, &tempMatrix2);
-        tr_matrix = tempMatrix2;
+        Mat4 tempMatrix2 = *matMultiplication(&rotation, &model_view_matrix, &tempMatrix2);
+        model_view_matrix = tempMatrix2;
       
     }
     else if(key == 'Z')
     {
         printf("KEY: %c\n",key);
         Mat4 rotation = *matRotateAboutZ(-5.0, &rotation);
-        Mat4 tempMatrix2 = *matMultiplication(&rotation, &tr_matrix, &tempMatrix2);
-        tr_matrix = tempMatrix2;
+        Mat4 tempMatrix2 = *matMultiplication(&rotation, &model_view_matrix, &tempMatrix2);
+        model_view_matrix = tempMatrix2;
        
     }
     else if(key == ' ')
@@ -444,8 +448,8 @@ void idle(void)
 {
     if(enableIdle)
     {
-        Mat4 tempMatrix = *matMultiplication(&R, &tr_matrix,&tempMatrix);
-        tr_matrix = tempMatrix;
+        Mat4 tempMatrix = *matMultiplication(&R, &model_view_matrix,&tempMatrix);
+        model_view_matrix = tempMatrix;
         glutPostRedisplay();
     }
 
@@ -572,8 +576,8 @@ void motion(int x, int y)
                 R = *matMultiplication(&rxNeg, &tempMatrix4, &R);
             
                 // Apply R to current transformation matrix
-                Mat4 tempMatrix5 = *matMultiplication(&R,&tr_matrix,&tempMatrix5);
-                tr_matrix = tempMatrix5;
+                Mat4 tempMatrix5 = *matMultiplication(&R,&model_view_matrix,&tempMatrix5);
+                model_view_matrix = tempMatrix5;
             
                 // Reset initial point to last point in motion
                 // in order to allow user to change axis of rotation
