@@ -34,7 +34,7 @@ Main file for Project 2
 #define windowSize 375
 
 #define sizeOfGround 6
-#define sizeOfWall 6
+#define sizeOfWall 30
 
 
 
@@ -47,6 +47,8 @@ Vec4 colors[10000];
 
 
 int num_vertices;
+
+float eyex = -1.0, eyey = 1.0, eyez = -1.0;
 
 
 // Declare point & vector pointing from initial mouse click to origin
@@ -66,9 +68,9 @@ GLuint model_view_matrix_location;
 // Changes worldview to be at angle
 Mat4 projection_matrix =
 {
-    {1.0, 0.0, 0.0, 0.0},
-    {0.0, 1.0, 0.0, 0.0},
-    {0.0, 0.0, 1.0, 0.0},
+    {0.5, 0.0, 0.0, 0.0},
+    {0.0, 0.5, 0.0, 0.0},
+    {0.0, 0.0, 0.5, 0.0},
     {0.0, 0.0, 0.0, 1.0}
     
 };
@@ -148,6 +150,7 @@ void gen3Dmaze()
     
      // Cast the one-dimensional array of cells into two-dimensional
     cell (*cells2D)[numColumns] = (cell (*)[numColumns]) cells;
+    
     int row, column, v_index = 0;
     float wallSize = 0;
     
@@ -198,7 +201,7 @@ void gen3Dmaze()
             // Add every North wall if wall present
             if(cells2D[row][column].north)
             {
-                // First triangle. Vertex, followed by color (yellow)
+                // First face. Vertex, followed by color (yellow)
                 vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
                 vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
                 v_index++;
@@ -208,7 +211,7 @@ void gen3Dmaze()
                 vecArrayAdd(vertices, v_index, currX+wallSize, currY+wallSize, currZ, 1.0);
                 vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
                 v_index++;
-                // Second Triangle
+                
                 vecArrayAdd(vertices, v_index, currX+wallSize, currY+wallSize, currZ, 1.0);
                 vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
                 v_index++;
@@ -218,12 +221,97 @@ void gen3Dmaze()
                 vecArrayAdd(vertices, v_index, currX+wallSize, currY, currZ, 1.0);
                 vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
                 v_index++;
+                
+                // Second face
+                vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ+(.1*wallSize), 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY, currZ+(.1*wallSize), 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX+wallSize, currY+wallSize, currZ+(.1*wallSize), 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
+                v_index++;
+           
+                vecArrayAdd(vertices, v_index, currX+wallSize, currY+wallSize, currZ+(.1*wallSize), 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY, currZ+(.1*wallSize), 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX+wallSize, currY, currZ+(.1*wallSize), 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
+                v_index++;
+                
+                // Third face
+                vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 0.4, 1.0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ+(.1*wallSize), 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 0.4, 1.0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX+wallSize, currY+wallSize, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 0.4, 1.0, 1.0);
+                v_index++;
+               
+                vecArrayAdd(vertices, v_index, currX+wallSize, currY+wallSize, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 0.4, 1.0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ+(.1*wallSize), 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 0.4, 1.0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX+wallSize, currY+wallSize, currZ+(.1*wallSize), 1.0);
+                vecArrayAdd(colors, v_index, 1.0, 0.4, 1.0, 1.0);
+                v_index++;
+                
+                // Fourth face
+                vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ+(.1*wallSize), 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+         
+                vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ+(.1*wallSize), 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY, currZ+(.1*wallSize), 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                
+                // Fifth face
+                vecArrayAdd(vertices, v_index, currX+wallSize, currY+wallSize, currZ+(.1*wallSize), 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX+wallSize, currY, currZ+(.1*wallSize), 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX+wallSize, currY+wallSize, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+             
+                vecArrayAdd(vertices, v_index, currX+wallSize, currY+wallSize, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX+wallSize, currY, currZ+(.1*wallSize), 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX+wallSize, currY, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                
             }
             
             // Add every West wall if wall present
             if(cells2D[row][column].west)
             {
-                // First triangle. Vertex, followed by color (red)
+                // First Face. Vertex, followed by color (red)
                 vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ+wallSize, 1.0);
                 vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
                 v_index++;
@@ -233,7 +321,91 @@ void gen3Dmaze()
                 vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
                 vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
                 v_index++;
-                // Second Triangle
+               
+                vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY, currZ+wallSize, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                
+                // Second Face. Vertex, followed by color (red)
+                vecArrayAdd(vertices, v_index, currX+(.1*wallSize), currY+wallSize, currZ+wallSize, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX+(.1*wallSize), currY, currZ+wallSize, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX+(.1*wallSize), currY+wallSize, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                
+                vecArrayAdd(vertices, v_index, currX+(.1*wallSize), currY+wallSize, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX+(.1*wallSize), currY, currZ+wallSize, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX+(.1*wallSize), currY, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                
+                // Third Face. Vertex, followed by color (red)
+                vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ+wallSize, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY, currZ+wallSize, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                
+                vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY, currZ+wallSize, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                
+                // Fourth Face. Vertex, followed by color (red)
+                vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ+wallSize, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY, currZ+wallSize, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                
+                vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY, currZ+wallSize, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                
+                // Fifth Face. Vertex, followed by color (red)
+                vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ+wallSize, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY, currZ+wallSize, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
+                vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+                v_index++;
+                
                 vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
                 vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
                 v_index++;
@@ -316,6 +488,8 @@ void init(void)
     Mat4 tempMatrix = look_at(-1.0, 1.0, -1.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0);
     model_view_matrix = tempMatrix;
     
+    //tempMatrix = frustum(1.0, -1.0, 1.0, -1.0, 1.0, -2.0);
+    //projection_matrix = tempMatrix;
     
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
     glUseProgram(program);
@@ -371,6 +545,7 @@ void display(void)
 
 
 
+
 void keyboard(unsigned char key, int mousex, int mousey)
 {
     // Quit program
@@ -392,60 +567,9 @@ void keyboard(unsigned char key, int mousex, int mousey)
         projection_matrix = tempMatrix;
        
     }
-    else if(key == 'x')
-    {
-        printf("KEY: %c\n",key);
-        Mat4 rotation = *matRotateAboutX(5.0, &rotation);
-        Mat4 tempMatrix2 = *matMultiplication(&rotation, &projection_matrix, &tempMatrix2);
-        projection_matrix = tempMatrix2;
-       
-    }
-    else if(key == 'X')
-    {
-        printf("KEY: %c\n",key);
-        Mat4 rotation = *matRotateAboutX(-5.0, &rotation);
-        Mat4 tempMatrix2 = *matMultiplication(&rotation, &projection_matrix, &tempMatrix2);
-        projection_matrix = tempMatrix2;
-
-    }
-    else if(key == 'y')
-    {
-        printf("KEY: %c\n",key);
-        Mat4 rotation = *matRotateAboutY(5.0, &rotation);
-        Mat4 tempMatrix2 = *matMultiplication(&rotation, &projection_matrix, &tempMatrix2);
-        projection_matrix = tempMatrix2;
-    
-    }
-    else if(key == 'Y')
-    {
-        printf("KEY: %c\n",key);
-        Mat4 rotation = *matRotateAboutY(-5.0, &rotation);
-        Mat4 tempMatrix2 = *matMultiplication(&rotation, &projection_matrix, &tempMatrix2);
-        projection_matrix = tempMatrix2;
-       
-    }
-    else if(key == 'z')
-    {
-        printf("KEY: %c\n",key);
-        Mat4 rotation = *matRotateAboutZ(5.0, &rotation);
-        Mat4 tempMatrix2 = *matMultiplication(&rotation, &projection_matrix, &tempMatrix2);
-        projection_matrix = tempMatrix2;
-      
-    }
-    else if(key == 'Z')
-    {
-        printf("KEY: %c\n",key);
-        Mat4 rotation = *matRotateAboutZ(-5.0, &rotation);
-        Mat4 tempMatrix2 = *matMultiplication(&rotation, &projection_matrix, &tempMatrix2);
-        projection_matrix = tempMatrix2;
-       
-    }
     else if(key == ' ')
     {
-        R.col1.x = 1.0; R.col2.x = 0.0; R.col3.x = 0.0; R.col4.x = 0.0;
-        R.col1.y = 0.0; R.col2.y = 1.0; R.col3.y = 0.0; R.col4.y = 0.0;
-        R.col1.z = 0.0; R.col2.z = 0.0; R.col3.z = 1.0; R.col4.z = 0.0;
-        R.col1.w = 0.0; R.col2.w = 0.0; R.col3.w = 0.0; R.col4.w = 1.0;
+        enableIdle = 1;
         
     }
 
@@ -456,19 +580,18 @@ void keyboard(unsigned char key, int mousex, int mousey)
 
 void idle(void)
 {
-    /*
+    
     if(enableIdle)
     {
-        Mat4 tempMatrix = *matMultiplication(&R, &projection_matrix,&tempMatrix);
+        Mat4 tempMatrix = look_at(eyex, eyey, eyez, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0);
         model_view_matrix = tempMatrix;
-        glutPostRedisplay();
     }
-    */
+    
     
     glutPostRedisplay();
 }
 
-/*
+
 void mouse(int button, int state, int x, int y)
 {
     // If button is pressed
@@ -499,9 +622,9 @@ void mouse(int button, int state, int x, int y)
 
     glutPostRedisplay();
 }
-*/
 
-/*
+
+
 void motion(int x, int y)
 {
     // Capture moving x,y
@@ -612,7 +735,7 @@ void motion(int x, int y)
     
     glutPostRedisplay();
 }
-*/
+
 
 int main(int argc, char **argv)
 {
@@ -628,8 +751,8 @@ int main(int argc, char **argv)
     init();
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
-    //glutMouseFunc(mouse);
-    //glutMotionFunc(motion);
+    glutMouseFunc(mouse);
+    glutMotionFunc(motion);
     glutIdleFunc(idle);
     glutMainLoop();
     
