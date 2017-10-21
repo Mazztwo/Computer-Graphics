@@ -790,18 +790,22 @@ Mat4 look_at(GLfloat eyex, GLfloat eyey, GLfloat eyez,
 {
     Mat4 rawr = {};
     
-    
-    // VPN = e-a
+    // vpn = e-a
     // n is normalized vpn --> vpn/ |vpn|
     Vec4 eye = {eyex, eyey,eyez,0.0};
     Vec4 at = {atx, aty, atz, 0.0};
+    Vec4 up = {upx,upy, upz, 0.0};
     
     Vec4 vpn = *vec4subtraction(&eye, &at, &vpn);
-    Vec4 n = mult
+    Vec4 n = *scalarMultVector(1.0/vecMagnitude(&vpn), &vpn, &n);
     
+    // normalized u = Vup X n / |Vup X n|
+    Vec4 upXn = *crossProduct(&up, &n, &upXn);
+    Vec4 u = *scalarMultVector(1.0/vecMagnitude(&upXn), &upXn, &u);
     
-    
-    
+    // normalized v = n X u / |n X u|
+    Vec4 nXu = *crossProduct(&n, &u, &nXu);
+    Vec4 v = *scalarMultVector(1.0/vecMagnitude(&nXu), &nXu, &v);
     
     
     
