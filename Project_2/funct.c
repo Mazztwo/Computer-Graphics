@@ -779,11 +779,32 @@ Mat4* scaleMatrix(Mat4 *tr_matrix, float scalingFactor, Mat4 *productMatrix)
 }
 
 
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
 Mat4 look_at(GLfloat eyex, GLfloat eyey, GLfloat eyez,
              GLfloat atx, GLfloat aty, GLfloat atz,
              GLfloat upx, GLfloat upy, GLfloat upz)
 {
     Mat4 rawr = {};
+    
+    
+    // VPN = e-a
+    // n is normalized vpn --> vpn/ |vpn|
+    Vec4 eye = {eyex, eyey,eyez,0.0};
+    Vec4 at = {atx, aty, atz, 0.0};
+    
+    Vec4 vpn = *vec4subtraction(&eye, &at, &vpn);
+    Vec4 n = mult
+    
+    
+    
+    
+    
+    
+    
     
     return rawr;
 }
@@ -800,7 +821,8 @@ Mat4 frustum(GLfloat left, GLfloat right,
 
 
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
