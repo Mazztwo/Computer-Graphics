@@ -788,8 +788,6 @@ Mat4 look_at(GLfloat eyex, GLfloat eyey, GLfloat eyez,
              GLfloat atx, GLfloat aty, GLfloat atz,
              GLfloat upx, GLfloat upy, GLfloat upz)
 {
-    Mat4 rawr = {};
-    
     // vpn = e-a
     // n is normalized vpn --> vpn/ |vpn|
     Vec4 eye = {eyex, eyey,eyez,0.0};
@@ -808,9 +806,15 @@ Mat4 look_at(GLfloat eyex, GLfloat eyey, GLfloat eyez,
     Vec4 v = *scalarMultVector(1.0/vecMagnitude(&nXu), &nXu, &v);
     
     
+    Mat4 model_view_matrix =
+    {
+        {u.x,v.x,n.x,0.0},
+        {u.y,v.y,n.y,0.0},
+        {u.z,v.z,n.z,0.0},
+        {0.0,0.0,0.0,1.0}
+    };
     
-    
-    return rawr;
+    return model_view_matrix;
 }
 
 Mat4 frustum(GLfloat left, GLfloat right,
