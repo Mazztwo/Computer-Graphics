@@ -102,7 +102,7 @@ void gen3Dmaze()
 {
     srand(time(0));
     
-    
+    /*
     fflush(stdout);
     printf("Enter a number of rows: ");
     fflush(stdout);
@@ -112,7 +112,9 @@ void gen3Dmaze()
     fflush(stdout);
     scanf("%i", &numColumns);
     fflush(stdout);
+    */
     
+    numRows = 8, numColumns = 8;
     cell *cells = (cell *) malloc(sizeof(cell) * numRows * numColumns);
     
     // Clear malloc'ed memory
@@ -452,7 +454,10 @@ void idle(void)
         model_view_matrix = tempMatrix;
         glutPostRedisplay();
     }
-
+    
+    Mat4 temp = look_at(-1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    model_view_matrix = temp;
+    
     glutPostRedisplay();
 }
 

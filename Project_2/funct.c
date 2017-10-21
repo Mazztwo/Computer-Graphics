@@ -813,9 +813,15 @@ Mat4 look_at(GLfloat eyex, GLfloat eyey, GLfloat eyez,
         {u.z,v.z,n.z,0.0},
         {0.0,0.0,0.0,1.0}
     };
+  
     
     return model_view_matrix;
 }
+
+
+
+
+
 
 Mat4 frustum(GLfloat left, GLfloat right,
              GLfloat bottom, GLfloat top,
