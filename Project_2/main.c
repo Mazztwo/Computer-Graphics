@@ -68,9 +68,9 @@ GLuint model_view_matrix_location;
 // Changes worldview to be at angle
 Mat4 projection_matrix =
 {
-    {0.5, 0.0, 0.0, 0.0},
-    {0.0, 0.5, 0.0, 0.0},
-    {0.0, 0.0, 0.5, 0.0},
+    {0.45, 0.0, 0.0, 0.0},
+    {0.0, 0.45, 0.0, 0.0},
+    {0.0, 0.0, 0.45, 0.0},
     {0.0, 0.0, 0.0, 1.0}
     
 };
@@ -156,23 +156,23 @@ void gen3Dmaze()
     
     
     // Set ground and ground color
-    vecArrayAdd(vertices, v_index, 1.0, -1.0 , -1.0, 1.0);
+    vecArrayAdd(vertices, v_index, 1.3, -1.0 , -1.3, 1.0);
     vecArrayAdd(colors, v_index, 0.0, 0.6, 0.0, 1.0);
     v_index++;
-    vecArrayAdd(vertices, v_index, -1.0, -1.0, -1.0, 1.0);
+    vecArrayAdd(vertices, v_index, -1.3, -1.0, -1.3, 1.0);
     vecArrayAdd(colors, v_index, 0.0, 0.6, 0.0, 1.0);
     v_index++;
-    vecArrayAdd(vertices, v_index, 1.0, -1.0, 1.0, 1.0);
+    vecArrayAdd(vertices, v_index, 1.3, -1.0, 1.3, 1.0);
     vecArrayAdd(colors, v_index, 0.0, 0.6, 0.0, 1.0);
     v_index++;
     // Second Triangle
-    vecArrayAdd(vertices, v_index, 1.0, -1.0, 1.0, 1.0);
+    vecArrayAdd(vertices, v_index, 1.3, -1.0, 1.3, 1.0);
     vecArrayAdd(colors, v_index, 0.0, 0.6, 0.0, 1.0);
     v_index++;
-    vecArrayAdd(vertices, v_index, -1.0, -1.0, -1.0, 1.0);
+    vecArrayAdd(vertices, v_index, -1.3, -1.0, -1.3, 1.0);
     vecArrayAdd(colors, v_index, 0.0, 0.6, 0.0, 1.0);
     v_index++;
-    vecArrayAdd(vertices, v_index, -1.0, -1.0, 1.0, 1.0);
+    vecArrayAdd(vertices, v_index, -1.3, -1.0, 1.3, 1.0);
     vecArrayAdd(colors, v_index, 0.0, 0.6, 0.0, 1.0);
     v_index++;
     
