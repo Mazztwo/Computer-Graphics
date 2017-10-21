@@ -516,6 +516,7 @@ void gen3Dmaze()
         if(row != numRows -1)
         {
             // Add ending East wall every time
+            // First face. Vertex, followed by color (red)
             vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ+wallSize, 1.0);
             vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
             v_index++;
@@ -525,7 +526,7 @@ void gen3Dmaze()
             vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
             vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
             v_index++;
-            // Second Triangle
+         
             vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
             vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
             v_index++;
@@ -534,6 +535,69 @@ void gen3Dmaze()
             v_index++;
             vecArrayAdd(vertices, v_index, currX, currY, currZ, 1.0);
             vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+            v_index++;
+            
+            // Second face. Vertex, followed by color (red)
+            vecArrayAdd(vertices, v_index, currX-(.1*wallSize), currY+wallSize, currZ+wallSize, 1.0);
+            vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+            v_index++;
+            vecArrayAdd(vertices, v_index, currX-(.1*wallSize), currY, currZ+wallSize, 1.0);
+            vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+            v_index++;
+            vecArrayAdd(vertices, v_index, currX-(.1*wallSize), currY+wallSize, currZ, 1.0);
+            vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+            v_index++;
+            
+            vecArrayAdd(vertices, v_index, currX-(.1*wallSize), currY+wallSize, currZ, 1.0);
+            vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+            v_index++;
+            vecArrayAdd(vertices, v_index, currX-(.1*wallSize), currY, currZ+wallSize, 1.0);
+            vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+            v_index++;
+            vecArrayAdd(vertices, v_index, currX-(.1*wallSize), currY, currZ, 1.0);
+            vecArrayAdd(colors, v_index, 0.8, 0, 0, 1.0);
+            v_index++;
+            
+            // Third face. Vertex, followed by color (pink)
+            vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
+            vecArrayAdd(colors, v_index, 1.0, 0.4, 1.0, 1.0);
+            v_index++;
+            vecArrayAdd(vertices, v_index, currX-(.1*wallSize), currY+wallSize, currZ, 1.0);
+            vecArrayAdd(colors, v_index, 1.0, 0.4, 1.0, 1.0);
+            v_index++;
+            vecArrayAdd(vertices, v_index, currX-(.1*wallSize), currY+wallSize, currZ+wallSize, 1.0);
+            vecArrayAdd(colors, v_index, 1.0, 0.4, 1.0, 1.0);
+            v_index++;
+            
+            vecArrayAdd(vertices, v_index, currX-(.1*wallSize), currY+wallSize, currZ+wallSize, 1.0);
+            vecArrayAdd(colors, v_index, 1.0, 0.4, 1.0, 1.0);
+            v_index++;
+            vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ, 1.0);
+            vecArrayAdd(colors, v_index, 1.0, 0.4, 1.0, 1.0);
+            v_index++;
+            vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ+wallSize, 1.0);
+            vecArrayAdd(colors, v_index, 1.0, 0.4, 1.0, 1.0);
+            v_index++;
+            
+            // Fourth face. Vertex, followed by color (yellow)
+            vecArrayAdd(vertices, v_index, currX-(.1*wallSize), currY+wallSize, currZ+wallSize, 1.0);
+            vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
+            v_index++;
+            vecArrayAdd(vertices, v_index, currX-(.1*wallSize), currY, currZ+wallSize, 1.0);
+            vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
+            v_index++;
+            vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ+wallSize, 1.0);
+            vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
+            v_index++;
+            
+            vecArrayAdd(vertices, v_index, currX, currY+wallSize, currZ+wallSize, 1.0);
+            vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
+            v_index++;
+            vecArrayAdd(vertices, v_index, currX-(.1*wallSize), currY, currZ+wallSize, 1.0);
+            vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
+            v_index++;
+            vecArrayAdd(vertices, v_index, currX, currY, currZ+wallSize, 1.0);
+            vecArrayAdd(colors, v_index, 1.0, 1.0, 0.4, 1.0);
             v_index++;
             
             // Reset X to be all the way on the left, move Z down one row
