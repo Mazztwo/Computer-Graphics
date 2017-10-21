@@ -312,6 +312,11 @@ void gen3Dmaze()
 
 void init(void)
 {
+    // Initialize model_view matrix
+    Mat4 tempMatrix = look_at(-1.0, 1.0, -1.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0);
+    model_view_matrix = tempMatrix;
+    
+    
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
     glUseProgram(program);
     
@@ -363,6 +368,7 @@ void display(void)
 }
 
 
+
 void keyboard(unsigned char key, int mousex, int mousey)
 {
     // Quit program
@@ -373,63 +379,63 @@ void keyboard(unsigned char key, int mousex, int mousey)
     // Zoom In
     else if(key == 'o')
     {
-        Mat4 tempMatrix = *scaleMatrix(&model_view_matrix, 1.02, &tempMatrix);
-        model_view_matrix = tempMatrix;
+        Mat4 tempMatrix = *scaleMatrix(&projection_matrix, 1.02, &tempMatrix);
+        projection_matrix = tempMatrix;
   
     }
     // Zoom Out
     else if(key == 'l')
     {
-        Mat4 tempMatrix = *scaleMatrix(&model_view_matrix, 1.0/1.02, &tempMatrix);
-        model_view_matrix = tempMatrix;
+        Mat4 tempMatrix = *scaleMatrix(&projection_matrix, 1.0/1.02, &tempMatrix);
+        projection_matrix = tempMatrix;
        
     }
     else if(key == 'x')
     {
         printf("KEY: %c\n",key);
         Mat4 rotation = *matRotateAboutX(5.0, &rotation);
-        Mat4 tempMatrix2 = *matMultiplication(&rotation, &model_view_matrix, &tempMatrix2);
-        model_view_matrix = tempMatrix2;
+        Mat4 tempMatrix2 = *matMultiplication(&rotation, &projection_matrix, &tempMatrix2);
+        projection_matrix = tempMatrix2;
        
     }
     else if(key == 'X')
     {
         printf("KEY: %c\n",key);
         Mat4 rotation = *matRotateAboutX(-5.0, &rotation);
-        Mat4 tempMatrix2 = *matMultiplication(&rotation, &model_view_matrix, &tempMatrix2);
-        model_view_matrix = tempMatrix2;
+        Mat4 tempMatrix2 = *matMultiplication(&rotation, &projection_matrix, &tempMatrix2);
+        projection_matrix = tempMatrix2;
 
     }
     else if(key == 'y')
     {
         printf("KEY: %c\n",key);
         Mat4 rotation = *matRotateAboutY(5.0, &rotation);
-        Mat4 tempMatrix2 = *matMultiplication(&rotation, &model_view_matrix, &tempMatrix2);
-        model_view_matrix = tempMatrix2;
+        Mat4 tempMatrix2 = *matMultiplication(&rotation, &projection_matrix, &tempMatrix2);
+        projection_matrix = tempMatrix2;
     
     }
     else if(key == 'Y')
     {
         printf("KEY: %c\n",key);
         Mat4 rotation = *matRotateAboutY(-5.0, &rotation);
-        Mat4 tempMatrix2 = *matMultiplication(&rotation, &model_view_matrix, &tempMatrix2);
-        model_view_matrix = tempMatrix2;
+        Mat4 tempMatrix2 = *matMultiplication(&rotation, &projection_matrix, &tempMatrix2);
+        projection_matrix = tempMatrix2;
        
     }
     else if(key == 'z')
     {
         printf("KEY: %c\n",key);
         Mat4 rotation = *matRotateAboutZ(5.0, &rotation);
-        Mat4 tempMatrix2 = *matMultiplication(&rotation, &model_view_matrix, &tempMatrix2);
-        model_view_matrix = tempMatrix2;
+        Mat4 tempMatrix2 = *matMultiplication(&rotation, &projection_matrix, &tempMatrix2);
+        projection_matrix = tempMatrix2;
       
     }
     else if(key == 'Z')
     {
         printf("KEY: %c\n",key);
         Mat4 rotation = *matRotateAboutZ(-5.0, &rotation);
-        Mat4 tempMatrix2 = *matMultiplication(&rotation, &model_view_matrix, &tempMatrix2);
-        model_view_matrix = tempMatrix2;
+        Mat4 tempMatrix2 = *matMultiplication(&rotation, &projection_matrix, &tempMatrix2);
+        projection_matrix = tempMatrix2;
        
     }
     else if(key == ' ')
@@ -448,21 +454,19 @@ void keyboard(unsigned char key, int mousex, int mousey)
 
 void idle(void)
 {
+    /*
     if(enableIdle)
     {
-        Mat4 tempMatrix = *matMultiplication(&R, &model_view_matrix,&tempMatrix);
+        Mat4 tempMatrix = *matMultiplication(&R, &projection_matrix,&tempMatrix);
         model_view_matrix = tempMatrix;
         glutPostRedisplay();
     }
-    
-    Mat4 temp = look_at(-1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-    model_view_matrix = temp;
+    */
     
     glutPostRedisplay();
 }
 
-
-// Listener for mouse button events
+/*
 void mouse(int button, int state, int x, int y)
 {
     // If button is pressed
@@ -493,8 +497,9 @@ void mouse(int button, int state, int x, int y)
 
     glutPostRedisplay();
 }
+*/
 
-
+/*
 void motion(int x, int y)
 {
     // Capture moving x,y
@@ -581,8 +586,8 @@ void motion(int x, int y)
                 R = *matMultiplication(&rxNeg, &tempMatrix4, &R);
             
                 // Apply R to current transformation matrix
-                Mat4 tempMatrix5 = *matMultiplication(&R,&model_view_matrix,&tempMatrix5);
-                model_view_matrix = tempMatrix5;
+                Mat4 tempMatrix5 = *matMultiplication(&R,&projection_matrix,&tempMatrix5);
+                projection_matrix = tempMatrix5;
             
                 // Reset initial point to last point in motion
                 // in order to allow user to change axis of rotation
@@ -605,7 +610,7 @@ void motion(int x, int y)
     
     glutPostRedisplay();
 }
-
+*/
 
 int main(int argc, char **argv)
 {
@@ -621,8 +626,8 @@ int main(int argc, char **argv)
     init();
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
-    glutMouseFunc(mouse);
-    glutMotionFunc(motion);
+    //glutMouseFunc(mouse);
+    //glutMotionFunc(motion);
     glutIdleFunc(idle);
     glutMainLoop();
     
