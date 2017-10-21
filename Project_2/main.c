@@ -360,6 +360,8 @@ void display(void)
     glUniformMatrix4fv(projection_matrix_location, 1, GL_FALSE, (GLfloat *) &projection_matrix);
     glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &model_view_matrix);
     
+    //glEnable(GL_CULL_FACE);
+    
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_FILL);
     glDrawArrays(GL_TRIANGLES, 0, num_vertices);
