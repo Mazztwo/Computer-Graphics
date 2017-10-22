@@ -65,8 +65,8 @@ GLuint ctm_location;
 GLuint projection_matrix_location;
 GLuint model_view_matrix_location;
 
-// Changes worldview to be at angle
-Mat4 projection_matrix =
+
+Mat4 model_view_matrix =
 {
     {0.48, 0.0, 0.0, 0.0},
     {0.0, 0.48, 0.0, 0.0},
@@ -75,8 +75,8 @@ Mat4 projection_matrix =
     
 };
 
-// Changes view of world in relationship to camera
-Mat4 model_view_matrix =
+
+Mat4 projection_matrix =
 {
     {1.0, 0.0, 0.0, 0.0},
     {0.0, 1.0, 0.0, 0.0},
@@ -100,6 +100,7 @@ int numRows, numColumns;
 
 
 // Generate 3D maze
+
 void gen3Dmaze()
 {
     srand(time(0));
@@ -156,29 +157,29 @@ void gen3Dmaze()
     
     
     // Set ground and ground color
-    vecArrayAdd(vertices, v_index, 1.3, -1.0 , -1.3, 1.0);
+    vecArrayAdd(vertices, v_index, 1.3, 0.0 , -1.3, 1.0);
     vecArrayAdd(colors, v_index, 0.0, 0.6, 0.0, 1.0);
     v_index++;
-    vecArrayAdd(vertices, v_index, -1.3, -1.0, -1.3, 1.0);
+    vecArrayAdd(vertices, v_index, -1.3, 0.0, -1.3, 1.0);
     vecArrayAdd(colors, v_index, 0.0, 0.6, 0.0, 1.0);
     v_index++;
-    vecArrayAdd(vertices, v_index, 1.3, -1.0, 1.3, 1.0);
+    vecArrayAdd(vertices, v_index, 1.3, 0.0, 1.3, 1.0);
     vecArrayAdd(colors, v_index, 0.0, 0.6, 0.0, 1.0);
     v_index++;
     // Second Triangle
-    vecArrayAdd(vertices, v_index, 1.3, -1.0, 1.3, 1.0);
+    vecArrayAdd(vertices, v_index, 1.3, 0.0, 1.3, 1.0);
     vecArrayAdd(colors, v_index, 0.0, 0.6, 0.0, 1.0);
     v_index++;
-    vecArrayAdd(vertices, v_index, -1.3, -1.0, -1.3, 1.0);
+    vecArrayAdd(vertices, v_index, -1.3, 0.0, -1.3, 1.0);
     vecArrayAdd(colors, v_index, 0.0, 0.6, 0.0, 1.0);
     v_index++;
-    vecArrayAdd(vertices, v_index, -1.3, -1.0, 1.3, 1.0);
+    vecArrayAdd(vertices, v_index, -1.3, 0.0, 1.3, 1.0);
     vecArrayAdd(colors, v_index, 0.0, 0.6, 0.0, 1.0);
     v_index++;
     
     // Top left corner is {-1,-1,-1}
     float currX = -1.0;
-    float currY = -1.0;
+    float currY = 0.0;
     float currZ = -1.0;
     
     // Figure out size of wall based on how many rows/cols there are
@@ -613,10 +614,10 @@ void gen3Dmaze()
 void init(void)
 {
     // Initialize model_view matrix
-    Mat4 tempMatrix = look_at(-1.0, 0.0, -0.5, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0);
+    Mat4 tempMatrix = look_at(-1.0, 1.0, -0.5, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     model_view_matrix = tempMatrix;
     
-    //tempMatrix = frustum(1.0, -1.0, 1.0, -1.0, 1.0, -5.0);
+    //tempMatrix = frustum(-1.0, 1.0, -1.0, 1.0, -1.0, -10.0);
     //projection_matrix = tempMatrix;
     
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
@@ -648,6 +649,8 @@ void init(void)
     
     
     glEnable(GL_DEPTH_TEST);
+    //glEnable(GL_CULL_FACE);
+    
     glClearColor(0.0, 0.5, 1.0, 1.0);
     glDepthRange(1,0);
 }
@@ -684,21 +687,24 @@ void keyboard(unsigned char key, int mousex, int mousey)
     // Zoom In
     else if(key == 'o')
     {
-        Mat4 tempMatrix = *scaleMatrix(&projection_matrix, 1.02, &tempMatrix);
-        projection_matrix = tempMatrix;
+        Mat4 tempMatrix = *scaleMatrix(&model_view_matrix, 1.02, &tempMatrix);
+        model_view_matrix = tempMatrix;
   
     }
     // Zoom Out
     else if(key == 'l')
     {
-        Mat4 tempMatrix = *scaleMatrix(&projection_matrix, 1.0/1.02, &tempMatrix);
-        projection_matrix = tempMatrix;
+        Mat4 tempMatrix = *scaleMatrix(&model_view_matrix, 1.0/1.02, &tempMatrix);
+        model_view_matrix = tempMatrix;
        
     }
     else if(key == ' ')
     {
         enableIdle = 1;
-        
+    }
+    else if(key = 'x')
+    {
+        //Mat4 tempMatrix = translate( <#float x#>, <#float y#>, <#float z#>)
     }
 
     glutPostRedisplay();
@@ -710,7 +716,7 @@ void idle(void)
 {
     if(enableIdle)
     {
-        Mat4 tempMatrix = look_at(eyex, eyey, eyez, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0);
+        Mat4 tempMatrix = look_at(-1.0, 1.0, -0.5, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
         model_view_matrix = tempMatrix;
         
         
@@ -744,11 +750,6 @@ void mouse(int button, int state, int x, int y)
             originVector.w = 0.0;
 
             
-        }
-        else if(state == GLUT_UP)
-        {
-            // allows spin animation to start
-            enableIdle = 1;
         }
     }
 
@@ -843,8 +844,8 @@ void motion(int x, int y)
                 R = *matMultiplication(&rxNeg, &tempMatrix4, &R);
             
                 // Apply R to current transformation matrix
-                Mat4 tempMatrix5 = *matMultiplication(&R,&projection_matrix,&tempMatrix5);
-                projection_matrix = tempMatrix5;
+                Mat4 tempMatrix5 = *matMultiplication(&R,&model_view_matrix,&tempMatrix5);
+                model_view_matrix = tempMatrix5;
             
                 // Reset initial point to last point in motion
                 // in order to allow user to change axis of rotation
