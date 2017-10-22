@@ -48,7 +48,7 @@ Vec4 colors[10000];
 
 int num_vertices;
 
-float eyex = -1.0, eyey = 1.0, eyez = -1.0;
+float eyex = -1.0, eyey = 0.0, eyez = -0.5, degrees = 0.0;
 
 
 // Declare point & vector pointing from initial mouse click to origin
@@ -68,9 +68,9 @@ GLuint model_view_matrix_location;
 // Changes worldview to be at angle
 Mat4 projection_matrix =
 {
-    {0.45, 0.0, 0.0, 0.0},
-    {0.0, 0.45, 0.0, 0.0},
-    {0.0, 0.0, 0.45, 0.0},
+    {0.48, 0.0, 0.0, 0.0},
+    {0.0, 0.48, 0.0, 0.0},
+    {0.0, 0.0, 0.48, 0.0},
     {0.0, 0.0, 0.0, 1.0}
     
 };
@@ -116,7 +116,7 @@ void gen3Dmaze()
     fflush(stdout);
     */
     
-    numRows = 8, numColumns = 8;
+    numRows = 13, numColumns = 13;
     cell *cells = (cell *) malloc(sizeof(cell) * numRows * numColumns);
     
     // Clear malloc'ed memory
@@ -613,10 +613,10 @@ void gen3Dmaze()
 void init(void)
 {
     // Initialize model_view matrix
-    Mat4 tempMatrix = look_at(-1.0, 1.0, -1.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0);
+    Mat4 tempMatrix = look_at(-1.0, 0.0, -0.5, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0);
     model_view_matrix = tempMatrix;
     
-    //tempMatrix = frustum(1.0, -1.0, 1.0, -1.0, 1.0, -2.0);
+    //tempMatrix = frustum(1.0, -1.0, 1.0, -1.0, 1.0, -5.0);
     //projection_matrix = tempMatrix;
     
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
@@ -708,11 +708,15 @@ void keyboard(unsigned char key, int mousex, int mousey)
 
 void idle(void)
 {
-    
     if(enableIdle)
     {
         Mat4 tempMatrix = look_at(eyex, eyey, eyez, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0);
         model_view_matrix = tempMatrix;
+        
+        
+        
+        
+        
     }
     
     
