@@ -613,8 +613,7 @@ void gen3Dmaze()
 void init(void)
 {
     // Initialize model_view matrix
-    //Mat4 tempMatrix = look_at(-5.0, -.5, -2.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-    Mat4 tempMatrix = look_at(-1.0, -1.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    Mat4 tempMatrix = look_at(-1.5, 1.5, -1.5, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
     model_view_matrix = tempMatrix2;
     
