@@ -617,8 +617,8 @@ void init(void)
     Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
     model_view_matrix = tempMatrix2;
     
-    //tempMatrix = frustum(-1.0, 1.0, -1.0, 1.0, -1.0, -10.0);
-    //projection_matrix = tempMatrix;
+    tempMatrix = frustum(-1.0, 1.0, -1.0, 1.0, -1.0, -10.0);
+    projection_matrix = tempMatrix;
     
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
     glUseProgram(program);
@@ -702,7 +702,8 @@ void keyboard(unsigned char key, int mousex, int mousey)
     }
     else if(key = 'x')
     {
-        //Mat4 tempMatrix = translate( <#float x#>, <#float y#>, <#float z#>)
+        Mat4 tempMatrix = translate(.33, 0.0, 0.0);
+        model_view_matrix = tempMatrix;
     }
 
     glutPostRedisplay();

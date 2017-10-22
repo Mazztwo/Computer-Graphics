@@ -779,7 +779,15 @@ Mat4* scaleMatrix(Mat4 *tr_matrix, float scalingFactor, Mat4 *productMatrix)
 }
 
 
-
+/*
+ Function:
+     This function moves the tr_matrix by adding x,y,z components.
+ Inputs:
+     x,y,z --> components to add to current tr_matrix
+     tr_matrix --> matrix to translate
+ Outputs:
+     productMatrix --> result of translating matrixc
+ */
 Mat4 translate(Mat4 *tr_matrix, float x, float y, float z)
 {
     Mat4 translationMatrix =
