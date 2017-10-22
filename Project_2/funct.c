@@ -830,6 +830,9 @@ Mat4 look_at(GLfloat eyex, GLfloat eyey, GLfloat eyez,
     Vec4 nXu = *crossProduct(&n, &u, &nXu);
     Vec4 v = *scalarMultVector(1.0/vecMagnitude(&nXu), &nXu, &v);
     
+    float lastColX
+    float lastColY
+    float lastColZ
     
     Mat4 model_view_matrix =
     {

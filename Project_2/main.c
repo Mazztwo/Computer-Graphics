@@ -68,9 +68,9 @@ GLuint model_view_matrix_location;
 
 Mat4 model_view_matrix =
 {
-    {0.48, 0.0, 0.0, 0.0},
-    {0.0, 0.48, 0.0, 0.0},
-    {0.0, 0.0, 0.48, 0.0},
+    {1.0, 0.0, 0.0, 0.0},
+    {0.0, 1.0, 0.0, 0.0},
+    {0.0, 0.0, 1.0, 0.0},
     {0.0, 0.0, 0.0, 1.0}
     
 };
@@ -613,12 +613,13 @@ void gen3Dmaze()
 void init(void)
 {
     // Initialize model_view matrix
-    Mat4 tempMatrix = look_at(-1.0, 1.0, -0.5, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    //Mat4 tempMatrix = look_at(-5.0, -.5, -2.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    Mat4 tempMatrix = look_at(-1.0, -1.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
     model_view_matrix = tempMatrix2;
     
-    //tempMatrix = frustum(-1.0, 1.0, -1.0, 1.0, -1.0, -10.0);
-    //projection_matrix = tempMatrix;
+    tempMatrix = frustum(-1.0, 1.0, -1.0, 1.0, -1.0, -10.0);
+    projection_matrix = tempMatrix;
     
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
     glUseProgram(program);
@@ -680,6 +681,8 @@ void keyboard(unsigned char key, int mousex, int mousey)
     // Quit program
     if(key == 'q')
     {
+        printMat4(&model_view_matrix);
+        
         exit(0);
     }
     // Zoom In
@@ -687,7 +690,6 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         Mat4 tempMatrix = *scaleMatrix(&model_view_matrix, 1.02, &tempMatrix);
         model_view_matrix = tempMatrix;
-  
     }
     // Zoom Out
     else if(key == 'l')
@@ -740,8 +742,8 @@ void idle(void)
 {
     if(enableIdle)
     {
-        Mat4 tempMatrix = look_at(-1.0, 1.0, -0.5, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-        model_view_matrix = tempMatrix;
+        //Mat4 tempMatrix = look_at(-1.0, 1.0, -0.5, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+        //model_view_matrix = tempMatrix;
         
         
         
