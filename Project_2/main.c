@@ -680,8 +680,6 @@ void keyboard(unsigned char key, int mousex, int mousey)
     // Quit program
     if(key == 'q')
     {
-        printMat4(&model_view_matrix);
-        
         exit(0);
     }
     // Zoom In
