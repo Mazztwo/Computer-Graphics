@@ -100,7 +100,6 @@ int numRows, numColumns;
 
 
 // Generate 3D maze
-
 void gen3Dmaze()
 {
     srand(time(0));
@@ -615,7 +614,8 @@ void init(void)
 {
     // Initialize model_view matrix
     Mat4 tempMatrix = look_at(-1.0, 1.0, -0.5, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-    model_view_matrix = tempMatrix;
+    Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
+    model_view_matrix = tempMatrix2;
     
     //tempMatrix = frustum(-1.0, 1.0, -1.0, 1.0, -1.0, -10.0);
     //projection_matrix = tempMatrix;
@@ -673,8 +673,6 @@ void display(void)
     
     glutSwapBuffers();
 }
-
-
 
 
 void keyboard(unsigned char key, int mousex, int mousey)
