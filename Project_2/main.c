@@ -618,6 +618,12 @@ void init(void)
     Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
     model_view_matrix = tempMatrix2;
     
+    // Initialize starting angle
+    distanceFromOrigin = sqrt( (eyex*eyex) + (eyez*eyez) );
+    startDegrees = acos(eyex / distanceFromOrigin);
+    //convert to degrees
+    startDegrees *= (180.0/M_PI);
+    
     tempMatrix = frustum(-1.0, 1.0, -1.0, 1.0, -1.0, -10.0);
     projection_matrix = tempMatrix;
     
@@ -744,14 +750,22 @@ void idle(void)
         //Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
         //model_view_matrix = tempMatrix2;
         
-        distanceFromOrigin = sqrt( (eyex*eyex) + (eyez*eyez) );
-        degrees = acos(eyex / distsanceFromOrigin);
-        //convert to degrees
-        degrees *= (180.0/M_PI);
+        // Get curr angle & convert to degrees
+        currDegrees = acos(eyex / distanceFromOrigin);
+        currDegrees *= (180.0/M_PI);
         
-        // calculate new eyex, eyez
-        eyex =
         
+        
+        // If 360 degrees is reached, begin again at 0
+        // and move towards start angle
+        if(currDegrees == 360)
+        {
+            currDegrees = 0;
+        }
+        else if(currDegrees == startDegrees)
+        {
+            enableIdle = 0;
+        }
         
         
     }
