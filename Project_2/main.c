@@ -48,7 +48,8 @@ Vec4 colors[10000];
 
 int num_vertices;
 
-float eyex = -1.0, eyey = 0.0, eyez = -0.5, degrees = 0.0;
+float eyex = -1.5, eyey = 1.5, eyez = -1.5, startDegrees = 0.0, currDegrees = 0.0, distanceFromOrigin = 0.0;
+
 
 
 // Declare point & vector pointing from initial mouse click to origin
@@ -613,7 +614,7 @@ void gen3Dmaze()
 void init(void)
 {
     // Initialize model_view matrix
-    Mat4 tempMatrix = look_at(-1.5, 1.5, -1.5, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    Mat4 tempMatrix = look_at(eyex, eyey, eyez, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
     model_view_matrix = tempMatrix2;
     
@@ -656,7 +657,6 @@ void init(void)
 }
 
 
-
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -673,6 +673,7 @@ void display(void)
     
     glutSwapBuffers();
 }
+
 
 
 void keyboard(unsigned char key, int mousex, int mousey)
@@ -739,10 +740,17 @@ void idle(void)
 {
     if(enableIdle)
     {
-        //Mat4 tempMatrix = look_at(-1.0, 1.0, -0.5, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-        //model_view_matrix = tempMatrix;
+        //Mat4 tempMatrix = look_at(eyex, eyey, eyez, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+        //Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
+        //model_view_matrix = tempMatrix2;
         
+        distanceFromOrigin = sqrt( (eyex*eyex) + (eyez*eyez) );
+        degrees = acos(eyex / distsanceFromOrigin);
+        //convert to degrees
+        degrees *= (180.0/M_PI);
         
+        // calculate new eyex, eyez
+        eyex =
         
         
         
