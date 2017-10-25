@@ -830,6 +830,8 @@ Mat4 look_at(GLfloat eyex, GLfloat eyey, GLfloat eyez,
     Vec4 nXu = *crossProduct(&n, &u, &nXu);
     Vec4 v = *scalarMultVector(1.0/vecMagnitude(&nXu), &nXu, &v);
     
+    // This last column calculation includes translation of point
+    // to desired location
     float lastColX = (-eyex*u.x)-(eyey*u.y)-(eyez*u.z);
     float lastColY = (-eyex*v.x)-(eyey*v.y)-(eyez*v.z);
     float lastColZ = (-eyex*n.x)-(eyey*n.y)-(eyez*n.z);

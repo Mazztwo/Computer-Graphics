@@ -73,7 +73,6 @@ Mat4 model_view_matrix =
     {0.0, 1.0, 0.0, 0.0},
     {0.0, 0.0, 1.0, 0.0},
     {0.0, 0.0, 0.0, 1.0}
-    
 };
 
 
@@ -615,12 +614,11 @@ void init(void)
 {
     // Initialize model_view matrix
     Mat4 tempMatrix = look_at(eyex, eyey, eyez, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-    Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
-    model_view_matrix = tempMatrix2;
+    model_view_matrix = tempMatrix;
     
     // Initialize starting angle
     distanceFromOrigin = sqrt( (eyex*eyex) + (eyez*eyez) );
-    startDegrees = acos(eyex / distanceFromOrigin);
+    startDegrees = acos(eyez / distanceFromOrigin);
     //convert to degrees
     startDegrees *= (180.0/M_PI);
     
@@ -736,6 +734,24 @@ void keyboard(unsigned char key, int mousex, int mousey)
         Mat4 tempMatrix = translate(&model_view_matrix,0.0, 0.0, -0.33);
         model_view_matrix = tempMatrix;
     }
+    else if(key == 'n')
+    {;
+        eyez -= 1.0;
+        
+        Mat4 tempMatrix = look_at(eyex, eyey, eyez, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+        model_view_matrix = tempMatrix;
+        
+        printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
+    }
+    else if(key = 'N')
+    {
+        eyez += 1.0;
+        
+        Mat4 tempMatrix = look_at(eyex, eyey, eyez, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+        model_view_matrix = tempMatrix;
+        
+        printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
+    }
 
     glutPostRedisplay();
     
@@ -746,14 +762,20 @@ void idle(void)
 {
     if(enableIdle)
     {
-        //Mat4 tempMatrix = look_at(eyex, eyey, eyez, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-        //Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
-        //model_view_matrix = tempMatrix2;
-        
         // Get curr angle & convert to degrees
-        currDegrees = acos(eyex / distanceFromOrigin);
+        currDegrees = acos(eyez / distanceFromOrigin);
         currDegrees *= (180.0/M_PI);
         
+        // Increment currDegrees by 5 and
+        // recalculate new eyex and eyez.
+        currDegrees += 1.0;
+        eyez = distanceFromOrigin * cos(currDegrees);
+        eyex = distanceFromOrigin * sin(currDegrees);
+        
+        //Update look_at function with new x and z positions
+        Mat4 tempMatrix = look_at(eyex, eyey, eyez, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+        Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
+        model_view_matrix = tempMatrix2;
         
         
         // If 360 degrees is reached, begin again at 0
