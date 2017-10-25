@@ -51,7 +51,6 @@ int num_vertices;
 float eyex = -1.5, eyey = 1.5, eyez = -1.5, startDegrees = 0.0, currDegrees = 0.0, distanceFromOrigin = 0.0;
 
 
-
 // Declare point & vector pointing from initial mouse click to origin
 Vec4 originVector = {0.0,0.0,0.0,0.0};
 
@@ -619,6 +618,7 @@ void init(void)
     // Initialize starting angle
     distanceFromOrigin = sqrt( (eyex*eyex) + (eyez*eyez) );
     startDegrees = acos(eyez / distanceFromOrigin);
+    currDegrees = startDegrees;
     //convert to degrees
     startDegrees *= (180.0/M_PI);
     
@@ -763,32 +763,32 @@ void idle(void)
     if(enableIdle)
     {
         // Get curr angle & convert to degrees
-        currDegrees = acos(eyez / distanceFromOrigin);
         currDegrees *= (180.0/M_PI);
         
-        // Increment currDegrees by 5 and
-        // recalculate new eyex and eyez.
-        currDegrees += 1.0;
-        eyez = distanceFromOrigin * cos(currDegrees);
-        eyex = distanceFromOrigin * sin(currDegrees);
-        
-        //Update look_at function with new x and z positions
-        Mat4 tempMatrix = look_at(eyex, eyey, eyez, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-        Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
-        model_view_matrix = tempMatrix2;
-        
-        
-        // If 360 degrees is reached, begin again at 0
-        // and move towards start angle
-        if(currDegrees == 360)
+        if (currDegrees < startDegrees + 360)
         {
-            currDegrees = 0;
+            // Increment currDegrees by 5 and
+            // recalculate new eyex and eyez.
+            currDegrees += 1.0;
+            printf("degrees: %f\n", currDegrees);
+        
+            // convert back to radians
+            currDegrees *= (M_PI/180.0);
+        
+            eyez = distanceFromOrigin * cos(currDegrees);
+            eyex = distanceFromOrigin * sin(-currDegrees);
+        
+            printf("eyex: %f, eyez: %f\n",eyex, eyez);
+        
+            //Update look_at function with new x and z positions
+            Mat4 tempMatrix = look_at(eyex, eyey, eyez, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+            model_view_matrix = tempMatrix;
         }
-        else if(currDegrees == startDegrees)
+        else
         {
             enableIdle = 0;
+            currDegrees = startDegrees;
         }
-        
         
     }
     
