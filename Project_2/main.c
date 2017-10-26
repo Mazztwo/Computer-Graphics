@@ -758,8 +758,6 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         // Initiate fly down to maze entrance
         
-        aty = 0.1;
-        
         enableIdle = 2;
     }
     else if(key == 'n')
