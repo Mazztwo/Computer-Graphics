@@ -50,6 +50,7 @@ int num_vertices;
 
 float eyex = -1.5, eyey = 1.4, eyez = -.90, startDegrees = 0.0, currDegrees = 0.0, distanceFromOrigin = 0.0;
 float atx = 0.0, aty = 0.0, atz = 0.0, near = -1.0, far = -10.0;
+float left = -1.0, right = 1.0, bottom = -1.0, top = 1.0, scalingFactor = 0.0;
 
 // Declare point & vector pointing from initial mouse click to origin
 Vec4 originVector = {0.0,0.0,0.0,0.0};
@@ -622,7 +623,7 @@ void init(void)
     startDegrees *= (180.0/M_PI);
     currDegrees = startDegrees;
     
-    tempMatrix = frustum(-1.0, 1.0, -1.0, 1.0, near, far);
+    tempMatrix = frustum(left, right, bottom, top, near, far);
     projection_matrix = tempMatrix;
     
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
@@ -687,19 +688,19 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         exit(0);
     }
+/////////// SCALING DOESN'T WORK FOR NOW////////
     // Zoom In
-    else if(key == 'o')
+    else if(key == 'u')
     {
-        Mat4 tempMatrix = *scaleMatrix(&model_view_matrix, 1.02, &tempMatrix);
-        model_view_matrix = tempMatrix;
+        scalingFactor = 1.02;
     }
     // Zoom Out
-    else if(key == 'l')
+    else if(key == 'j')
     {
-        Mat4 tempMatrix = *scaleMatrix(&model_view_matrix, 1.0/1.02, &tempMatrix);
-        model_view_matrix = tempMatrix;
+        scalingFactor = 1.0/1.02;
        
     }
+////////////////////////////////////////////////
     else if(key == ' ')
     {
         // Initiate fly around maze
@@ -709,27 +710,18 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         eyex -= 0.1;
         
-        Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-        model_view_matrix = tempMatrix;
-        
         printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
         
     }
     else if(key == 'X')
     {
         eyex += 0.1;
-        
-        Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-        model_view_matrix = tempMatrix;
-        
+
         printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
     }
     else if(key == 'y')
     {
         eyey -= 0.1;
-        
-        Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-        model_view_matrix = tempMatrix;
         
         printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
     }
@@ -737,26 +729,18 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         eyey += 0.1;
         
-        Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-        model_view_matrix = tempMatrix;
-        
         printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
     }
     else if(key == 'z')
     {
         eyez -= 0.1;
-        
-        Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-        model_view_matrix = tempMatrix;
+
         
         printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
     }
     else if(key == 'Z')
     {
         eyez += 0.1;
-        
-        Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-        model_view_matrix = tempMatrix;
         
         printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
     }
@@ -770,44 +754,84 @@ void keyboard(unsigned char key, int mousex, int mousey)
     }
     else if(key == 'n')
     {
-        near -= 1.0;
+        near -= 0.1;
         
-        printf("near: %f, far: %f\n",near,far);
-        
-        Mat4 tempMatrix = frustum(-1.0, 1.0, -1.0, 1.0, near, far);
-        projection_matrix = tempMatrix;
+        printf("left: %f, right: %f, top: %f, bottom: %f, near: %f, far: %f\n",left,right,top,bottom,near,far);
         
     }
     else if(key == 'N')
     {
-        near += 1.0;
-        
-        printf("near: %f, far: %f\n",near,far);
-        
-        Mat4 tempMatrix = frustum(-1.0, 1.0, -1.0, 1.0, near, far);
-        projection_matrix = tempMatrix;
+        near += 0.1;
+        printf("left: %f, right: %f, top: %f, bottom: %f, near: %f, far: %f\n",left,right,top,bottom,near,far);
+
         
     }
     else if(key == 'f')
     {
-        far -= 1.0;
-        
-        printf("near: %f, far: %f\n",near,far);
-        
-        Mat4 tempMatrix = frustum(-1.0, 1.0, -1.0, 1.0, near, far);
-        projection_matrix = tempMatrix;
+        far -= 0.1;
+        printf("left: %f, right: %f, top: %f, bottom: %f, near: %f, far: %f\n",left,right,top,bottom,near,far);
         
     }
     else if(key == 'F')
     {
-        far += 1.0;
-        
-        printf("near: %f, far: %f\n",near,far);
-        
-        Mat4 tempMatrix = frustum(-1.0, 1.0, -1.0, 1.0, near, far);
-        projection_matrix = tempMatrix;
+        far += 0.1;
+        printf("left: %f, right: %f, top: %f, bottom: %f, near: %f, far: %f\n",left,right,top,bottom,near,far);
         
     }
+    else if(key == 't')
+    {
+        top -= 0.1;
+        printf("left: %f, right: %f, top: %f, bottom: %f, near: %f, far: %f\n",left,right,top,bottom,near,far);
+        
+    }
+    else if(key == 'T')
+    {
+        top += 0.1;
+        printf("left: %f, right: %f, top: %f, bottom: %f, near: %f, far: %f\n",left,right,top,bottom,near,far);
+        
+    }
+    else if(key == 'b')
+    {
+        bottom -= 0.1;
+        printf("left: %f, right: %f, top: %f, bottom: %f, near: %f, far: %f\n",left,right,top,bottom,near,far);
+        
+    }
+    else if(key == 'B')
+    {
+        bottom += 0.1;
+        printf("left: %f, right: %f, top: %f, bottom: %f, near: %f, far: %f\n",left,right,top,bottom,near,far);
+        
+    }
+    else if(key == 'l')
+    {
+        left -= 0.1;
+        printf("left: %f, right: %f, top: %f, bottom: %f, near: %f, far: %f\n",left,right,top,bottom,near,far);
+        
+    }
+    else if(key == 'L')
+    {
+        left += 0.1;
+        printf("left: %f, right: %f, top: %f, bottom: %f, near: %f, far: %f\n",left,right,top,bottom,near,far);
+        
+    }
+    else if(key == 'r')
+    {
+        right -= 0.1;
+        printf("left: %f, right: %f, top: %f, bottom: %f, near: %f, far: %f\n",left,right,top,bottom,near,far);
+        
+    }
+    else if(key == 'R')
+    {
+        right += 0.1;
+        printf("left: %f, right: %f, top: %f, bottom: %f, near: %f, far: %f\n",left,right,top,bottom,near,far);
+        
+    }
+    
+    tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
+    model_view_matrix = tempMatrix;
+    
+    tempMatrix = frustum(left, right, bottom, top, near, far);
+    projection_matrix = tempMatrix;
 
     glutPostRedisplay();
     
