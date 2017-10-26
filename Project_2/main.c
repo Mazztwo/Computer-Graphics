@@ -765,13 +765,8 @@ void keyboard(unsigned char key, int mousex, int mousey)
         // Initiate fly down to maze entrance
         
         aty = 0.1;
-        atz = -0.9;
         
-        Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-        model_view_matrix = tempMatrix;
-        
-        
-        //enableIdle = 2;
+        enableIdle = 2;
     }
     
 
@@ -816,30 +811,26 @@ void idle(void)
         
     }
     // Fly down to maze entrance
-    else if(enableIdle == 8)
+    else if(enableIdle == 2)
     {
         // Desired end location:
         // eyex = -1.1, eyey = .1, eyez = -.9
         // atx = 0, aty = .1, atxz = =-.9
         
-        aty = 0.1;
-        atz = -0.9;
-        
-        Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-        model_view_matrix = tempMatrix;
+        float atzFinal = -0.9;
         
         
-        int i;
-        
-        for(i = 0; i <= 1.0; i += .05)
+        if(atz != atzFinal)
         {
+            atz -= 0.01;
             
+            Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
+            model_view_matrix = tempMatrix;
         }
-        
-        
-        
-        
-        
+        else
+        {
+            enableIdle = 0;
+        }
         
     }
     
