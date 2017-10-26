@@ -702,6 +702,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     }
     else if(key == ' ')
     {
+        // Initiate fly around maze
         enableIdle = 1;
     }
     else if(key == 'x')
@@ -759,6 +760,19 @@ void keyboard(unsigned char key, int mousex, int mousey)
         
         printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
     }
+    else if(key == 'g')
+    {
+        // Initiate fly down to maze entrance
+        
+        aty = 0.1;
+        atz = -0.9;
+        
+        Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
+        model_view_matrix = tempMatrix;
+        
+        
+        //enableIdle = 2;
+    }
     
 
     glutPostRedisplay();
@@ -768,7 +782,8 @@ void keyboard(unsigned char key, int mousex, int mousey)
 
 void idle(void)
 {
-    if(enableIdle)
+    // Fly a circle around the maze
+    if(enableIdle == 1)
     {
         
         if (currDegrees < startDegrees + 360)
@@ -787,7 +802,7 @@ void idle(void)
             printf("eyex: %f, eyez: %f\n",eyex, eyez);
         
             //Update look_at function with new x and z positions
-            Mat4 tempMatrix = look_at(eyex, eyey, eyez, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+            Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
             model_view_matrix = tempMatrix;
             
             // convert back to degrees
@@ -798,6 +813,33 @@ void idle(void)
             enableIdle = 0;
             currDegrees = startDegrees;
         }
+        
+    }
+    // Fly down to maze entrance
+    else if(enableIdle == 8)
+    {
+        // Desired end location:
+        // eyex = -1.1, eyey = .1, eyez = -.9
+        // atx = 0, aty = .1, atxz = =-.9
+        
+        aty = 0.1;
+        atz = -0.9;
+        
+        Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
+        model_view_matrix = tempMatrix;
+        
+        
+        int i;
+        
+        for(i = 0; i <= 1.0; i += .05)
+        {
+            
+        }
+        
+        
+        
+        
+        
         
     }
     
