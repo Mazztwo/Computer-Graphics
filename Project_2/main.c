@@ -48,7 +48,7 @@ Vec4 colors[10000];
 
 int num_vertices;
 
-float eyex = -1.5, eyey = 1.5, eyez = -1.5, startDegrees = 0.0, currDegrees = 0.0, distanceFromOrigin = 0.0;
+float eyex = -1.5, eyey = 1.4, eyez = -.90, startDegrees = 0.0, currDegrees = 0.0, distanceFromOrigin = 0.0;
 
 
 // Declare point & vector pointing from initial mouse click to origin
