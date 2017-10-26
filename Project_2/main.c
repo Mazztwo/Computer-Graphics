@@ -723,38 +723,42 @@ void keyboard(unsigned char key, int mousex, int mousey)
         eyex -= 0.1;
         
         printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
-        
+        printf("atx: %f, aty: %f, atz: %f\n", atx,aty,atz);
     }
     else if(key == 'X')
     {
         eyex += 0.1;
 
         printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
+        printf("atx: %f, aty: %f, atz: %f\n", atx,aty,atz);
     }
     else if(key == 'y')
     {
         eyey -= 0.1;
         
         printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
+        printf("atx: %f, aty: %f, atz: %f\n", atx,aty,atz);
     }
     else if(key == 'Y')
     {
         eyey += 0.1;
         
         printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
+        printf("atx: %f, aty: %f, atz: %f\n", atx,aty,atz);
     }
     else if(key == 'z')
     {
         eyez -= 0.1;
 
-        
         printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
+        printf("atx: %f, aty: %f, atz: %f\n", atx,aty,atz);
     }
     else if(key == 'Z')
     {
         eyez += 0.1;
         
         printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
+        printf("atx: %f, aty: %f, atz: %f\n", atx,aty,atz);
     }
     else if(key == 'g')
     {
@@ -838,12 +842,21 @@ void keyboard(unsigned char key, int mousex, int mousey)
     }
     else if(key == 'a')
     {
-        atx -= 0.1;
+        
     }
-    else if(key == 'A')
+    else if(key == 'd')
     {
-        atx += 0.1;
+        
     }
+    else if(key == 'w')
+    {
+        
+    }
+    else if(key == 'd')
+    {
+        
+    }
+    
     
     Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
     model_view_matrix = tempMatrix;
@@ -903,7 +916,7 @@ void idle(void)
         {
             eyex += 0.0025;
             eyey -= 0.01;
-            
+            eyez += 0.0005;
             atz -= 0.0062;
             
             Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
