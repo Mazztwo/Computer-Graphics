@@ -904,7 +904,7 @@ void idle(void)
             eyex += 0.0025;
             eyey -= 0.01;
             
-            atz -= 0.0061;
+            atz -= 0.0062;
             
             Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
             model_view_matrix = tempMatrix;
