@@ -50,8 +50,8 @@ int num_vertices;
 
 
 float eyex = -1.5, eyey = 1.5, eyez = -.90, startDegrees = 0.0, currDegrees = 0.0, distanceFromOrigin = 0.0;
-float atx = 0.0, aty = 0.0, atz = 0.0, near = -1.0, far = -10.0;
-float left = -1.0, right = 1.0, bottom = -1.0, top = 1.0, scalingFactor = 0.0;
+float atx = 0.0, aty = 0.0, atz = 0.0, near = -0.05, far = -100.0;
+float left = -0.05, right = 0.05, bottom = -0.05, top = 0.05, scalingFactor = 0.0;
 
 
 // Declare point & vector pointing from initial mouse click to origin
@@ -620,6 +620,7 @@ void gen3Dmaze()
 
 
 
+
 void init(void)
 {
     // Initialize model_view matrix
@@ -688,6 +689,7 @@ void display(void)
     
     glutSwapBuffers();
 }
+
 
 
 
@@ -834,6 +836,14 @@ void keyboard(unsigned char key, int mousex, int mousey)
         printf("left: %f, right: %f, top: %f, bottom: %f, near: %f, far: %f\n",left,right,top,bottom,near,far);
         
     }
+    else if(key == 'a')
+    {
+        atx -= 0.1;
+    }
+    else if(key == 'A')
+    {
+        atx += 0.1;
+    }
     
     Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
     model_view_matrix = tempMatrix;
@@ -888,7 +898,7 @@ void idle(void)
         // eyex = -1.1, eyey = .1, eyez = -.9
         // atx = 0, aty = .1, atxz = =-.9
         
-        float atzFinal = -0.9;
+        float atzFinal = -0.7;
         
         
         if(atz >= atzFinal)
