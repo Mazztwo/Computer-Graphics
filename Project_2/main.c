@@ -49,7 +49,7 @@ Vec4 colors[10000];
 int num_vertices;
 
 float eyex = -1.5, eyey = 1.4, eyez = -.90, startDegrees = 0.0, currDegrees = 0.0, distanceFromOrigin = 0.0;
-
+float atx = 0.0, aty = 0.0, atz = 0.0;
 
 // Declare point & vector pointing from initial mouse click to origin
 Vec4 originVector = {0.0,0.0,0.0,0.0};
@@ -612,7 +612,7 @@ void gen3Dmaze()
 void init(void)
 {
     // Initialize model_view matrix
-    Mat4 tempMatrix = look_at(eyex, eyey, eyez, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
     model_view_matrix = tempMatrix;
     
     // Initialize starting angle
@@ -706,52 +706,60 @@ void keyboard(unsigned char key, int mousex, int mousey)
     }
     else if(key == 'x')
     {
-        Mat4 tempMatrix = translate(&model_view_matrix,0.33, 0.0, 0.0);
+        eyex -= 0.1;
+        
+        Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
         model_view_matrix = tempMatrix;
+        
+        printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
+        
     }
     else if(key == 'X')
     {
-        Mat4 tempMatrix = translate(&model_view_matrix,-0.33, 0.0, 0.0);
+        eyex += 0.1;
+        
+        Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
         model_view_matrix = tempMatrix;
+        
+        printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
     }
     else if(key == 'y')
     {
-        Mat4 tempMatrix = translate(&model_view_matrix,0.0, 0.33, 0.0);
+        eyey -= 0.1;
+        
+        Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
         model_view_matrix = tempMatrix;
+        
+        printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
     }
     else if(key == 'Y')
     {
-        Mat4 tempMatrix = translate(&model_view_matrix,0.0, -0.33, 0.0);
+        eyey += 0.1;
+        
+        Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
         model_view_matrix = tempMatrix;
+        
+        printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
     }
     else if(key == 'z')
     {
-        Mat4 tempMatrix = translate(&model_view_matrix,0.0, 0.0, 0.33);
+        eyez -= 0.1;
+        
+        Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
         model_view_matrix = tempMatrix;
+        
+        printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
     }
     else if(key == 'Z')
     {
-        Mat4 tempMatrix = translate(&model_view_matrix,0.0, 0.0, -0.33);
-        model_view_matrix = tempMatrix;
-    }
-    else if(key == 'n')
-    {;
-        eyez -= 1.0;
+        eyez += 0.1;
         
-        Mat4 tempMatrix = look_at(eyex, eyey, eyez, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+        Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
         model_view_matrix = tempMatrix;
         
         printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
     }
-    else if(key = 'N')
-    {
-        eyez += 1.0;
-        
-        Mat4 tempMatrix = look_at(eyex, eyey, eyez, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-        model_view_matrix = tempMatrix;
-        
-        printf("eyex: %f, eyey: %f, eyez: %f\n", eyex,eyey,eyez);
-    }
+    
 
     glutPostRedisplay();
     
