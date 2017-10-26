@@ -827,7 +827,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
         
     }
     
-    tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
+    Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
     model_view_matrix = tempMatrix;
     
     tempMatrix = frustum(left, right, bottom, top, near, far);
