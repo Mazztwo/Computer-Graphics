@@ -810,7 +810,7 @@ void idle(void)
         }
         
     }
-    // Fly down to maze entrance
+    // Look down to maze entrance
     else if(enableIdle == 2)
     {
         // Desired end location:
@@ -829,8 +829,37 @@ void idle(void)
         }
         else
         {
+            // start fly down to maze entrance
+            enableIdle = 3;
+        }
+        
+    }
+    // fly down to maze entrance
+    else if(enableIdle == 3)
+    {
+        float eyexFinal = -1.1;
+        float eyeyFinal = 0.1;
+        
+        if(eyex >= eyexFinal)
+        {
+            eyex -= 0.1;
+            
+            Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
+            model_view_matrix = tempMatrix;
+        }
+        else if(eyey >= eyeyFinal)
+        {
+            eyey -= 0.01;
+            
+            Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
+            model_view_matrix = tempMatrix;
+            
+        }
+        else
+        {
             enableIdle = 0;
         }
+        
         
     }
     
