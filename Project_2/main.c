@@ -49,7 +49,7 @@ Vec4 colors[10000];
 int num_vertices;
 
 float eyex = -1.5, eyey = 1.4, eyez = -.90, startDegrees = 0.0, currDegrees = 0.0, distanceFromOrigin = 0.0;
-float atx = 0.0, aty = 0.0, atz = 0.0;
+float atx = 0.0, aty = 0.0, atz = 0.0, near = -1.0, far = -10.0;
 
 // Declare point & vector pointing from initial mouse click to origin
 Vec4 originVector = {0.0,0.0,0.0,0.0};
@@ -622,7 +622,7 @@ void init(void)
     startDegrees *= (180.0/M_PI);
     currDegrees = startDegrees;
     
-    tempMatrix = frustum(-1.0, 1.0, -1.0, 1.0, -1.0, -10.0);
+    tempMatrix = frustum(-1.0, 1.0, -1.0, 1.0, near, far);
     projection_matrix = tempMatrix;
     
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
@@ -768,7 +768,46 @@ void keyboard(unsigned char key, int mousex, int mousey)
         
         enableIdle = 2;
     }
-    
+    else if(key == 'n')
+    {
+        near -= 1.0;
+        
+        printf("near: %f, far: %f\n",near,far);
+        
+        Mat4 tempMatrix = frustum(-1.0, 1.0, -1.0, 1.0, near, far);
+        projection_matrix = tempMatrix;
+        
+    }
+    else if(key == 'N')
+    {
+        near += 1.0;
+        
+        printf("near: %f, far: %f\n",near,far);
+        
+        Mat4 tempMatrix = frustum(-1.0, 1.0, -1.0, 1.0, near, far);
+        projection_matrix = tempMatrix;
+        
+    }
+    else if(key == 'f')
+    {
+        far -= 1.0;
+        
+        printf("near: %f, far: %f\n",near,far);
+        
+        Mat4 tempMatrix = frustum(-1.0, 1.0, -1.0, 1.0, near, far);
+        projection_matrix = tempMatrix;
+        
+    }
+    else if(key == 'F')
+    {
+        far += 1.0;
+        
+        printf("near: %f, far: %f\n",near,far);
+        
+        Mat4 tempMatrix = frustum(-1.0, 1.0, -1.0, 1.0, near, far);
+        projection_matrix = tempMatrix;
+        
+    }
 
     glutPostRedisplay();
     

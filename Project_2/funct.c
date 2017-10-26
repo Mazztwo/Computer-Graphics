@@ -875,7 +875,7 @@ Mat4 frustum(GLfloat left, GLfloat right,
         {0.0,0.0,(-far+near)/(far-near),-1.0},
         {0.0,0.0,(-2*far*near)/(far-near),0.0}
     };
-    /*
+    */
     
     /*
     Mat4 projection_matrix =
