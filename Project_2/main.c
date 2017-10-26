@@ -48,9 +48,11 @@ Vec4 colors[10000];
 
 int num_vertices;
 
-float eyex = -1.5, eyey = 1.4, eyez = -.90, startDegrees = 0.0, currDegrees = 0.0, distanceFromOrigin = 0.0;
+
+float eyex = -1.5, eyey = 1.5, eyez = -.90, startDegrees = 0.0, currDegrees = 0.0, distanceFromOrigin = 0.0;
 float atx = 0.0, aty = 0.0, atz = 0.0, near = -1.0, far = -10.0;
 float left = -1.0, right = 1.0, bottom = -1.0, top = 1.0, scalingFactor = 0.0;
+
 
 // Declare point & vector pointing from initial mouse click to origin
 Vec4 originVector = {0.0,0.0,0.0,0.0};
@@ -116,7 +118,15 @@ void gen3Dmaze()
     fflush(stdout);
     */
     
-    numRows = 13, numColumns = 13;
+    
+    ///// NUM ROWS & COLS//////////////////
+    
+    numRows = 8, numColumns = 8;
+    
+    
+    ///////////////////////////////////////
+    
+    
     cell *cells = (cell *) malloc(sizeof(cell) * numRows * numColumns);
     
     // Clear malloc'ed memory
