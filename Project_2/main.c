@@ -618,9 +618,9 @@ void init(void)
     // Initialize starting angle
     distanceFromOrigin = sqrt( (eyex*eyex) + (eyez*eyez) );
     startDegrees = acos(eyez / distanceFromOrigin);
-    currDegrees = startDegrees;
     //convert to degrees
     startDegrees *= (180.0/M_PI);
+    currDegrees = startDegrees;
     
     tempMatrix = frustum(-1.0, 1.0, -1.0, 1.0, -1.0, -10.0);
     projection_matrix = tempMatrix;
@@ -762,8 +762,6 @@ void idle(void)
 {
     if(enableIdle)
     {
-        // Get curr angle & convert to degrees
-        currDegrees *= (180.0/M_PI);
         
         if (currDegrees < startDegrees + 360)
         {
@@ -772,7 +770,7 @@ void idle(void)
             currDegrees += 1.0;
             printf("degrees: %f\n", currDegrees);
         
-            // convert back to radians
+            // convert to radians
             currDegrees *= (M_PI/180.0);
         
             eyez = distanceFromOrigin * cos(currDegrees);
@@ -783,6 +781,9 @@ void idle(void)
             //Update look_at function with new x and z positions
             Mat4 tempMatrix = look_at(eyex, eyey, eyez, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
             model_view_matrix = tempMatrix;
+            
+            // convert back to degrees
+            currDegrees *= (180.0/M_PI);
         }
         else
         {
