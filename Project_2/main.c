@@ -820,7 +820,7 @@ void idle(void)
         float atzFinal = -0.9;
         
         
-        if(atz != atzFinal)
+        if(atz >= atzFinal)
         {
             atz -= 0.01;
             
