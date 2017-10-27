@@ -42,8 +42,14 @@ Vec4 vertices[10000];
 Vec4 colors[10000];
 
 
-//Vec4 *vertices;
-//Vec4 *colors;
+///// NUM ROWS & COLS//////////////////
+
+numRows = 8, numColumns = 8;
+
+///////////////////////////////////////
+
+cell *cells;
+cell (*cells2D)[8];
 
 
 int num_vertices;
@@ -52,7 +58,9 @@ int num_vertices;
 float eyex = -1.5, eyey = 1.5, eyez = -.90, startDegrees = 0.0, currDegrees = 0.0, distanceFromOrigin = 0.0;
 float atx = 0.0, aty = 0.0, atz = 0.0, near = -0.05, far = -100.0;
 float left = -0.05, right = 0.05, bottom = -0.05, top = 0.05, scalingFactor = 0.0;
-
+float wallSize = 0, alpha = 0.0;
+char forward = 'e';
+int currRow = 0, currCol = 0;
 
 // Declare point & vector pointing from initial mouse click to origin
 Vec4 originVector = {0.0,0.0,0.0,0.0};
@@ -106,28 +114,8 @@ void gen3Dmaze()
 {
     srand(time(0));
     
-    /*
-    fflush(stdout);
-    printf("Enter a number of rows: ");
-    fflush(stdout);
-    scanf("%i", &numRows);
-    fflush(stdout);
-    printf("Enter a number of columns: ");
-    fflush(stdout);
-    scanf("%i", &numColumns);
-    fflush(stdout);
-    */
     
-    
-    ///// NUM ROWS & COLS//////////////////
-    
-    numRows = 8, numColumns = 8;
-    
-    
-    ///////////////////////////////////////
-    
-    
-    cell *cells = (cell *) malloc(sizeof(cell) * numRows * numColumns);
+    cells = (cell *) malloc(sizeof(cell) * numRows * numColumns);
     
     // Clear malloc'ed memory
     int i;
@@ -148,9 +136,6 @@ void gen3Dmaze()
     // and color arrays.
     num_vertices = sizeOfGround + (num_walls*sizeOfWall);
     
-    //vertices = (Vec4 *)malloc(sizeof(Vec4) * num_vertices);
-    //colors = (Vec4 *)malloc(sizeof(Vec4) * num_vertices);
-    
     // Clear malloc'ed memory
     for (i = 0; i < num_vertices; i++)
     {
@@ -159,11 +144,10 @@ void gen3Dmaze()
     }
     
      // Cast the one-dimensional array of cells into two-dimensional
-    cell (*cells2D)[numColumns] = (cell (*)[numColumns]) cells;
+    cells2D =(cell (*)[numColumns]) cells;
     
     int row, column, v_index = 0;
-    float wallSize = 0;
-    
+   
     
     // Set ground and ground color
     vecArrayAdd(vertices, v_index, 1.3, 0.0 , -1.3, 1.0);
@@ -619,8 +603,6 @@ void gen3Dmaze()
 }
 
 
-
-
 void init(void)
 {
     // Initialize model_view matrix
@@ -840,22 +822,15 @@ void keyboard(unsigned char key, int mousex, int mousey)
         printf("left: %f, right: %f, top: %f, bottom: %f, near: %f, far: %f\n",left,right,top,bottom,near,far);
         
     }
-    else if(key == 'a')
+    else if(key == 's')
     {
+        // Walk into maze
+        // Move at point to be somewhere in front
+        // of current eye point
         
+        enableIdle = 4;
     }
-    else if(key == 'd')
-    {
-        
-    }
-    else if(key == 'w')
-    {
-        
-    }
-    else if(key == 'd')
-    {
-        
-    }
+    
     
     
     Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
@@ -866,6 +841,57 @@ void keyboard(unsigned char key, int mousex, int mousey)
 
     glutPostRedisplay();
     
+}
+
+
+int getSituation(char forward, cell *currCell)
+{
+    /*
+     -need which direction facing (N,S,E or W)
+     -need row/col you are in to know if
+     there is a N,S,E,W wall in that cell
+     -step = .005
+     
+     -based on that
+     -if wall on left
+         -if no wall forward
+             -move forward one space
+         -if wall in front
+             -turn left 90 degrees
+     -if no wall on left
+         -turn left 90 degrees
+         -move forward one space
+     */
+    if(forward == 'n')
+    {
+        // check for left wall
+        if(currCell->west)
+        {
+            // check for wall in front
+            if( currCell->north)
+            {
+                return 1;
+            }
+            
+            return 2;
+        }
+    }
+    else if(forward == 's')
+    {
+        // check for left wall
+    }
+    else if(forward == 'e')
+    {
+        // check for left wall
+    }
+    else //forward == 'w'
+    {
+        // check for left wall
+    }
+        
+        
+        
+    return 1;
 }
 
 
@@ -926,13 +952,73 @@ void idle(void)
         {
             enableIdle = 0;
         }
+         
+    }
+    // walk into maze
+    else if(enableIdle == 4)
+    {
+        float eyexFinal = eyex + .005;
+        
+        Vec4 p1 = {eyex, eyey, eyez, 1.0};
+        Vec4 p2 = {eyexFinal, eyey, eyez, 1.0};
+        
+        Vec4 vTemp = *vec4subtraction(&p2, &p1, &vTemp);
+        Vec4 v = vTemp;
+        
+        if(alpha < 1.0)
+        {
+            Vec4 alphaV = *scalarMultVector(alpha, &v, &alphaV);
+            v = alphaV;
+            
+            vTemp = *vec4addition(&p1, &v, &vTemp);
+            p2 = vTemp;
+            
+            eyex = p2.x;
+            eyey = p2.y;
+            eyez = p2.z;
+            
+            Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
+            model_view_matrix = tempMatrix;
+            
+            alpha += 0.01;
+        }
+        else
+        {
+            enableIdle = 5;
+        }
         
         
+    }
+    // solve maze
+    else if(enableIdle == 5)
+    {
+        /*
+         -need which direction facing (N,S,E or W)
+         -need row/col you are in to know if
+         there is a N,S,E,W wall in that cell
+         -step = .005
+         
+         -based on that
+             -if wall on left
+                 -if no wall forward
+                 -move forward one space
+             -if wall in front
+                 -turn left 90 degrees
+             -if no wall on left
+                 -turn left 90 degrees
+                 -move forward one space
+         */
+        int rawr = getSituation(forward, &cells2D[currRow][currCol]);
+        
+        // 1 = turn left 90 degrees
+        // 2 = move forward one cell
     }
     
     
     glutPostRedisplay();
 }
+
+
 
 
 void mouse(int button, int state, int x, int y)
