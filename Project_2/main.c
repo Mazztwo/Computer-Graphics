@@ -37,14 +37,13 @@ Main file for Project 2
 #define sizeOfWall 30
 
 
-
 Vec4 vertices[10000];
 Vec4 colors[10000];
 
 
 ///// NUM ROWS & COLS//////////////////
 
-numRows = 8, numColumns = 8;
+int numRows = 8, numColumns = 8;
 
 ///////////////////////////////////////
 
@@ -61,6 +60,20 @@ float left = -0.05, right = 0.05, bottom = -0.05, top = 0.05, scalingFactor = 0.
 float wallSize = 0, alpha = 0.0;
 char forward = 'e';
 int currRow = 0, currCol = 0;
+
+
+Vec4 p1 = {-1.5, 1.5, -0.9, 1.0};
+Vec4 p2 = {-1.1, 0.1, -0.9, 1.0};
+
+Vec4 p3 = {0, 0, 0, 1};
+Vec4 p4 = {0, 0, -0.9, 1};
+
+Vec4 v1 = {0, 0, 0, 0};
+Vec4 v2 = {0, 0, 0, 0};
+
+Vec4 currEye = {0, 0, 0, 0};
+Vec4 currAt = {0, 0, 0, 0};
+
 
 // Declare point & vector pointing from initial mouse click to origin
 Vec4 originVector = {0.0,0.0,0.0,0.0};
@@ -603,6 +616,9 @@ void gen3Dmaze()
 }
 
 
+
+
+
 void init(void)
 {
     // Initialize model_view matrix
@@ -619,6 +635,11 @@ void init(void)
     
     tempMatrix = frustum(left, right, bottom, top, near, far);
     projection_matrix = tempMatrix;
+    
+    v1 = *vec4subtraction(&p2, &p1, &v1);
+    
+    v2 = *vec4subtraction(&p4, &p3, &v2);
+    
     
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
     glUseProgram(program);
@@ -672,8 +693,6 @@ void display(void)
     
     glutSwapBuffers();
 }
-
-
 
 
 
@@ -857,7 +876,7 @@ int getSituation(char forward, cell *currCell)
          -if no wall forward
              -move forward one space
          -if wall in front
-             -turn left 180 degrees
+             -turn right 90 degrees
      -if no wall on left
          -turn left 90 degrees
          -move forward one space
@@ -974,50 +993,32 @@ void idle(void)
     // fly down to maze entrance
     else if(enableIdle == 2)
     {
-        if(alpha <= 0.08)
+        if(alpha <= 1.0 )
         {
-            float eyexFinal = -1.2;
-            float eyeyFinal = 0.1;
-            float eyezFinal = -.85;
+            Vec4 scaledV1 = *scalarMultVector(alpha, &v1, &scaledV1);
+            currEye = *vec4addition(&p1, &scaledV1, &currEye);
             
-            float atzFinal = -0.9;
+            Vec4 scaledV2 = *scalarMultVector(alpha, &v2, &scaledV2);
+            currAt = *vec4addition(&p3, &scaledV2, &currAt);
             
-            Vec4 p1 = {eyex, eyey, eyez, 1.0};
-            Vec4 p2 = {eyexFinal, eyeyFinal, eyezFinal, 1.0};
+            Mat4 tempMat = look_at(currEye.x, currEye.y, currEye.z, currAt.x, currAt.y, currAt.z, 0, 1, 0);
+            model_view_matrix = tempMat;
             
-            Vec4 p3 = {atx, aty, atz, 1.0};
-            Vec4 p4 = {atx, aty, atzFinal, 1.0};
+ 
             
-            Vec4 vTemp = *vec4subtraction(&p2, &p1, &vTemp);
-            Vec4 v1 = vTemp;
-            
-            vTemp = *vec4subtraction(&p4, &p3, &vTemp);
-            Vec4 v2 = vTemp;
-            
-            Vec4 alphaV = *scalarMultVector(alpha, &v1, &alphaV);
-            v1 = alphaV;
-            
-            alphaV = *scalarMultVector(alpha, &v2, &alphaV);
-            v2 = alphaV;
-            
-            vTemp = *vec4addition(&p1, &v1, &vTemp);
-            eyex = vTemp.x;
-            eyey = vTemp.y;
-            eyez = vTemp.z;
-            
-            vTemp = *vec4addition(&p3, &v2, &vTemp);
-            atx = vTemp.x;
-            aty = vTemp.y;
-            atz = vTemp.z;
-            
-            Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-            model_view_matrix = tempMatrix;
-            
-            alpha += 0.0005;
+            alpha += 0.005;
+            printf("alpha: %f\n", alpha);
         }
         else
         {
             alpha = 0.0;
+            eyex = currEye.x;
+            eyey = currEye.y;
+            eyez = currEye.z;
+            //atx = currAt.x;
+            //aty = currAt.y;
+            //atz = currAt.z;
+            
             enableIdle = 0 ;
         }
     }
@@ -1071,7 +1072,7 @@ void idle(void)
                  -if no wall forward
                      -move forward one space
                  -if wall in front
-                    -turn 180 degrees
+                     -turn right 90 degrees
              -if no wall on left
                  -turn left 90 degrees
                  -move forward one space
@@ -1079,15 +1080,16 @@ void idle(void)
          */
         int situation = getSituation(forward, &cells2D[currRow][currCol]);
         
-        // 1 = turn 180 degrees
+        // 1 = turn right 90 degrees
         // 2 = move forward one cell
         // 3 = turn left 90 degrees and move forward one space
         
         if(situation == 1)
         {
-            if(forward == 'e' || forward == 'w')
+            if(forward == 'n')
             {
-                // just flip sign of atx to turn around
+                
+                
                 float atxFinal = atx * -1;
                 
                 Vec4 p1 = {atx, aty, atz, 1.0};
@@ -1116,15 +1118,6 @@ void idle(void)
                 else
                 {
                     alpha = 0.0;
-                    
-                    if(forward == 'e')
-                    {
-                        forward = 'w';
-                    }
-                    else
-                    {
-                        forward = 'e';
-                    }
                     
                     printf("atx: %f, aty: %f, atz: %f\n",atx, aty, atz);
                     printf("eyex: %f, eyey: %f, eyez: %f\n",eyex, eyey, eyez);
@@ -1158,149 +1151,6 @@ void idle(void)
     glutPostRedisplay();
 }
 
-
-
-
-void mouse(int button, int state, int x, int y)
-{
-    // If button is pressed
-    // button = GLUT LEFT BUTTON
-    // state = GLUT_UP or GLUT_DOWN
-    // The top-left corner of the screen is at (0, 0)
-    // x y represent pointer position on screen
-    if(button == GLUT_LEFT_BUTTON)
-    {
-        if(state == GLUT_DOWN)
-        {
-            enableIdle = 0;
-            // Get initial click point to use for
-            // calculation of axis of rotation
-            originVector.x = x-windowSize;
-            originVector.y = windowSize-y;
-            originVector.z = sqrt((windowSize*windowSize)-((x-windowSize)*(x-windowSize)));
-            originVector.w = 0.0;
-
-            
-        }
-    }
-
-    glutPostRedisplay();
-}
-
-
-
-void motion(int x, int y)
-{
-    // Capture moving x,y
-    motionVector.x = x-windowSize;
-    motionVector.y = windowSize-y;
-    motionVector.z = sqrt((windowSize*windowSize)-((x-windowSize)*(x-windowSize)));
-    motionVector.w = 0.0;
-   
-    
-    // If user drag is outside window, do nothing
-    if(motionVector.x > windowSize ||
-       motionVector.y > windowSize ||
-       motionVector.z > windowSize ||
-       motionVector.x < -windowSize ||
-       motionVector.y < -windowSize ||
-       motionVector.z < -windowSize
-       ){}
-    else
-    {
-        // Caclculate rotation axis and normalize it
-        Vec4 tempVector = *crossProduct(&originVector, &motionVector, &tempVector);
-        rotationAxis = tempVector;
-        float rotationAxisMagnitude = vecMagnitude(&rotationAxis);
-        
-        // As long as the magnitude is not 0, which is the case
-        // initially at the first moment of dragging
-        if(rotationAxisMagnitude != 0)
-        {
-            // Normalize rotationAxis
-            tempVector = *scalarMultVector(1/rotationAxisMagnitude, &rotationAxis, &tempVector);
-            rotationAxis = tempVector;
-            
-            // Generate rotation matrix by calculating
-            // Rx, Ry, Rz, being rotation about x,y,z axes.
-            float theta = angleBetweenVectors(&originVector, &motionVector);
-            float d = sqrt((rotationAxis.y*rotationAxis.y) + (rotationAxis.z*rotationAxis.z));
-
-            
-            if(d != 0)
-            {
-                Mat4 ry =
-                {
-                    {d, 0.0, rotationAxis.x, 0.0},
-                    {0.0,1.0,0.0,0.0},
-                    {-rotationAxis.x,0.0,d,0.0},
-                    {0.0,0.0,0.0,1.0}
-                };
-            
-                Mat4 rx =
-                {
-                    {1.0,0.0,0.0,0.0},
-                    {0.0,rotationAxis.z/d,rotationAxis.y/d,0.0},
-                    {0.0,-rotationAxis.y/d,rotationAxis.z/d,0.0},
-                    {0.0,0.0,0.0,1.0}
-                };
-            
-                Mat4 ryNeg =
-                {
-                    {d, 0.0, -rotationAxis.x, 0.0},
-                    {0.0,1.0,0.0,0.0},
-                    {rotationAxis.x,0.0,d,0.0},
-                    {0.0,0.0,0.0,1.0}
-                };
-            
-                Mat4 rxNeg =
-                {
-                    {1.0,0.0,0.0,0.0},
-                    {0.0,rotationAxis.z/d,-rotationAxis.y/d,0.0},
-                    {0.0,rotationAxis.y/d,rotationAxis.z/d,0.0},
-                    {0.0,0.0,0.0,1.0}
-                };
-            
-                //Generate R
-                Mat4 tempMatrix1 = *matMultiplication(&ry, &rx, &tempMatrix1);
-                
-                // The factor in which theta is multiplied by
-                // determines the speed at which the object
-                // rotates about the rotation axis.
-                // Convert degrees to radians by multiplying by 180/pi
-                Mat4 tempMatrix2 = *matRotateAboutZ(theta*(180/M_PI), &tempMatrix2);
-                
-                Mat4 tempMatrix3 = *matMultiplication(&tempMatrix2, &tempMatrix1,&tempMatrix3);
-                Mat4 tempMatrix4 = *matMultiplication(&ryNeg, &tempMatrix3, &tempMatrix4);
-                R = *matMultiplication(&rxNeg, &tempMatrix4, &R);
-            
-                // Apply R to current transformation matrix
-                Mat4 tempMatrix5 = *matMultiplication(&R,&model_view_matrix,&tempMatrix5);
-                model_view_matrix = tempMatrix5;
-            
-                // Reset initial point to last point in motion
-                // in order to allow user to change axis of rotation
-                // on demand
-                originVector.x = motionVector.x;
-                originVector.y = motionVector.y;
-                originVector.z = motionVector.z;
-                originVector.w = motionVector.w;
-            }
-        }
-        else
-        {
-            R.col1.x = 1.0; R.col2.x = 0.0; R.col3.x = 0.0; R.col4.x = 0.0;
-            R.col1.y = 0.0; R.col2.y = 1.0; R.col3.y = 0.0; R.col4.y = 0.0;
-            R.col1.z = 0.0; R.col2.z = 0.0; R.col3.z = 1.0; R.col4.z = 0.0;
-            R.col1.w = 0.0; R.col2.w = 0.0; R.col3.w = 0.0; R.col4.w = 1.0;
-        }
-        
-    }
-    
-    glutPostRedisplay();
-}
-
-
 int main(int argc, char **argv)
 {
     gen3Dmaze();
@@ -1315,8 +1165,6 @@ int main(int argc, char **argv)
     init();
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
-    glutMouseFunc(mouse);
-    glutMotionFunc(motion);
     glutIdleFunc(idle);
     glutMainLoop();
     
