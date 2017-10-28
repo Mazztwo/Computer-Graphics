@@ -61,6 +61,8 @@ float wallSize = 0, alpha = 0.0;
 char forward = 'e';
 int currRow = 0, currCol = 0;
 
+float eyexFinal = 0, eyezFinal = 0;
+
 
 Vec4 p1 = {-1.5, 1.5, -0.9, 1.0};
 Vec4 p2 = {-1.1, 0.1, -0.9, 1.0};
@@ -74,15 +76,6 @@ Vec4 v2 = {0, 0, 0, 0};
 Vec4 currEye = {0, 0, 0, 0};
 Vec4 currAt = {0, 0, 0, 0};
 
-
-// Declare point & vector pointing from initial mouse click to origin
-Vec4 originVector = {0.0,0.0,0.0,0.0};
-
-// Declare vector of motion starting from origin point
-Vec4 motionVector = {0.0,0.0,0.0,0.0};
-
-// Declare axis of rotation
-Vec4 rotationAxis = {0.0,0.0,0.0,0.0};
 
 GLuint ctm_location;
 
@@ -1005,6 +998,40 @@ void idle(void)
             model_view_matrix = tempMat;
             
  
+            alpha += 0.005;
+            printf("alpha: %f\n", alpha);
+        }
+        else
+        {
+            alpha = 0.0;
+            eyex = currEye.x;
+            eyey = currEye.y;
+            eyez = currEye.z;
+            atx = currAt.x;
+            aty = currAt.y;
+            atz = currAt.z;
+            
+            
+            eyexFinal = eyex + .2;
+            p1 = {eyex, eyey, eyez, 1.0};
+            
+            
+            p2 = {eyexFinal, eyey, eyez, 1.0};
+            v1 = *vec4subtraction(&p2, &p1, &vTemp);
+            
+            enableIdle = 0 ;
+        }
+    }
+    // walk into maze
+    else if(enableIdle == 4)
+    {
+        if(alpha <= 1.0)
+        {
+            Vec4 scaledV = *scalarMultVector(alpha, &v1, &scaledV);
+            currEye = *vec4addition(&p1, &v1, &currEye);
+            
+            Mat4 tempMatrix = look_at(currEye.x, currEye.y, currEye.z, atx, aty, atz, 0.0, 1.0, 0.0);
+            model_view_matrix = tempMatrix;
             
             alpha += 0.005;
             printf("alpha: %f\n", alpha);
@@ -1015,47 +1042,13 @@ void idle(void)
             eyex = currEye.x;
             eyey = currEye.y;
             eyez = currEye.z;
-            //atx = currAt.x;
-            //aty = currAt.y;
-            //atz = currAt.z;
+            atx = currAt.x;
+            aty = currAt.y;
+            atz = currAt.z;
             
-            enableIdle = 0 ;
-        }
-    }
-    // walk into maze
-    else if(enableIdle == 4)
-    {
-        float eyexFinal = eyex + .2;
-        
-        Vec4 p1 = {eyex, eyey, eyez, 1.0};
-        Vec4 p2 = {eyexFinal, eyey, eyez, 1.0};
-        
-        Vec4 vTemp = *vec4subtraction(&p2, &p1, &vTemp);
-        Vec4 v = vTemp;
-        
-        if(alpha <= 1.0)
-        {
-            Vec4 alphaV = *scalarMultVector(alpha, &v, &alphaV);
-            v = alphaV;
-            
-            vTemp = *vec4addition(&p1, &v, &vTemp);
-            p2 = vTemp;
-            
-            eyex = p2.x;
-            eyey = p2.y;
-            eyez = p2.z;
-            
-            Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-            model_view_matrix = tempMatrix;
-            
-            alpha += 0.2;
-        }
-        else
-        {
-            alpha = 0.0;
             printf("atx: %f, aty: %f, atz: %f\n",atx, aty, atz);
             printf("eyex: %f, eyey: %f, eyez: %f\n",eyex, eyey, eyez);
-            enableIdle = 5;
+            enableIdle = 0;
         }
     }
     // solve maze

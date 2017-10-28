@@ -232,6 +232,31 @@ float angleBetweenVectors(Vec4 *vec1, Vec4 *vec2)
     return angle;
 }
 
+
+/*
+ Function:
+     This function assigns an x,y,z,w component to a result vector.
+     Baisically a constructor for a vector.
+ Inputs:
+     x,y,z,w --> values of Vec4 that needs to be created
+     result --> pointer to where we want to put created vector
+ Outputs:
+     result --> pointer to final created vector
+ */
+Vec4* vec4create(float x, float y, float z, float w, Vec4 *result)
+{
+    result->x = x;
+    result->y = x;
+    result->z = x;
+    result->w = x;
+    
+    return result;
+    
+}
+
+
+
+
 /*
  Function:
     This function calculates the magnitude of a vector
