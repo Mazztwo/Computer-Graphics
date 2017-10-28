@@ -607,7 +607,8 @@ void init(void)
 {
     // Initialize model_view matrix
     Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-    model_view_matrix = tempMatrix;
+    Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
+    model_view_matrix = tempMatrix2;
     
     // Initialize starting angle
     distanceFromOrigin = sqrt( (eyex*eyex) + (eyez*eyez) );
@@ -671,6 +672,7 @@ void display(void)
     
     glutSwapBuffers();
 }
+
 
 
 
@@ -832,6 +834,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     
     
     Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
+    Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
     model_view_matrix = tempMatrix;
     
     tempMatrix = frustum(left, right, bottom, top, near, far);
@@ -932,6 +935,7 @@ int getSituation(char forward, cell *currCell)
 }
 
 
+
 void idle(void)
 {
     // Fly a circle around the maze
@@ -955,6 +959,7 @@ void idle(void)
         
             //Update look_at function with new x and z positions
             Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
+            Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
             model_view_matrix = tempMatrix;
             
             // convert back to degrees
@@ -973,20 +978,53 @@ void idle(void)
     {
         float eyexFinal = -1.2;
         float eyeyFinal = 0.1;
-        float atzfinal = -0.9;
+        float eyezFinal = -.85;
         
-        if(eyey >= eyeyFinal)
+        float atzFinal = -0.9;
+        
+        Vec4 p1 = {eyex, eyey, eyez, 1.0};
+        Vec4 p2 = {eyexFinal, eyeyFinal, eyezFinal, 1.0};
+        
+        Vec4 p3 = {atx, aty, atz, 1.0};
+        Vec4 p4 = {atx, aty, atzFinal, 1.0};
+        
+        Vec4 vTemp = *vec4subtraction(&p2, &p1, &vTemp);
+        Vec4 v1 = vTemp;
+        
+        vTemp = *vec4subtraction(&p4, &p3, &vTemp);
+        Vec4 v2 = vTemp;
+        
+        if(alpha < 1.0)
         {
-            eyex += 0.0025;
-            eyey -= 0.01;
-            eyez += 0.0005;
-            atz -= 0.0062;
+            Vec4 alphaV = *scalarMultVector(alpha, &v1, &alphaV);
+            v1 = alphaV;
+            
+            alphaV = *scalarMultVector(alpha, &v2, &alphaV);
+            v2 = alphaV;
+            
+            vTemp = *vec4addition(&p1, &v1, &vTemp);
+            p2 = vTemp;
+            
+            vTemp = *vec4addition(&p3, &v2, &vTemp);
+            p4 = vTemp;
+            
+            eyex = p2.x;
+            eyey = p2.y;
+            eyez = p2.z;
+            
+            atx = p4.x;
+            aty = p4.y;
+            atz = p4.z;
             
             Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
+            Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
             model_view_matrix = tempMatrix;
+            
+            alpha += 0.0005;
         }
         else
         {
+            alpha = 0.0;
             enableIdle = 0;
         }
          
@@ -1002,7 +1040,7 @@ void idle(void)
         Vec4 vTemp = *vec4subtraction(&p2, &p1, &vTemp);
         Vec4 v = vTemp;
         
-        if(alpha < 1.0)
+        if(alpha <= 1.0)
         {
             Vec4 alphaV = *scalarMultVector(alpha, &v, &alphaV);
             v = alphaV;
@@ -1015,17 +1053,18 @@ void idle(void)
             eyez = p2.z;
             
             Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
+            Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
             model_view_matrix = tempMatrix;
             
-            alpha += 0.01;
+            alpha += 0.2;
         }
         else
         {
             alpha = 0.0;
+            printf("atx: %f, aty: %f, atz: %f\n",atx, aty, atz);
+            printf("eyex: %f, eyey: %f, eyez: %f\n",eyex, eyey, eyez);
             enableIdle = 5;
         }
-        
-        
     }
     // solve maze
     else if(enableIdle == 5)
@@ -1055,53 +1094,10 @@ void idle(void)
         
         if(situation == 1)
         {
-            if(forward == 'n' || forward == 's')
+            if(forward == 'e' || forward == 'w')
             {
-                float atzFinal = -100*atz;
-                
-                Vec4 p1 = {atx, aty, atz, 1.0};
-                Vec4 p2 = {atx, aty, atzFinal, 1.0};
-                
-                Vec4 vTemp = *vec4subtraction(&p2, &p1, &vTemp);
-                Vec4 v = vTemp;
-                
-                if(alpha <= 1.0)
-                {
-                    Vec4 alphaV = *scalarMultVector(alpha, &v, &alphaV);
-                    v = alphaV;
-                    
-                    vTemp = *vec4addition(&p1, &v, &vTemp);
-                    p2 = vTemp;
-                    
-                    atx = p2.x;
-                    aty = p2.y;
-                    atz = p2.z;
-                    
-                    Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-                    model_view_matrix = tempMatrix;
-                    
-                    alpha += 0.01;
-                }
-                else
-                {
-                    alpha = 0.0;
-                    
-                    if(forward == 'n')
-                    {
-                        forward = 's';
-                    }
-                    else
-                    {
-                        forward = 'n';
-                    }
-                    
-                    printf("Row: %d, Col: %d\n",currRow,currCol);
-                }
-                
-            }
-            else if(forward == 'e' || 'w')
-            {
-                float atxFinal = -100*atx;
+                // just flip sign of atx to turn around
+                float atxFinal = atx * -1;
                 
                 Vec4 p1 = {atx, aty, atz, 1.0};
                 Vec4 p2 = {atxFinal, aty, atz, 1.0};
@@ -1122,6 +1118,7 @@ void idle(void)
                     atz = p2.z;
                     
                     Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
+                    Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
                     model_view_matrix = tempMatrix;
                     
                     alpha += 0.01;
@@ -1139,309 +1136,34 @@ void idle(void)
                         forward = 'e';
                     }
                     
-                    printf("Row: %d, Col: %d\n",currRow,currCol);
+                    printf("atx: %f, aty: %f, atz: %f\n",atx, aty, atz);
+                    printf("eyex: %f, eyey: %f, eyez: %f\n",eyex, eyey, eyez);
+                    enableIdle = 0;
                 }
-            }
                 
+                
+                
+            }
+            else //situation == 'n' || situation == 's'
+            {
+                
+            }
         }
         else if(situation == 2)
         {
-            // move forward one cell
-            if(forward == 'n')
-            {
-                atz -= 100.0;
-                float eyezFinal = eyez - .0075;
-                
-                
-                Vec4 p1 = {eyex, eyey, eyez, 1.0};
-                Vec4 p2 = {eyex, eyey, eyezFinal, 1.0};
-                
-                Vec4 vTemp = *vec4subtraction(&p2, &p1, &vTemp);
-                Vec4 v = vTemp;
-                
-                if(alpha <= 1.0)
-                {
-                    Vec4 alphaV = *scalarMultVector(alpha, &v, &alphaV);
-                    v = alphaV;
-                    
-                    vTemp = *vec4addition(&p1, &v, &vTemp);
-                    p2 = vTemp;
-                    
-                    eyex = p2.x;
-                    eyey = p2.y;
-                    eyez = p2.z;
-                    
-                    Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-                    model_view_matrix = tempMatrix;
-                    
-                    alpha += 0.01;
-                }
-                else
-                {
-                    printf("Row: %d, Col: %d\n",currRow,currCol);
-                    alpha = 0.0;
-                    currRow -= 1;
-                }
-            }
-            else if(forward == 's')
-            {
-                atz += 100.0;
-                float eyezFinal = eyez + .0075;
-                
-                
-                Vec4 p1 = {eyex, eyey, eyez, 1.0};
-                Vec4 p2 = {eyex, eyey, eyezFinal, 1.0};
-                
-                Vec4 vTemp = *vec4subtraction(&p2, &p1, &vTemp);
-                Vec4 v = vTemp;
-                
-                if(alpha <= 1.0)
-                {
-                    Vec4 alphaV = *scalarMultVector(alpha, &v, &alphaV);
-                    v = alphaV;
-                    
-                    vTemp = *vec4addition(&p1, &v, &vTemp);
-                    p2 = vTemp;
-                    
-                    eyex = p2.x;
-                    eyey = p2.y;
-                    eyez = p2.z;
-                    
-                    Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-                    model_view_matrix = tempMatrix;
-                    
-                    alpha += 0.02;
-                }
-                else
-                {
-                    printf("Row: %d, Col: %d\n",currRow,currCol);
-                    alpha = 0.0;
-                    currRow += 1;
-                }
-            }
-            else if(forward == 'e')
-            {
-                atx += 100.0;
-                float eyexFinal = eyex + .0075;
-                
-                
-                Vec4 p1 = {eyex, eyey, eyez, 1.0};
-                Vec4 p2 = {eyexFinal, eyey, eyez, 1.0};
-                
-                Vec4 vTemp = *vec4subtraction(&p2, &p1, &vTemp);
-                Vec4 v = vTemp;
-                
-                if(alpha <= 1.0)
-                {
-                    Vec4 alphaV = *scalarMultVector(alpha, &v, &alphaV);
-                    v = alphaV;
-                    
-                    vTemp = *vec4addition(&p1, &v, &vTemp);
-                    p2 = vTemp;
-                    
-                    eyex = p2.x;
-                    eyey = p2.y;
-                    eyez = p2.z;
-                    
-                    Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-                    model_view_matrix = tempMatrix;
-                    
-                    alpha += 0.02;
-                }
-                else
-                {
-                    printf("Row: %d, Col: %d\n",currRow,currCol);
-                    alpha = 0.0;
-                    currCol += 1;
-                }
-            }
-            else // forward == 'w'
-            {
-                atx -= 100.0;
-                float eyexFinal = eyex - .0075;
-                
-                
-                Vec4 p1 = {eyex, eyey, eyez, 1.0};
-                Vec4 p2 = {eyexFinal, eyey, eyez, 1.0};
-                
-                Vec4 vTemp = *vec4subtraction(&p2, &p1, &vTemp);
-                Vec4 v = vTemp;
-                
-                if(alpha <= 1.0)
-                {
-                    Vec4 alphaV = *scalarMultVector(alpha, &v, &alphaV);
-                    v = alphaV;
-                    
-                    vTemp = *vec4addition(&p1, &v, &vTemp);
-                    p2 = vTemp;
-                    
-                    eyex = p2.x;
-                    eyey = p2.y;
-                    eyez = p2.z;
-                    
-                    Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-                    model_view_matrix = tempMatrix;
-                    
-                    alpha += 0.02;
-                }
-                else
-                {
-                    printf("Row: %d, Col: %d\n",currRow,currCol);
-                    alpha = 0.0;
-                    currCol -= 1;
-                }
-            }
+            
         }
         else if(situation == 3)
         {
-            if(forward == 'n')
-            {
-                float atxFinal = atx - 100.0;
-                float atzFinal = 100*eyez;
-                
-                Vec4 p1 = {atx, aty, atz, 1.0};
-                Vec4 p2 = {atxFinal, aty, atzFinal, 1.0};
-                
-                Vec4 vTemp = *vec4subtraction(&p2, &p1, &vTemp);
-                Vec4 v = vTemp;
-                
-                if(alpha <= 1.0)
-                {
-                    Vec4 alphaV = *scalarMultVector(alpha, &v, &alphaV);
-                    v = alphaV;
-                    
-                    vTemp = *vec4addition(&p1, &v, &vTemp);
-                    p2 = vTemp;
-                    
-                    atx = p2.x;
-                    aty = p2.y;
-                    atz = p2.z;
-                    
-                    Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-                    model_view_matrix = tempMatrix;
-                    
-                    alpha += 0.02;
-                }
-                else
-                {
-                    alpha = 0.0;
-                    forward = 'w';
-                    printf("Row: %d, Col: %d\n",currRow,currCol);
-                }
-                
-            }
-            else if(forward == 's')
-            {
-                float atxFinal = atx + 100.0;
-                float atzFinal = 100*eyez;
-                
-                Vec4 p1 = {atx, aty, atz, 1.0};
-                Vec4 p2 = {atxFinal, aty, atzFinal, 1.0};
-                
-                Vec4 vTemp = *vec4subtraction(&p2, &p1, &vTemp);
-                Vec4 v = vTemp;
-                
-                if(alpha <= 1.0)
-                {
-                    Vec4 alphaV = *scalarMultVector(alpha, &v, &alphaV);
-                    v = alphaV;
-                    
-                    vTemp = *vec4addition(&p1, &v, &vTemp);
-                    p2 = vTemp;
-                    
-                    atx = p2.x;
-                    aty = p2.y;
-                    atz = p2.z;
-                    
-                    Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-                    model_view_matrix = tempMatrix;
-                    
-                    alpha += 0.02;
-                }
-                else
-                {
-                    alpha = 0.0;
-                    forward = 'e';
-                    printf("Row: %d, Col: %d\n",currRow,currCol);
-                }
-                
-            }
-            else if(forward == 'e')
-            {
-                float atxFinal = 100*eyex;
-                float atzFinal = atz - 100.0;
-                
-                Vec4 p1 = {atx, aty, atz, 1.0};
-                Vec4 p2 = {atxFinal, aty, atzFinal, 1.0};
-                
-                Vec4 vTemp = *vec4subtraction(&p2, &p1, &vTemp);
-                Vec4 v = vTemp;
-                
-                if(alpha <= 1.0)
-                {
-                    Vec4 alphaV = *scalarMultVector(alpha, &v, &alphaV);
-                    v = alphaV;
-                    
-                    vTemp = *vec4addition(&p1, &v, &vTemp);
-                    p2 = vTemp;
-                    
-                    atx = p2.x;
-                    aty = p2.y;
-                    atz = p2.z;
-                    
-                    Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-                    model_view_matrix = tempMatrix;
-                    
-                    alpha += 0.02;
-                }
-                else
-                {
-                    alpha = 0.0;
-                    forward = 'n';
-                    printf("Row: %d, Col: %d\n",currRow,currCol);
-                }
-                
-            }
-            else //forward == 'w'
-            {
-                float atxFinal = 100*eyex;
-                float atzFinal = atz + 100.0;
-                
-                Vec4 p1 = {atx, aty, atz, 1.0};
-                Vec4 p2 = {atxFinal, aty, atzFinal, 1.0};
-                
-                Vec4 vTemp = *vec4subtraction(&p2, &p1, &vTemp);
-                Vec4 v = vTemp;
-                
-                if(alpha <= 1.0)
-                {
-                    Vec4 alphaV = *scalarMultVector(alpha, &v, &alphaV);
-                    v = alphaV;
-                    
-                    vTemp = *vec4addition(&p1, &v, &vTemp);
-                    p2 = vTemp;
-                    
-                    atx = p2.x;
-                    aty = p2.y;
-                    atz = p2.z;
-                    
-                    Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-                    model_view_matrix = tempMatrix;
-                    
-                    alpha += 0.02;
-                }
-                else
-                {
-                    alpha = 0.0;
-                    forward = 's';
-                    printf("Row: %d, Col: %d\n",currRow,currCol);
-                }
-                
-            }
-        }
             
-    }
+        }
+        
+        
+        
+        
+        
     
+    }
     
     glutPostRedisplay();
 }
