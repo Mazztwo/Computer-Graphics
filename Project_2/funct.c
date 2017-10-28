@@ -246,9 +246,9 @@ float angleBetweenVectors(Vec4 *vec1, Vec4 *vec2)
 Vec4* vec4create(float x, float y, float z, float w, Vec4 *result)
 {
     result->x = x;
-    result->y = x;
-    result->z = x;
-    result->w = x;
+    result->y = y;
+    result->z = z;
+    result->w = w;
     
     return result;
     

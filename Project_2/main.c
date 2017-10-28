@@ -68,7 +68,7 @@ Vec4 p1 = {-1.5, 1.5, -0.9, 1.0};
 Vec4 p2 = {-1.1, 0.1, -0.9, 1.0};
 
 Vec4 p3 = {0, 0, 0, 1};
-Vec4 p4 = {0, 0, -0.9, 1};
+Vec4 p4 = {0, 0.1, -0.9, 1};
 
 Vec4 v1 = {0, 0, 0, 0};
 Vec4 v2 = {0, 0, 0, 0};
@@ -696,19 +696,6 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         exit(0);
     }
-/////////// SCALING DOESN'T WORK FOR NOW////////
-    // Zoom In
-    else if(key == 'u')
-    {
-        scalingFactor = 1.02;
-    }
-    // Zoom Out
-    else if(key == 'j')
-    {
-        scalingFactor = 1.0/1.02;
-       
-    }
-////////////////////////////////////////////////
     else if(key == ' ')
     {
         // Initiate fly around maze
@@ -759,7 +746,6 @@ void keyboard(unsigned char key, int mousex, int mousey)
     else if(key == 'g')
     {
         // Initiate fly down to maze entrance
-        
         enableIdle = 2;
     }
     else if(key == 'n')
@@ -840,7 +826,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         // Walk into maze
         
-        enableIdle = 4;
+        enableIdle = 3;
     }
     
     
@@ -1011,24 +997,22 @@ void idle(void)
             aty = currAt.y;
             atz = currAt.z;
             
-            
+           // set up for walk into maze
             eyexFinal = eyex + .2;
-            p1 = {eyex, eyey, eyez, 1.0};
-            
-            
-            p2 = {eyexFinal, eyey, eyez, 1.0};
-            v1 = *vec4subtraction(&p2, &p1, &vTemp);
+            p1 = *vec4create(eyex, eyey, eyez, 1.0, &p1);
+            p2 = *vec4create(eyexFinal, eyey, eyez, 1.0, &p2);
+            v1 = *vec4subtraction(&p2, &p1, &v1);
             
             enableIdle = 0 ;
         }
     }
     // walk into maze
-    else if(enableIdle == 4)
+    else if(enableIdle == 3)
     {
         if(alpha <= 1.0)
         {
             Vec4 scaledV = *scalarMultVector(alpha, &v1, &scaledV);
-            currEye = *vec4addition(&p1, &v1, &currEye);
+            currEye = *vec4addition(&p1, &scaledV, &currEye);
             
             Mat4 tempMatrix = look_at(currEye.x, currEye.y, currEye.z, atx, aty, atz, 0.0, 1.0, 0.0);
             model_view_matrix = tempMatrix;
@@ -1042,9 +1026,6 @@ void idle(void)
             eyex = currEye.x;
             eyey = currEye.y;
             eyez = currEye.z;
-            atx = currAt.x;
-            aty = currAt.y;
-            atz = currAt.z;
             
             printf("atx: %f, aty: %f, atz: %f\n",atx, aty, atz);
             printf("eyex: %f, eyey: %f, eyez: %f\n",eyex, eyey, eyez);
