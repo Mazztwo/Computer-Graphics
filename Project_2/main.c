@@ -834,8 +834,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     
     
     Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-    Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
-    model_view_matrix = tempMatrix2;
+    model_view_matrix = tempMatrix;
     
     tempMatrix = frustum(left, right, bottom, top, near, far);
     projection_matrix = tempMatrix;
@@ -975,26 +974,26 @@ void idle(void)
     // fly down to maze entrance
     else if(enableIdle == 2)
     {
-        float eyexFinal = -1.2;
-        float eyeyFinal = 0.1;
-        float eyezFinal = -.85;
-        
-        float atzFinal = -0.9;
-        
-        Vec4 p1 = {eyex, eyey, eyez, 1.0};
-        Vec4 p2 = {eyexFinal, eyeyFinal, eyezFinal, 1.0};
-        
-        Vec4 p3 = {atx, aty, atz, 1.0};
-        Vec4 p4 = {atx, aty, atzFinal, 1.0};
-        
-        Vec4 vTemp = *vec4subtraction(&p2, &p1, &vTemp);
-        Vec4 v1 = vTemp;
-        
-        vTemp = *vec4subtraction(&p4, &p3, &vTemp);
-        Vec4 v2 = vTemp;
-        
-        if(alpha <= 1.0)
+        if(alpha <= 0.08)
         {
+            float eyexFinal = -1.2;
+            float eyeyFinal = 0.1;
+            float eyezFinal = -.85;
+            
+            float atzFinal = -0.9;
+            
+            Vec4 p1 = {eyex, eyey, eyez, 1.0};
+            Vec4 p2 = {eyexFinal, eyeyFinal, eyezFinal, 1.0};
+            
+            Vec4 p3 = {atx, aty, atz, 1.0};
+            Vec4 p4 = {atx, aty, atzFinal, 1.0};
+            
+            Vec4 vTemp = *vec4subtraction(&p2, &p1, &vTemp);
+            Vec4 v1 = vTemp;
+            
+            vTemp = *vec4subtraction(&p4, &p3, &vTemp);
+            Vec4 v2 = vTemp;
+            
             Vec4 alphaV = *scalarMultVector(alpha, &v1, &alphaV);
             v1 = alphaV;
             
@@ -1002,35 +1001,30 @@ void idle(void)
             v2 = alphaV;
             
             vTemp = *vec4addition(&p1, &v1, &vTemp);
-            p2 = vTemp;
+            eyex = vTemp.x;
+            eyey = vTemp.y;
+            eyez = vTemp.z;
             
             vTemp = *vec4addition(&p3, &v2, &vTemp);
-            p4 = vTemp;
-            
-            eyex = p2.x;
-            eyey = p2.y;
-            eyez = p2.z;
-            
-            atx = p4.x;
-            aty = p4.y;
-            atz = p4.z;
+            atx = vTemp.x;
+            aty = vTemp.y;
+            atz = vTemp.z;
             
             Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
             model_view_matrix = tempMatrix;
             
-            alpha += 0.005;
+            alpha += 0.0005;
         }
         else
         {
             alpha = 0.0;
-            enableIdle = 0;
+            enableIdle = 0 ;
         }
-         
     }
     // walk into maze
     else if(enableIdle == 4)
     {
-        float eyexFinal = eyex + .005;
+        float eyexFinal = eyex + .2;
         
         Vec4 p1 = {eyex, eyey, eyez, 1.0};
         Vec4 p2 = {eyexFinal, eyey, eyez, 1.0};
