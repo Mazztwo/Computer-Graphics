@@ -1057,7 +1057,7 @@ void idle(void)
         {
             if(forward == 'n' || forward == 's')
             {
-                float atzFinal = -1*atz;
+                float atzFinal = -100*atz;
                 
                 Vec4 p1 = {atx, aty, atz, 1.0};
                 Vec4 p2 = {atx, aty, atzFinal, 1.0};
@@ -1080,7 +1080,7 @@ void idle(void)
                     Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
                     model_view_matrix = tempMatrix;
                     
-                    alpha += 0.02;
+                    alpha += 0.01;
                 }
                 else
                 {
@@ -1101,7 +1101,7 @@ void idle(void)
             }
             else if(forward == 'e' || 'w')
             {
-                float atxFinal = -1*atx;
+                float atxFinal = -100*atx;
                 
                 Vec4 p1 = {atx, aty, atz, 1.0};
                 Vec4 p2 = {atxFinal, aty, atz, 1.0};
@@ -1149,8 +1149,8 @@ void idle(void)
             // move forward one cell
             if(forward == 'n')
             {
-                atz -= .006;
-                float eyezFinal = eyez - .005;
+                atz -= 100.0;
+                float eyezFinal = eyez - .0075;
                 
                 
                 Vec4 p1 = {eyex, eyey, eyez, 1.0};
@@ -1185,8 +1185,8 @@ void idle(void)
             }
             else if(forward == 's')
             {
-                atz += .006;
-                float eyezFinal = eyez + .005;
+                atz += 100.0;
+                float eyezFinal = eyez + .0075;
                 
                 
                 Vec4 p1 = {eyex, eyey, eyez, 1.0};
@@ -1221,8 +1221,8 @@ void idle(void)
             }
             else if(forward == 'e')
             {
-                atx += .006;
-                float eyexFinal = eyex + .005;
+                atx += 100.0;
+                float eyexFinal = eyex + .0075;
                 
                 
                 Vec4 p1 = {eyex, eyey, eyez, 1.0};
@@ -1257,8 +1257,8 @@ void idle(void)
             }
             else // forward == 'w'
             {
-                atx -= .006;
-                float eyexFinal = eyex - .005;
+                atx -= 100.0;
+                float eyexFinal = eyex - .0075;
                 
                 
                 Vec4 p1 = {eyex, eyey, eyez, 1.0};
@@ -1296,8 +1296,8 @@ void idle(void)
         {
             if(forward == 'n')
             {
-                float atxFinal = atx - 0.1;
-                float atzFinal = eyez;
+                float atxFinal = atx - 100.0;
+                float atzFinal = 100*eyez;
                 
                 Vec4 p1 = {atx, aty, atz, 1.0};
                 Vec4 p2 = {atxFinal, aty, atzFinal, 1.0};
@@ -1332,8 +1332,8 @@ void idle(void)
             }
             else if(forward == 's')
             {
-                float atxFinal = atx + 0.1;
-                float atzFinal = eyez;
+                float atxFinal = atx + 100.0;
+                float atzFinal = 100*eyez;
                 
                 Vec4 p1 = {atx, aty, atz, 1.0};
                 Vec4 p2 = {atxFinal, aty, atzFinal, 1.0};
@@ -1368,8 +1368,8 @@ void idle(void)
             }
             else if(forward == 'e')
             {
-                float atxFinal = eyex;
-                float atzFinal = atz - 0.1;
+                float atxFinal = 100*eyex;
+                float atzFinal = atz - 100.0;
                 
                 Vec4 p1 = {atx, aty, atz, 1.0};
                 Vec4 p2 = {atxFinal, aty, atzFinal, 1.0};
@@ -1404,8 +1404,8 @@ void idle(void)
             }
             else //forward == 'w'
             {
-                float atxFinal = eyex;
-                float atzFinal = atz + 0.1;
+                float atxFinal = 100*eyex;
+                float atzFinal = atz + 100.0;
                 
                 Vec4 p1 = {atx, aty, atz, 1.0};
                 Vec4 p2 = {atxFinal, aty, atzFinal, 1.0};
