@@ -835,7 +835,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     
     Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
     Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
-    model_view_matrix = tempMatrix;
+    model_view_matrix = tempMatrix2;
     
     tempMatrix = frustum(left, right, bottom, top, near, far);
     projection_matrix = tempMatrix;
@@ -959,7 +959,6 @@ void idle(void)
         
             //Update look_at function with new x and z positions
             Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-            Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
             model_view_matrix = tempMatrix;
             
             // convert back to degrees
@@ -994,7 +993,7 @@ void idle(void)
         vTemp = *vec4subtraction(&p4, &p3, &vTemp);
         Vec4 v2 = vTemp;
         
-        if(alpha < 1.0)
+        if(alpha <= 1.0)
         {
             Vec4 alphaV = *scalarMultVector(alpha, &v1, &alphaV);
             v1 = alphaV;
@@ -1017,10 +1016,9 @@ void idle(void)
             atz = p4.z;
             
             Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-            Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
             model_view_matrix = tempMatrix;
             
-            alpha += 0.0005;
+            alpha += 0.005;
         }
         else
         {
@@ -1053,7 +1051,6 @@ void idle(void)
             eyez = p2.z;
             
             Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-            Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
             model_view_matrix = tempMatrix;
             
             alpha += 0.2;
@@ -1118,7 +1115,6 @@ void idle(void)
                     atz = p2.z;
                     
                     Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-                    Mat4 tempMatrix2 = *matMultiplication(&model_view_matrix, &tempMatrix, &tempMatrix2);
                     model_view_matrix = tempMatrix;
                     
                     alpha += 0.01;
