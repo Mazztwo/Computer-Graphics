@@ -1053,11 +1053,21 @@ void idle(void)
                  -move forward one space
          
          */
-        situation = getSituation(forward, &cells2D[currRow][currCol]);
+        
+        // At end of maze! Turn around and end!
+        if(currRow == 7 && currCol > 7)
+        {
+            situation = 4;
+        }
+        else
+        {
+           situation = getSituation(forward, &cells2D[currRow][currCol]);
+        }
         
         // 1 = turn right 90 degrees
         // 2 = move forward one cell
         // 3 = turn left 90 degrees and move forward one space
+        // 4 = out of maze, turn around and face exit
         
         if(situation == 1)
         {
@@ -1259,6 +1269,25 @@ void idle(void)
                 enableIdle = 5;
             }
         }
+        else if(situation == 4)
+        {
+            // turn around and face maze entrance
+            // must turn to face south
+            forward = 'w';
+            
+            atxFinal -= 10* fabs(eyex);
+            atzFinal = eyez;
+            
+            p1 = *vec4create(atx, aty, atz, 1.0, &p1);
+            p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
+            v1 = *vec4subtraction(&p2, &p1, &v1);
+            
+            // Enter animation loop
+            enableIdle = 5;
+            
+            
+            
+        }
     }
     // Animates 'at' turng
     else if(enableIdle == 5)
@@ -1287,6 +1316,10 @@ void idle(void)
             if(situation == 3)
             {
                 enableIdle = 7;
+            }
+            else if(situation == 4)
+            {
+                enableIdle = 0;
             }
             else
             {
