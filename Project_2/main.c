@@ -945,15 +945,12 @@ void idle(void)
             // Increment currDegrees by 5 and
             // recalculate new eyex and eyez.
             currDegrees += 1.0;
-            printf("degrees: %f\n", currDegrees);
         
             // convert to radians
             currDegrees *= (M_PI/180.0);
         
             eyez = distanceFromOrigin * cos(currDegrees);
             eyex = distanceFromOrigin * sin(-currDegrees);
-        
-            printf("eyex: %f, eyez: %f\n",eyex, eyez);
         
             //Update look_at function with new x and z positions
             Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
@@ -1027,9 +1024,7 @@ void idle(void)
             eyex = currEye.x;
             eyey = currEye.y;
             eyez = currEye.z;
-            
-            printf("atx: %f, aty: %f, atz: %f\n",atx, aty, atz);
-            printf("eyex: %f, eyey: %f, eyez: %f\n",eyex, eyey, eyez);
+  
             enableIdle = 4;
         }
     }
@@ -1095,7 +1090,7 @@ void idle(void)
                 forward = 'w';
                 
                 atzFinal = eyez;
-                atxFinal -= 10*fabs(eyex);
+                atxFinal -= 1*fabs(eyex);
                 
                 p1 = *vec4create(atx, aty, atz, 1.0, &p1);
                 p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
@@ -1277,6 +1272,7 @@ void idle(void)
             
             atxFinal -= 10* fabs(eyex);
             atzFinal = eyez;
+            eyex = 1.2;
             
             p1 = *vec4create(atx, aty, atz, 1.0, &p1);
             p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
@@ -1310,15 +1306,13 @@ void idle(void)
             atz = currAt.z;
             
             
-            printf("atx: %f, aty: %f, atz: %f\n",atx, aty, atz);
-            printf("eyex: %f, eyey: %f, eyez: %f\n",eyex, eyey, eyez);
-            
             if(situation == 3)
             {
                 enableIdle = 7;
             }
             else if(situation == 4)
             {
+                // maze solved, idle
                 enableIdle = 0;
             }
             else
@@ -1347,8 +1341,6 @@ void idle(void)
             eyey = currEye.y;
             eyez = currEye.z;
             
-            printf("atx: %f, aty: %f, atz: %f\n",atx, aty, atz);
-            printf("eyex: %f, eyey: %f, eyez: %f\n",eyex, eyey, eyez);
             enableIdle = 4;
         }
     }
