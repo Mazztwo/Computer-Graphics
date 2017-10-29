@@ -232,6 +232,31 @@ float angleBetweenVectors(Vec4 *vec1, Vec4 *vec2)
     return angle;
 }
 
+
+/*
+ Function:
+     This function assigns an x,y,z,w component to a result vector.
+     Baisically a constructor for a vector.
+ Inputs:
+     x,y,z,w --> values of Vec4 that needs to be created
+     result --> pointer to where we want to put created vector
+ Outputs:
+     result --> pointer to final created vector
+ */
+Vec4* vec4create(float x, float y, float z, float w, Vec4 *result)
+{
+    result->x = x;
+    result->y = y;
+    result->z = z;
+    result->w = w;
+    
+    return result;
+    
+}
+
+
+
+
 /*
  Function:
     This function calculates the magnitude of a vector
@@ -830,6 +855,8 @@ Mat4 look_at(GLfloat eyex, GLfloat eyey, GLfloat eyez,
     Vec4 nXu = *crossProduct(&n, &u, &nXu);
     Vec4 v = *scalarMultVector(1.0/vecMagnitude(&nXu), &nXu, &v);
     
+    // This last column calculation includes translation of point
+    // to desired location
     float lastColX = (-eyex*u.x)-(eyey*u.y)-(eyez*u.z);
     float lastColY = (-eyex*v.x)-(eyey*v.y)-(eyez*v.z);
     float lastColZ = (-eyex*n.x)-(eyey*n.y)-(eyez*n.z);
@@ -855,7 +882,7 @@ Mat4 frustum(GLfloat left, GLfloat right,
              GLfloat bottom, GLfloat top,
              GLfloat near, GLfloat far)
 {
-    
+    /*
     Mat4 projection_matrix =
     {
         {-near/right,0.0,0.0,0.0},
@@ -863,7 +890,7 @@ Mat4 frustum(GLfloat left, GLfloat right,
         {0.0,0.0,(near+far)/(far-near),-1.0},
         {0.0,0.0,(-2*near*far)/(far-near),0.0}
     };
-     
+     */
     
     /*
     Mat4 projection_matrix =
@@ -873,9 +900,9 @@ Mat4 frustum(GLfloat left, GLfloat right,
         {0.0,0.0,(-far+near)/(far-near),-1.0},
         {0.0,0.0,(-2*far*near)/(far-near),0.0}
     };
-    /*
+    */
     
-    /*
+    
     Mat4 projection_matrix =
     {
         {(-2*near)/(right-left), 0.0, 0.0, 0.0},
@@ -883,7 +910,7 @@ Mat4 frustum(GLfloat left, GLfloat right,
         {(left+right)/(right-left), (bottom+top)/(top-bottom), (near+far)/(far-near), -1.0},
         {0.0, 0.0,(-2*near*far)/(far-near), 0.0}
     };
-    */
+    
     
     /*
     Mat4 projection_matrix =
