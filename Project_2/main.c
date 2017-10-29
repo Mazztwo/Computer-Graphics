@@ -62,7 +62,7 @@ char forward = 'e';
 int currRow = 0, currCol = 0;
 
 float eyexFinal = 0, eyezFinal = 0;
-
+float atxFinal = 0, atzFinal = 0;
 
 Vec4 p1 = {-1.5, 1.5, -0.9, 1.0};
 Vec4 p2 = {-1.1, 0.1, -0.9, 1.0};
@@ -984,7 +984,7 @@ void idle(void)
             model_view_matrix = tempMat;
             
  
-            alpha += 0.005;
+            alpha += 0.01;
             printf("alpha: %f\n", alpha);
         }
         else
@@ -1003,6 +1003,8 @@ void idle(void)
             p2 = *vec4create(eyexFinal, eyey, eyez, 1.0, &p2);
             v1 = *vec4subtraction(&p2, &p1, &v1);
             
+            atx += 1.2*atx;
+            
             enableIdle = 0 ;
         }
     }
@@ -1017,7 +1019,7 @@ void idle(void)
             Mat4 tempMatrix = look_at(currEye.x, currEye.y, currEye.z, atx, aty, atz, 0.0, 1.0, 0.0);
             model_view_matrix = tempMatrix;
             
-            alpha += 0.005;
+            alpha += 0.02;
             printf("alpha: %f\n", alpha);
         }
         else
@@ -1029,14 +1031,14 @@ void idle(void)
             
             printf("atx: %f, aty: %f, atz: %f\n",atx, aty, atz);
             printf("eyex: %f, eyey: %f, eyez: %f\n",eyex, eyey, eyez);
-            enableIdle = 0;
+            enableIdle = 4;
         }
     }
     // solve maze
-    else if(enableIdle == 5)
+    else if(enableIdle == 4)
     {
         /*
-         -need which direction facing (N,S,E or W)
+         -need which direction facing (N,S,E or W)q
          -need row/col you are in to know if
          there is a N,S,E,W wall in that cell
          -step = .005
@@ -1060,66 +1062,193 @@ void idle(void)
         
         if(situation == 1)
         {
+            // Set up variables and send into
+            // another idle() loop.
             if(forward == 'n')
             {
+                // must turn to face east
+                forward = 'e';
                 
+                atzFinal = eyez;
+                atxFinal += 1.2*eyex;
                 
-                float atxFinal = atx * -1;
+                p1 = *vec4create(atx, aty, atz, 1.0, &p1);
+                p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
+                v1 = *vec4subtraction(&p2, &p1, &v1);
                 
-                Vec4 p1 = {atx, aty, atz, 1.0};
-                Vec4 p2 = {atxFinal, aty, atz, 1.0};
-                
-                Vec4 vTemp = *vec4subtraction(&p2, &p1, &vTemp);
-                Vec4 v = vTemp;
-                
-                if(alpha <= 1.0)
-                {
-                    Vec4 alphaV = *scalarMultVector(alpha, &v, &alphaV);
-                    v = alphaV;
-                    
-                    vTemp = *vec4addition(&p1, &v, &vTemp);
-                    p2 = vTemp;
-                    
-                    atx = p2.x;
-                    aty = p2.y;
-                    atz = p2.z;
-                    
-                    Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-                    model_view_matrix = tempMatrix;
-                    
-                    alpha += 0.01;
-                }
-                else
-                {
-                    alpha = 0.0;
-                    
-                    printf("atx: %f, aty: %f, atz: %f\n",atx, aty, atz);
-                    printf("eyex: %f, eyey: %f, eyez: %f\n",eyex, eyey, eyez);
-                    enableIdle = 0;
-                }
-                
-                
+                // Enter animation loop
+                enableIdle = 5;
                 
             }
-            else //situation == 'n' || situation == 's'
+            else if(forward == 's')
             {
+                // must turn to face west
+                forward = 'w';
                 
+                atzFinal = eyez;
+                atxFinal -= 1.2*eyex;
+                
+                p1 = *vec4create(atx, aty, atz, 1.0, &p1);
+                p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
+                v1 = *vec4subtraction(&p2, &p1, &v1);
+                
+                // Enter animation loop
+                enableIdle = 5;
             }
+            else if(forward == 'e')
+            {
+                // must turn to face south
+                forward = 's';
+                
+                atxFinal = eyex;
+                atzFinal += 1.2*eyez;
+                
+                p1 = *vec4create(atx, aty, atz, 1.0, &p1);
+                p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
+                v1 = *vec4subtraction(&p2, &p1, &v1);
+                
+                // Enter animation loop
+                enableIdle = 5;
+            }
+            else if(forward == 'w')
+            {
+                // must turn to face north
+                forward = 'n';
+                
+                atxFinal = eyex;
+                atzFinal -= 1.2*eyez;
+                
+                p1 = *vec4create(atx, aty, atz, 1.0, &p1);
+                p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
+                v1 = *vec4subtraction(&p2, &p1, &v1);
+                
+                // Enter animation loop
+                enableIdle = 5;
+            }
+                
         }
+        // move forward one cell
         else if(situation == 2)
         {
-            
+            if(forward == 'n')
+            {
+                //Update current row & column
+                currRow -= 1;
+                
+                atz -= 1.2*eyez;
+                eyexFinal = eyex;
+                eyezFinal = eyez - 0.2;
+                
+                p1 = *vec4create(eyex, eyey, eyez, 1.0, &p1);
+                p2 = *vec4create(eyexFinal, eyey, eyezFinal, 1.0, &p2);
+                v1 = *vec4subtraction(&p2, &p1, &v1);
+                
+                // Enter animation loop
+                enableIdle = 6;
+            }
+            else if(forward == 's')
+            {
+                //Update current row & column
+                currRow += 1;
+                
+                atz += 1.2*eyez;
+                eyexFinal = eyex;
+                eyezFinal = eyez + 0.2;
+                
+                p1 = *vec4create(eyex, eyey, eyez, 1.0, &p1);
+                p2 = *vec4create(eyexFinal, eyey, eyezFinal, 1.0, &p2);
+                v1 = *vec4subtraction(&p2, &p1, &v1);
+                
+                // Enter animation loop
+                enableIdle = 6;
+            }
+            else if(forward == 'e')
+            {
+                //Update current row & column
+                currCol += 1;
+                
+                atx += 1.2*eyex;
+                eyezFinal = eyez;
+                eyexFinal = eyex + 0.2;
+                
+                p1 = *vec4create(eyex, eyey, eyez, 1.0, &p1);
+                p2 = *vec4create(eyexFinal, eyey, eyezFinal, 1.0, &p2);
+                v1 = *vec4subtraction(&p2, &p1, &v1);
+                
+                // Enter animation loop
+                enableIdle = 6;
+            }
+            if(forward == 'w')
+            {
+                //Update current row & column
+                currCol -= 1;
+                
+                atx -= 1.2*eyex;
+                eyezFinal = eyez;
+                eyexFinal = eyex - 0.2;
+                
+                p1 = *vec4create(eyex, eyey, eyez, 1.0, &p1);
+                p2 = *vec4create(eyexFinal, eyey, eyezFinal, 1.0, &p2);
+                v1 = *vec4subtraction(&p2, &p1, &v1);
+                
+                // Enter animation loop
+                enableIdle = 6;
+            }
         }
         else if(situation == 3)
         {
             
         }
-        
-        
-        
-        
-        
-    
+    }
+    // Animates 'at' turng
+    else if(enableIdle == 5)
+    {
+        if(alpha <= 1.0)
+        {
+            Vec4 scaledV = *scalarMultVector(alpha, &v1, &scaledV);
+            currAt = *vec4addition(&p1, &scaledV, &currAt);
+            
+            Mat4 tempMatrix = look_at(eyex, eyey, eyez, currAt.x, currAt.y, currAt.z, 0.0, 1.0, 0.0);
+            model_view_matrix = tempMatrix;
+            
+            alpha += 0.02;
+        }
+        else
+        {
+            alpha = 0.0;
+            atx = currAt.x;
+            aty = currAt.y;
+            atz = currAt.z;
+            
+            printf("atx: %f, aty: %f, atz: %f\n",atx, aty, atz);
+            printf("eyex: %f, eyey: %f, eyez: %f\n",eyex, eyey, eyez);
+            enableIdle = 4;
+        }
+    }
+    // Animates moving forward one cell
+    else if(enableIdle == 6)
+    {
+        if(alpha <= 1.0)
+        {
+            Vec4 scaledV = *scalarMultVector(alpha, &v1, &scaledV);
+            currEye = *vec4addition(&p1, &scaledV, &currEye);
+            
+            Mat4 tempMatrix = look_at(currEye.x, currEye.y, currEye.z, atx, aty, atz, 0.0, 1.0, 0.0);
+            model_view_matrix = tempMatrix;
+            
+            alpha += 0.02;
+        }
+        else
+        {
+            alpha = 0.0;
+            eyex = currEye.x;
+            eyey = currEye.y;
+            eyez = currEye.z;
+            
+            printf("atx: %f, aty: %f, atz: %f\n",atx, aty, atz);
+            printf("eyex: %f, eyey: %f, eyez: %f\n",eyex, eyey, eyez);
+            enableIdle = 4;
+        }
     }
     
     glutPostRedisplay();
