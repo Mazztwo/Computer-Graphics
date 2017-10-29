@@ -60,6 +60,7 @@ float left = -0.05, right = 0.05, bottom = -0.05, top = 0.05, scalingFactor = 0.
 float wallSize = 0, alpha = 0.0;
 char forward = 'e';
 int currRow = 0, currCol = 0;
+int situation = 0;
 
 float eyexFinal = 0, eyezFinal = 0;
 float atxFinal = 0, atzFinal = 0;
@@ -1052,7 +1053,7 @@ void idle(void)
                  -move forward one space
          
          */
-        int situation = getSituation(forward, &cells2D[currRow][currCol]);
+        situation = getSituation(forward, &cells2D[currRow][currCol]);
         
         // 1 = turn right 90 degrees
         // 2 = move forward one cell
@@ -1084,7 +1085,7 @@ void idle(void)
                 forward = 'w';
                 
                 atzFinal = eyez;
-                atxFinal -= 10*eyex;
+                atxFinal -= 10*fabs(eyex);
                 
                 p1 = *vec4create(atx, aty, atz, 1.0, &p1);
                 p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
@@ -1176,7 +1177,7 @@ void idle(void)
                 // Enter animation loop
                 enableIdle = 6;
             }
-            if(forward == 'w')
+            else if(forward == 'w')
             {
                 //Update current row & column
                 currCol -= 1;
@@ -1193,9 +1194,70 @@ void idle(void)
                 enableIdle = 6;
             }
         }
+        // 3 = turn left 90 degrees and move forward one space
         else if(situation == 3)
         {
-            
+            if(forward == 'n')
+            {
+                // must turn to face west
+                forward = 'w';
+                
+                atzFinal = eyez;
+                atxFinal -= 10*fabs(eyex);
+                
+                p1 = *vec4create(atx, aty, atz, 1.0, &p1);
+                p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
+                v1 = *vec4subtraction(&p2, &p1, &v1);
+                
+                // Enter animation loop
+                enableIdle = 5;
+                
+            }
+            else if(forward == 's')
+            {
+                // must turn to face east
+                forward = 'e';
+                
+                atzFinal = eyez;
+                atxFinal += 10*fabs(eyex);
+                
+                p1 = *vec4create(atx, aty, atz, 1.0, &p1);
+                p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
+                v1 = *vec4subtraction(&p2, &p1, &v1);
+                
+                // Enter animation loop
+                enableIdle = 5;
+            }
+            else if(forward == 'e')
+            {
+                // must turn to face north
+                forward = 'n';
+                
+                atxFinal = eyex;
+                atzFinal -= 10*fabs(eyez);
+                
+                p1 = *vec4create(atx, aty, atz, 1.0, &p1);
+                p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
+                v1 = *vec4subtraction(&p2, &p1, &v1);
+                
+                // Enter animation loop
+                enableIdle = 5;
+            }
+            else if(forward == 'w')
+            {
+                // must turn to face south
+                forward = 's';
+                
+                atxFinal = eyex;
+                atzFinal += 10*fabs(eyez);
+                
+                p1 = *vec4create(atx, aty, atz, 1.0, &p1);
+                p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
+                v1 = *vec4subtraction(&p2, &p1, &v1);
+                
+                // Enter animation loop
+                enableIdle = 5;
+            }
         }
     }
     // Animates 'at' turng
@@ -1218,9 +1280,18 @@ void idle(void)
             aty = currAt.y;
             atz = currAt.z;
             
+            
             printf("atx: %f, aty: %f, atz: %f\n",atx, aty, atz);
             printf("eyex: %f, eyey: %f, eyez: %f\n",eyex, eyey, eyez);
-            enableIdle = 4;
+            
+            if(situation == 3)
+            {
+                enableIdle = 7;
+            }
+            else
+            {
+                enableIdle = 4;
+            }
         }
     }
     // Animates moving forward one cell
@@ -1246,6 +1317,74 @@ void idle(void)
             printf("atx: %f, aty: %f, atz: %f\n",atx, aty, atz);
             printf("eyex: %f, eyey: %f, eyez: %f\n",eyex, eyey, eyez);
             enableIdle = 4;
+        }
+    }
+    else if(enableIdle == 7)
+    {
+        // set up moving forward after a left turn was made
+        if(forward == 'n')
+        {
+            //Update current row & column
+            currRow -= 1;
+            
+            atz -= 10*fabs(eyez);
+            eyexFinal = eyex;
+            eyezFinal = eyez - 0.25;
+            
+            p1 = *vec4create(eyex, eyey, eyez, 1.0, &p1);
+            p2 = *vec4create(eyexFinal, eyey, eyezFinal, 1.0, &p2);
+            v1 = *vec4subtraction(&p2, &p1, &v1);
+            
+            // Enter animation loop
+            enableIdle = 6;
+        }
+        else if(forward == 's')
+        {
+            //Update current row & column
+            currRow += 1;
+            
+            atz += 10*fabs(eyez);
+            eyexFinal = eyex;
+            eyezFinal = eyez + 0.25;
+            
+            p1 = *vec4create(eyex, eyey, eyez, 1.0, &p1);
+            p2 = *vec4create(eyexFinal, eyey, eyezFinal, 1.0, &p2);
+            v1 = *vec4subtraction(&p2, &p1, &v1);
+            
+            // Enter animation loop
+            enableIdle = 6;
+        }
+        else if(forward == 'e')
+        {
+            //Update current row & column
+            currCol += 1;
+            
+            atx += 10*fabs(eyex);
+            eyezFinal = eyez;
+            eyexFinal = eyex + 0.25;
+            
+            p1 = *vec4create(eyex, eyey, eyez, 1.0, &p1);
+            p2 = *vec4create(eyexFinal, eyey, eyezFinal, 1.0, &p2);
+            v1 = *vec4subtraction(&p2, &p1, &v1);
+            
+            // Enter animation loop
+            enableIdle = 6;
+        }
+        else if(forward == 'w')
+        {
+            //Update current row & column
+            currCol -= 1;
+            
+            atx -= 10*fabs(eyex);
+            eyezFinal = eyez;
+            eyexFinal = eyex - 0.25;
+            
+            p1 = *vec4create(eyex, eyey, eyez, 1.0, &p1);
+            p2 = *vec4create(eyexFinal, eyey, eyezFinal, 1.0, &p2);
+            v1 = *vec4subtraction(&p2, &p1, &v1);
+            
+            // Enter animation loop
+            enableIdle = 6;
         }
     }
     
