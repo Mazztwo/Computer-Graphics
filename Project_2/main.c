@@ -985,7 +985,6 @@ void idle(void)
             
  
             alpha += 0.01;
-            printf("alpha: %f\n", alpha);
         }
         else
         {
@@ -1020,7 +1019,6 @@ void idle(void)
             model_view_matrix = tempMatrix;
             
             alpha += 0.02;
-            printf("alpha: %f\n", alpha);
         }
         else
         {
@@ -1070,7 +1068,7 @@ void idle(void)
                 forward = 'e';
                 
                 atzFinal = eyez;
-                atxFinal += 1.2*eyex;
+                atxFinal += 10*fabs(eyex);
                 
                 p1 = *vec4create(atx, aty, atz, 1.0, &p1);
                 p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
@@ -1086,7 +1084,7 @@ void idle(void)
                 forward = 'w';
                 
                 atzFinal = eyez;
-                atxFinal -= 1.2*eyex;
+                atxFinal -= 10*eyex;
                 
                 p1 = *vec4create(atx, aty, atz, 1.0, &p1);
                 p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
@@ -1101,7 +1099,7 @@ void idle(void)
                 forward = 's';
                 
                 atxFinal = eyex;
-                atzFinal += 1.2*eyez;
+                atzFinal += 10*fabs(eyez);
                 
                 p1 = *vec4create(atx, aty, atz, 1.0, &p1);
                 p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
@@ -1116,7 +1114,7 @@ void idle(void)
                 forward = 'n';
                 
                 atxFinal = eyex;
-                atzFinal -= 1.2*eyez;
+                atzFinal -= 10*fabs(eyez);
                 
                 p1 = *vec4create(atx, aty, atz, 1.0, &p1);
                 p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
@@ -1135,9 +1133,9 @@ void idle(void)
                 //Update current row & column
                 currRow -= 1;
                 
-                atz -= 1.2*eyez;
+                atz -= 10*fabs(eyez);
                 eyexFinal = eyex;
-                eyezFinal = eyez - 0.2;
+                eyezFinal = eyez - 0.25;
                 
                 p1 = *vec4create(eyex, eyey, eyez, 1.0, &p1);
                 p2 = *vec4create(eyexFinal, eyey, eyezFinal, 1.0, &p2);
@@ -1151,9 +1149,9 @@ void idle(void)
                 //Update current row & column
                 currRow += 1;
                 
-                atz += 1.2*eyez;
+                atz += 10*fabs(eyez);
                 eyexFinal = eyex;
-                eyezFinal = eyez + 0.2;
+                eyezFinal = eyez + 0.25;
                 
                 p1 = *vec4create(eyex, eyey, eyez, 1.0, &p1);
                 p2 = *vec4create(eyexFinal, eyey, eyezFinal, 1.0, &p2);
@@ -1167,9 +1165,9 @@ void idle(void)
                 //Update current row & column
                 currCol += 1;
                 
-                atx += 1.2*eyex;
+                atx += 10*fabs(eyex);
                 eyezFinal = eyez;
-                eyexFinal = eyex + 0.2;
+                eyexFinal = eyex + 0.25;
                 
                 p1 = *vec4create(eyex, eyey, eyez, 1.0, &p1);
                 p2 = *vec4create(eyexFinal, eyey, eyezFinal, 1.0, &p2);
@@ -1183,9 +1181,9 @@ void idle(void)
                 //Update current row & column
                 currCol -= 1;
                 
-                atx -= 1.2*eyex;
+                atx -= 10*fabs(eyex);
                 eyezFinal = eyez;
-                eyexFinal = eyex - 0.2;
+                eyexFinal = eyex - 0.25;
                 
                 p1 = *vec4create(eyex, eyey, eyez, 1.0, &p1);
                 p2 = *vec4create(eyexFinal, eyey, eyezFinal, 1.0, &p2);
