@@ -39,6 +39,7 @@ Vec4 colors[1176];
 // Vertex index
 int v_index = 0;
 
+
 Vec4 cube_vertices[36] =
 {
     // Front Face 1
@@ -235,8 +236,20 @@ void initCube()
     
     for( j = 0; j < 36; j++)
     {
-        vertices[v_index] = cube_vertices[j];
-        colors[v_index] = cube_colors[j];
+        Vec4 temp = *vec4create(cube_vertices[j].x,
+                               cube_vertices[j].y,
+                               cube_vertices[j].z,
+                               1.0, 
+                               &temp);
+        vertices[v_index] = temp;
+        
+        temp = *vec4create(cube_colors[j].x,
+                          cube_colors[j].y,
+                          cube_colors[j].z,
+                          1.0,
+                          &temp);
+        colors[v_index] = temp;
+        
         v_index++;
     }
         
@@ -313,7 +326,7 @@ void display(void)
     
     // Draw Cube
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &tr_matrix[1]);
-    glDrawArrays(GL_TRIANGLES, 1141, 36);
+    glDrawArrays(GL_TRIANGLES, 1140, 36);
     
     
     
