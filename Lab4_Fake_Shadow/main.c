@@ -33,63 +33,116 @@ const float DegreesToRadians = M_PI / 180.0; // M_PI = 3.14159...
 // Create 3D object verticies
 Vec4 vertices[1176];
 
+// Color each face of object
+Vec4 colors[1176];
+
+// Vertex index
 int v_index = 0;
+
+// Color index
+int c_index = 0;
 
 Vec4 cube_vertices[36] =
 {
     // Front Face 1
-    {0.2, 0.2, 0.2, 1.0},              // top right
-    {-0.2, 0.2, 0.2, 1.0},             // top left
-    {-0.2, -0.2, 0.2, 1.0},            // bottom left
+    {1.0, 1.0, 1.0, 1.0},              // top right
+    {-1.0, 1.0, 1.0, 1.0},             // top left
+    {-1.0, -1.0, 1.0, 1.0},            // bottom left
     
-    {-0.2, -0.2, 0.2, 1.0},              // top right
-    {0.2, -0.2, 0.2, 1.0},            // bottom left
-    {0.2, 0.2, 0.2, 1.0},             // bottom right
+    {-1.0, -1.0, 1.0, 1.0},              // top right
+    {1.0, -1.0, 1.0, 1.0},            // bottom left
+    {1.0, 1.0, 1.0, 1.0},             // bottom right
     
     // Right Face 2
-    {0.2, 0.2, -0.2, 1.0},             // top right
-    {0.2, 0.2, 0.2, 1.0},              // top left
-    {0.2, -0.2, 0.2, 1.0},             // bottom left
+    {1.0, 1.0, -1.0, 1.0},             // top right
+    {1.0, 1.0, 1.0, 1.0},              // top left
+    {1.0, -1.0, 1.0, 1.0},             // bottom left
     
-    {0.2, -0.2, 0.2, 1.0},             // top right
-    {0.2, -0.2, -0.2, 1.0},             // bottom left
-    {0.2, 0.2, -0.2, 1.0},            // bottom right
+    {1.0, -1.0, 1.0, 1.0},             // top right
+    {1.0, -1.0, -1.0, 1.0},             // bottom left
+    {1.0, 1.0, -1.0, 1.0},            // bottom right
     
     // Back Face 3
-    {0.2, 0.2, -0.2, 1.0},           // Bottom left
-    {-0.2, 0.2, -0.2, 1.0},            // Top left
-    {-0.2, -0.2, -0.2, 1.0},             // Top Right
+    {1.0, 1.0, -1.0, 1.0},           // Bottom left
+    {-1.0, 1.0, -1.0, 1.0},            // Top left
+    {-1.0, -1.0, -1.0, 1.0},             // Top Right
     
-    {-0.2, -0.2, -0.2, 1.0},              // Top Right
-    {0.2, -0.2, -0.2, 1.0},            // Bottom Right
-    {0.2, 0.2, -0.2, 1.0},             // Bottom Left
+    {-1.0, -1.0, -1.0, 1.0},              // Top Right
+    {1.0, -1.0, -1.0, 1.0},            // Bottom Right
+    {1.0, 1.0, -1.0, 1.0},             // Bottom Left
     
     // Left Face 4
-    {-0.2, 0.2, -0.2, 1.0},              // top right
-    {-0.2, 0.2, 0.2, 1.0},             // top left
-    {-0.2, -0.2, 0.2, 1.0},            // bottom left
+    {-1.0, 1.0, -1.0, 1.0},              // top right
+    {-1.0, 1.0, 1.0, 1.0},             // top left
+    {-1.0, -1.0, 1.0, 1.0},            // bottom left
     
-    {-0.2, -0.2, 0.2, 1.0},              // top right
-    {-0.2, -0.2, -0.2, 1.0},            // bottom left
-    {-0.2, 0.2, -0.2, 1.0},              // bottom right
+    {-1.0, -1.0, 1.0, 1.0},              // top right
+    {-1.0, -1.0, -1.0, 1.0},            // bottom left
+    {-1.0, 1.0, -1.0, 1.0},              // bottom right
     
     // Top Face 5
-    {0.2, 0.2, -0.2, 1.0},              // top right
-    {-0.2, 0.2, -0.2, 1.0},             // top left
-    {-0.2, 0.2, 0.2, 1.0},            // bottom left
+    {1.0, 1.0, -1.0, 1.0},              // top right
+    {-1.0, 1.0, -1.0, 1.0},             // top left
+    {-1.0, 1.0, 1.0, 1.0},            // bottom left
     
-    {-0.2, 0.2, 0.2, 1.0},              // top right
-    {0.2, 0.2, 0.2, 1.0},            // bottom left
-    {0.2, 0.2, -0.2, 1.0},              // bottom right
+    {-1.0, 1.0, 1.0, 1.0},              // top right
+    {1.0, 1.0, 1.0, 1.0},            // bottom left
+    {1.0, 1.0, -1.0, 1.0},              // bottom right
     
     // Botto Face 6
-    {0.2, -0.2, -0.2, 1.0},              // bottom left
-    {-0.2, -0.2, -0.2, 1.0},             // top left
-    {-0.2, -0.2, 0.2, 1.0},            // top right
+    {1.0, -1.0, -1.0, 1.0},              // bottom left
+    {-1.0, -1.0, -1.0, 1.0},             // top left
+    {-1.0, -1.0, 1.0, 1.0},            // top right
     
-    {-0.2, -0.2, 0.2, 1.0},              // top right
-    {0.2, -0.2, 0.2, 1.0},            // bottom right
-    {0.2, -0.2, -0.2, 1.0}              // bottom left
+    {-1.0, -1.0, 1.0, 1.0},              // top right
+    {1.0, -1.0, 1.0, 1.0},            // bottom right
+    {1.0, -1.0, -1.0, 1.0}              // bottom left
+};
+
+// Color each face of object
+Vec4 cube_colors[36] =
+{
+    {1.0, 0.0, 0.0, 1.0},    // red
+    {1.0, 0.0, 0.0, 1.0},
+    {1.0, 0.0, 0.0, 1.0},
+    {1.0, 0.0, 0.0, 1.0},
+    {1.0, 0.0, 0.0, 1.0},
+    {1.0, 0.0, 0.0, 1.0},
+    
+    {0.0, 0.0, 1.0, 1.0},    // Blue
+    {0.0, 0.0, 1.0, 1.0},
+    {0.0, 0.0, 1.0, 1.0},
+    {0.0, 0.0, 1.0, 1.0},
+    {0.0, 0.0, 1.0, 1.0},
+    {0.0, 0.0, 1.0, 1.0},
+    
+    {1.0, 0.0, 0.0, 1.0},    // red
+    {1.0, 0.0, 0.0, 1.0},
+    {1.0, 0.0, 0.0, 1.0},
+    {1.0, 0.0, 0.0, 1.0},
+    {1.0, 0.0, 0.0, 1.0},
+    {1.0, 0.0, 0.0, 1.0},
+    
+    {0.0, 0.0, 1.0, 1.0},    // Blue
+    {0.0, 0.0, 1.0, 1.0},
+    {0.0, 0.0, 1.0, 1.0},
+    {0.0, 0.0, 1.0, 1.0},
+    {0.0, 0.0, 1.0, 1.0},
+    {0.0, 0.0, 1.0, 1.0},
+    
+    {0.0, 1.0, 0.0, 1.0},    // Green
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
+    
+    {0.0, 1.0, 0.0, 1.0},    // Green
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0},
+    {0.0, 1.0, 0.0, 1.0}
 };
 
 
@@ -147,11 +200,17 @@ void initSphereVertices()
 
 void initCubeVertices()
 {
+    int j;
+    
+    for( j = 0; j < 36; j++)
+    {
+        vertices[v_index] = cube_vertices[j];
+        colors[c_index] = cube_colors[j];
+        v_index++;
+    }
+        
     
 }
-
-// Color each face of object
-Vec4 colors[1140];
 
 void initColors()
 {
@@ -159,28 +218,36 @@ void initColors()
     
     for(int i = 0; i < 1140; i++)
     {
-        colors[i].x = rand() / (float)RAND_MAX;
-        colors[i].y = rand() / (float)RAND_MAX;
-        colors[i].z = rand() / (float)RAND_MAX;
-        colors[i].w = 1.0;
+        colors[c_index].x = rand() / (float)RAND_MAX;
+        colors[c_index].y = rand() / (float)RAND_MAX;
+        colors[c_index].z = rand() / (float)RAND_MAX;
+        colors[c_index].w = 1.0;
+        
+        c_index++;
     }
+    
 }
 
 
 // Declare number of verticies
-int num_vertices = 1140;
+int num_vertices = 1176;
 
 
 GLuint ctm_location;
 
-Mat4 scaling_matrix =
+Mat4 tr_matrix[2] =
 {
-    {1.0, 0.0, 0.0, 0.0},
-    {0.0, 1.0, 0.0, 0.0},
-    {0.0, 0.0, 1.0, 0.0},
-    {0.0, 0.0, 0.0, 1.0}
+    {{0.5, 0.0, 0.0, 0.0},
+    {0.0, 0.5, 0.0, 0.0},
+    {0.0, 0.0, 0.5, 0.0},
+    {-0.5, 0.25, 0.0, 1.0}},
     
+    {{0.5, 0.0, 0.0, 0.0},
+    {0.0, 0.5, 0.0, 0.0},
+    {0.0, 0.0, 0.5, 0.0},
+    {0.5, 0.25, 0.0, 1.0}}
 };
+
 
 int enableIdle = 0;
 int leftDown = 1;
@@ -219,12 +286,20 @@ void init(void)
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &scaling_matrix);
-    
+    //glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &scaling_matrix);
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_LINE);
-    glDrawArrays(GL_TRIANGLES, 0, num_vertices);
+    //glDrawArrays(GL_TRIANGLES, 0, num_vertices);
+    
+    // Draw Sphere
+    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &tr_matrix[0]);
+    glDrawArrays(GL_TRIANGLES, 0, 1140);
+    
+    // Draw Cube
+    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &tr_matrix[1]);
+    glDrawArrays(GL_TRIANGLES, 1141, 36);
+    
+    
     
     glutSwapBuffers();
 }
@@ -237,11 +312,23 @@ void idle(void)
 }
 
 
+void keyboard(unsigned char key, int mousex, int mousey)
+{
+    // Quit program
+    if(key == 'q')
+    {
+        exit(0);
+    }
+    
+    glutPostRedisplay();
+    
+}
 
 int main(int argc, char **argv)
 {
     initSphereVertices();
     initColors();
+    initCubeVertices();
     
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
@@ -251,6 +338,7 @@ int main(int argc, char **argv)
     //glewInit();
     init();
     glutDisplayFunc(display);
+    glutKeyboardFunc(keyboard);
     glutIdleFunc(idle);
     glutMainLoop();
     
