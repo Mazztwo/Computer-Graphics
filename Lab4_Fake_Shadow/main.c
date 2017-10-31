@@ -39,9 +39,6 @@ Vec4 colors[1176];
 // Vertex index
 int v_index = 0;
 
-// Color index
-int c_index = 0;
-
 Vec4 cube_vertices[36] =
 {
     // Front Face 1
@@ -146,8 +143,11 @@ Vec4 cube_colors[36] =
 };
 
 
-void initSphereVertices()
+
+void initSphere()
 {
+    srand ( time(NULL) );
+ 
     for (float phi = -90.0; phi <= 90.0; phi += 20.0)
     {
         float phir = phi * DegreesToRadians;
@@ -162,18 +162,33 @@ void initSphereVertices()
             vertices[v_index].y = cos(thetar)*cos(phir);
             vertices[v_index].z = sin(phir);
             vertices[v_index].w = 1.0;
+            
+            colors[v_index].x = rand() / (float)RAND_MAX;
+            colors[v_index].y = rand() / (float)RAND_MAX;
+            colors[v_index].z = rand() / (float)RAND_MAX;
+            colors[v_index].w = 1.0;
             v_index++;
             
             vertices[v_index].x = sin(thetar)*cos(phir20);
             vertices[v_index].y = cos(thetar)*cos(phir20);
             vertices[v_index].z = sin(phir20);
             vertices[v_index].w = 1.0;
+            
+            colors[v_index].x = rand() / (float)RAND_MAX;
+            colors[v_index].y = rand() / (float)RAND_MAX;
+            colors[v_index].z = rand() / (float)RAND_MAX;
+            colors[v_index].w = 1.0;
             v_index++;
             
             vertices[v_index].x = sin(thetar20)*cos(phir20);
             vertices[v_index].y = cos(thetar20)*cos(phir20);
             vertices[v_index].z = sin(phir20);
             vertices[v_index].w = 1.0;
+            
+            colors[v_index].x = rand() / (float)RAND_MAX;
+            colors[v_index].y = rand() / (float)RAND_MAX;
+            colors[v_index].z = rand() / (float)RAND_MAX;
+            colors[v_index].w = 1.0;
             v_index++;
             
             
@@ -181,52 +196,53 @@ void initSphereVertices()
             vertices[v_index].y = cos(thetar20)*cos(phir20);
             vertices[v_index].z = sin(phir20);
             vertices[v_index].w = 1.0;
+            
+            colors[v_index].x = rand() / (float)RAND_MAX;
+            colors[v_index].y = rand() / (float)RAND_MAX;
+            colors[v_index].z = rand() / (float)RAND_MAX;
+            colors[v_index].w = 1.0;
             v_index++;
             
             vertices[v_index].x = sin(thetar20)*cos(phir);
             vertices[v_index].y = cos(thetar20)*cos(phir);
             vertices[v_index].z = sin(phir);
             vertices[v_index].w = 1.0;
+            
+            colors[v_index].x = rand() / (float)RAND_MAX;
+            colors[v_index].y = rand() / (float)RAND_MAX;
+            colors[v_index].z = rand() / (float)RAND_MAX;
+            colors[v_index].w = 1.0;
             v_index++;
             
             vertices[v_index].x = sin(thetar)*cos(phir);
             vertices[v_index].y = cos(thetar)*cos(phir);
             vertices[v_index].z = sin(phir);
             vertices[v_index].w = 1.0;
+            
+            colors[v_index].x = rand() / (float)RAND_MAX;
+            colors[v_index].y = rand() / (float)RAND_MAX;
+            colors[v_index].z = rand() / (float)RAND_MAX;
+            colors[v_index].w = 1.0;
             v_index++;
         }
     }
 }
 
-void initCubeVertices()
+
+void initCube()
 {
     int j;
     
     for( j = 0; j < 36; j++)
     {
         vertices[v_index] = cube_vertices[j];
-        colors[c_index] = cube_colors[j];
+        colors[v_index] = cube_colors[j];
         v_index++;
     }
         
     
 }
 
-void initColors()
-{
-    srand ( time(NULL) );
-    
-    for(int i = 0; i < 1140; i++)
-    {
-        colors[c_index].x = rand() / (float)RAND_MAX;
-        colors[c_index].y = rand() / (float)RAND_MAX;
-        colors[c_index].z = rand() / (float)RAND_MAX;
-        colors[c_index].w = 1.0;
-        
-        c_index++;
-    }
-    
-}
 
 
 // Declare number of verticies
@@ -326,9 +342,8 @@ void keyboard(unsigned char key, int mousex, int mousey)
 
 int main(int argc, char **argv)
 {
-    initSphereVertices();
-    initColors();
-    initCubeVertices();
+    initSphere();
+    initCube();
     
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
