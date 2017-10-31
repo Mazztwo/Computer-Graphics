@@ -31,12 +31,70 @@ const float DegreesToRadians = M_PI / 180.0; // M_PI = 3.14159...
 
 
 // Create 3D object verticies
-Vec4 vertices[1140];
+Vec4 vertices[1176];
 
+int v_index = 0;
 
-void initVertices()
+Vec4 cube_vertices[36] =
 {
-    int k = 0;
+    // Front Face 1
+    {0.2, 0.2, 0.2, 1.0},              // top right
+    {-0.2, 0.2, 0.2, 1.0},             // top left
+    {-0.2, -0.2, 0.2, 1.0},            // bottom left
+    
+    {-0.2, -0.2, 0.2, 1.0},              // top right
+    {0.2, -0.2, 0.2, 1.0},            // bottom left
+    {0.2, 0.2, 0.2, 1.0},             // bottom right
+    
+    // Right Face 2
+    {0.2, 0.2, -0.2, 1.0},             // top right
+    {0.2, 0.2, 0.2, 1.0},              // top left
+    {0.2, -0.2, 0.2, 1.0},             // bottom left
+    
+    {0.2, -0.2, 0.2, 1.0},             // top right
+    {0.2, -0.2, -0.2, 1.0},             // bottom left
+    {0.2, 0.2, -0.2, 1.0},            // bottom right
+    
+    // Back Face 3
+    {0.2, 0.2, -0.2, 1.0},           // Bottom left
+    {-0.2, 0.2, -0.2, 1.0},            // Top left
+    {-0.2, -0.2, -0.2, 1.0},             // Top Right
+    
+    {-0.2, -0.2, -0.2, 1.0},              // Top Right
+    {0.2, -0.2, -0.2, 1.0},            // Bottom Right
+    {0.2, 0.2, -0.2, 1.0},             // Bottom Left
+    
+    // Left Face 4
+    {-0.2, 0.2, -0.2, 1.0},              // top right
+    {-0.2, 0.2, 0.2, 1.0},             // top left
+    {-0.2, -0.2, 0.2, 1.0},            // bottom left
+    
+    {-0.2, -0.2, 0.2, 1.0},              // top right
+    {-0.2, -0.2, -0.2, 1.0},            // bottom left
+    {-0.2, 0.2, -0.2, 1.0},              // bottom right
+    
+    // Top Face 5
+    {0.2, 0.2, -0.2, 1.0},              // top right
+    {-0.2, 0.2, -0.2, 1.0},             // top left
+    {-0.2, 0.2, 0.2, 1.0},            // bottom left
+    
+    {-0.2, 0.2, 0.2, 1.0},              // top right
+    {0.2, 0.2, 0.2, 1.0},            // bottom left
+    {0.2, 0.2, -0.2, 1.0},              // bottom right
+    
+    // Botto Face 6
+    {0.2, -0.2, -0.2, 1.0},              // bottom left
+    {-0.2, -0.2, -0.2, 1.0},             // top left
+    {-0.2, -0.2, 0.2, 1.0},            // top right
+    
+    {-0.2, -0.2, 0.2, 1.0},              // top right
+    {0.2, -0.2, 0.2, 1.0},            // bottom right
+    {0.2, -0.2, -0.2, 1.0}              // bottom left
+};
+
+
+void initSphereVertices()
+{
     for (float phi = -90.0; phi <= 90.0; phi += 20.0)
     {
         float phir = phi * DegreesToRadians;
@@ -47,46 +105,50 @@ void initVertices()
             float thetar = theta*DegreesToRadians;
             float thetar20 = (theta+20.0)*DegreesToRadians;
               
-            vertices[k].x = sin(thetar)*cos(phir);
-            vertices[k].y = cos(thetar)*cos(phir);
-            vertices[k].z = sin(phir);
-            vertices[k].w = 1.0;
-            k++;
+            vertices[v_index].x = sin(thetar)*cos(phir);
+            vertices[v_index].y = cos(thetar)*cos(phir);
+            vertices[v_index].z = sin(phir);
+            vertices[v_index].w = 1.0;
+            v_index++;
             
-            vertices[k].x = sin(thetar)*cos(phir20);
-            vertices[k].y = cos(thetar)*cos(phir20);
-            vertices[k].z = sin(phir20);
-            vertices[k].w = 1.0;
-            k++;
+            vertices[v_index].x = sin(thetar)*cos(phir20);
+            vertices[v_index].y = cos(thetar)*cos(phir20);
+            vertices[v_index].z = sin(phir20);
+            vertices[v_index].w = 1.0;
+            v_index++;
             
-            vertices[k].x = sin(thetar20)*cos(phir20);
-            vertices[k].y = cos(thetar20)*cos(phir20);
-            vertices[k].z = sin(phir20);
-            vertices[k].w = 1.0;
-            k++;
+            vertices[v_index].x = sin(thetar20)*cos(phir20);
+            vertices[v_index].y = cos(thetar20)*cos(phir20);
+            vertices[v_index].z = sin(phir20);
+            vertices[v_index].w = 1.0;
+            v_index++;
             
             
-            vertices[k].x = sin(thetar20)*cos(phir20);
-            vertices[k].y = cos(thetar20)*cos(phir20);
-            vertices[k].z = sin(phir20);
-            vertices[k].w = 1.0;
-            k++;
+            vertices[v_index].x = sin(thetar20)*cos(phir20);
+            vertices[v_index].y = cos(thetar20)*cos(phir20);
+            vertices[v_index].z = sin(phir20);
+            vertices[v_index].w = 1.0;
+            v_index++;
             
-            vertices[k].x = sin(thetar20)*cos(phir);
-            vertices[k].y = cos(thetar20)*cos(phir);
-            vertices[k].z = sin(phir);
-            vertices[k].w = 1.0;
-            k++;
+            vertices[v_index].x = sin(thetar20)*cos(phir);
+            vertices[v_index].y = cos(thetar20)*cos(phir);
+            vertices[v_index].z = sin(phir);
+            vertices[v_index].w = 1.0;
+            v_index++;
             
-            vertices[k].x = sin(thetar)*cos(phir);
-            vertices[k].y = cos(thetar)*cos(phir);
-            vertices[k].z = sin(phir);
-            vertices[k].w = 1.0;
-            k++;
+            vertices[v_index].x = sin(thetar)*cos(phir);
+            vertices[v_index].y = cos(thetar)*cos(phir);
+            vertices[v_index].z = sin(phir);
+            vertices[v_index].w = 1.0;
+            v_index++;
         }
     }
 }
 
+void initCubeVertices()
+{
+    
+}
 
 // Color each face of object
 Vec4 colors[1140];
@@ -178,7 +240,7 @@ void idle(void)
 
 int main(int argc, char **argv)
 {
-    initVertices();
+    initSphereVertices();
     initColors();
     
     glutInit(&argc, argv);
