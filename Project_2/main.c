@@ -961,7 +961,8 @@ void idle(void)
         }
         else
         {
-            enableIdle = 0;
+            enableIdle = 2;
+            //enableIdle = 0;
             currDegrees = startDegrees;
         }
         
@@ -1002,7 +1003,8 @@ void idle(void)
             
             atx += 1.2*atx;
             
-            enableIdle = 0 ;
+            //enableIdle = 0 ;
+            enableIdle = 3;
         }
     }
     // walk into maze
