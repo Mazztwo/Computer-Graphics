@@ -39,6 +39,8 @@ Vec4 colors[2*1176];
 // Vertex index
 int v_index = 0;
 
+float eyex, eyey, eyez;
+float atx, aty, atz;
 
 Vec4 cube_vertices[36] =
 {
@@ -286,6 +288,21 @@ int leftDown = 1;
 
 void init(void)
 {
+    eyex = .1;
+    eyey = .1;
+    eyez = .1;
+    
+    atx = 0;
+    aty = 0;
+    atz = 0;
+    
+    Mat4 model_view = look_at(eyex, eyey, eyez, atx, aty, atz, 0, 1, 0);
+    Mat4 temp1 = *matMultiplication(&tr_matrix[0], &model_view, &temp1);
+    Mat4 temp2 = *matMultiplication(&tr_matrix[1], &model_view, &temp2);
+    
+    tr_matrix[0] = temp1;
+    tr_matrix[1] = temp2;
+    
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
     glUseProgram(program);
     
@@ -360,6 +377,17 @@ int main(int argc, char **argv)
 {
     initSphere();
     initCube();
+    
+    /*
+    printf("Please enter an eye point: ");
+    scanf("(%f,%f,%f)", &eyex, &eyey, &eyez);
+    fflush(stdout);
+    
+    printf("Please enter an at point: ");
+    scanf("\n(%f,%f,%f)", &atx, &aty, &atz);
+    fflush(stdout);
+    */
+    
     
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
