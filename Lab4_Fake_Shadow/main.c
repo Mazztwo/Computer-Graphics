@@ -42,7 +42,7 @@ int v_index = 0;
 float eyex, eyey, eyez;
 float atx, aty, atz;
 
-float lightx = 0, lighty = 3.0, lightz = -3;
+float lightx = 0, lighty = 3.0, lightz = 0;
 
 // Declare number of verticies (cube+sphere) * 2
 int num_vertices = 2 * 1176;
@@ -51,23 +51,18 @@ GLuint ctm_location;
 
 Mat4 model_view;
 
-
-// First 3 cols are the scaling factor
-// Last col is point of center of object
-Mat4 tr_matrix[4] =
+Mat4 transformation_matricies[2] =
 {
-    {{0.25, 0.0, 0.0, 0.0},
-    {0.0, 0.25, 0.0, 0.0},
-    {0.0, 0.0, 0.25, 0.0},
-    {-0.5, 0.25, 0.0, 1.0}},
+    {{1,0,0,0},
+    {0,1,0,0},
+    {0,0,1,0},
+    {0,0,0,1}},
     
-    {{0.25, 0.0, 0.0, 0.0},
-    {0.0, 0.25, 0.0, 0.0},
-    {0.0, 0.0, 0.25, 0.0},
-    {0.5, 0.25, 0.0, 1.0}},
-    
+    {{1,0,0,0},
+    {0,1,0,0},
+    {0,0,1,0},
+    {0,0,0,1}}
 };
-
 
 Vec4 cube_vertices[36] =
 {
@@ -325,19 +320,18 @@ void init(void)
     atx = 0;
     aty = 0;
     atz = 0;
-    
-    
-    // Apply lookat matrix based on user input to each object
+
     model_view = look_at(eyex, eyey, eyez, atx, aty, atz, 0, 1, 0);
-    Mat4 temp1 = *matMultiplication(&tr_matrix[0], &model_view, &temp1);
-    Mat4 temp2 = *matMultiplication(&tr_matrix[1], &model_view, &temp2);
-    Mat4 temp3 = *matMultiplication(&tr_matrix[2], &model_view, &temp3);
-    Mat4 temp4 = *matMultiplication(&tr_matrix[3], &model_view, &temp4);
     
-    tr_matrix[0] = temp1;
-    tr_matrix[1] = temp2;
-    tr_matrix[2] = temp3;
-    tr_matrix[3] = temp4;
+    // Scale objects, then translate them to final point
+    Mat4 temp1 = *scaleMatrix(&transformation_matricies[0], .25, &temp1);
+    Mat4 temp2 = *scaleMatrix(&transformation_matricies[1], .25, &temp2);
+    
+    Mat4 temp3 = *translate(&temp1, -.5, .25, 0, &temp3);
+    Mat4 temp4 = *translate(&temp2, .5, .25, 0, &temp4);
+    
+    transformation_matricies[0] = temp3;
+    transformation_matricies[1] = temp4;
      
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
     glUseProgram(program);
@@ -376,19 +370,19 @@ void display(void)
     
     
     // Draw Sphere
-    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &tr_matrix[0]);
+    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[0]);
     glDrawArrays(GL_TRIANGLES, 0, 1140);
     
     // Draw Cube
-    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &tr_matrix[1]);
+    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[1]);
     glDrawArrays(GL_TRIANGLES, 1140, 36);
     
     // Draw Sphere Shadow
-    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &tr_matrix[0]);
+    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[0]);
     glDrawArrays(GL_TRIANGLES, 1176, 1140);
     
     // Draw Cube shadow
-    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &tr_matrix[1]);
+    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[1]);
     glDrawArrays(GL_TRIANGLES, 2316, 36);
     
     
