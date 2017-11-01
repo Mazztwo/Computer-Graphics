@@ -59,7 +59,7 @@ Mat4* matRotateAboutY(float theta, Mat4 *productMatrix);
 Mat4* matRotateAboutZ(float theta, Mat4 *productMatrix);
 Mat4* scaleMatrix(Mat4 *tr_matrix, float scalingFactor, Mat4 *productMatrix);
 
-Mat4* translate(Mat4 *tr_matrix, float x, float y, float z, Mat4 *productMatrix);
+Mat4 translate(Mat4 *tr_matrix, float x, float y, float z);
 
 Mat4 look_at(GLfloat eyex, GLfloat eyey, GLfloat eyez,
              GLfloat atx, GLfloat aty, GLfloat atz,
