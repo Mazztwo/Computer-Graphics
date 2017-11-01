@@ -51,8 +51,18 @@ GLuint ctm_location;
 
 Mat4 model_view;
 
-Mat4 transformation_matricies[2] =
+Mat4 transformation_matricies[4] =
 {
+    {{1,0,0,0},
+    {0,1,0,0},
+    {0,0,1,0},
+    {0,0,0,1}},
+    
+    {{1,0,0,0},
+    {0,1,0,0},
+    {0,0,1,0},
+    {0,0,0,1}},
+    
     {{1,0,0,0},
     {0,1,0,0},
     {0,0,1,0},
@@ -323,16 +333,36 @@ void init(void)
 
     model_view = look_at(eyex, eyey, eyez, atx, aty, atz, 0, 1, 0);
     
-    // Scale objects, then translate them to final point
-    Mat4 temp1 = *scaleMatrix(&transformation_matricies[0], .25, &temp1);
-    Mat4 temp2 = *scaleMatrix(&transformation_matricies[1], .25, &temp2);
+    // Translate objects and shadows
+    Mat4 temp1 = *translate(&transformation_matricies[0], -0.5, 0.25, 0,&temp1);
+    Mat4 temp2 = *translate(&transformation_matricies[1], 0.5, 0.25, 0,&temp2);
+    Mat4 temp3 = *translate(&transformation_matricies[2], -0.5, 0, 0,&temp3);
+    Mat4 temp4 = *translate(&transformation_matricies[3], 0.5, 0, 0,&temp4);
     
-    Mat4 temp3 = *translate(&temp1, -.5, .25, 0, &temp3);
-    Mat4 temp4 = *translate(&temp2, .5, .25, 0, &temp4);
+    // Scale objects and shadows
     
-    transformation_matricies[0] = temp3;
-    transformation_matricies[1] = temp4;
-     
+    // Objects
+    Mat4 temp5 = *scaleMatrix(&temp1, .25, &temp5);
+    Mat4 temp6 = *scaleMatrix(&temp2, .25, &temp6);
+    
+    //Shadows
+    Mat4 temp7 = *scaleMatrix(&temp3, .25, &temp7);
+    Mat4 temp8 = *scaleMatrix(&temp4, .25, &temp8);
+
+    // Apply model view
+    // Objects
+    temp1 = *matMultiplication(&temp5, &model_view, &temp1);
+    temp2 = *matMultiplication(&temp6, &model_view, &temp2);
+
+    // SHadows
+    temp3 = *matMultiplication(&temp7, &model_view, &temp3);
+    temp4 = *matMultiplication(&temp8, &model_view, &temp4);
+    
+    transformation_matricies[0] = temp1;
+    transformation_matricies[1] = temp2;
+    transformation_matricies[2] = temp3;
+    transformation_matricies[3] = temp4;
+    
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
     glUseProgram(program);
     
@@ -378,11 +408,11 @@ void display(void)
     glDrawArrays(GL_TRIANGLES, 1140, 36);
     
     // Draw Sphere Shadow
-    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[0]);
+    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[2]);
     glDrawArrays(GL_TRIANGLES, 1176, 1140);
     
     // Draw Cube shadow
-    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[1]);
+    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[3]);
     glDrawArrays(GL_TRIANGLES, 2316, 36);
     
     
