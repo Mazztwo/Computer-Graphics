@@ -1076,7 +1076,7 @@ void idle(void)
                 forward = 'e';
                 
                 atzFinal = eyez;
-                atxFinal += 10*fabs(eyex);
+                atxFinal += 5*fabs(eyex);
                 
                 p1 = *vec4create(atx, aty, atz, 1.0, &p1);
                 p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
@@ -1092,7 +1092,7 @@ void idle(void)
                 forward = 'w';
                 
                 atzFinal = eyez;
-                atxFinal -= 1*fabs(eyex);
+                atxFinal -= 5*fabs(eyex);
                 
                 p1 = *vec4create(atx, aty, atz, 1.0, &p1);
                 p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
@@ -1107,7 +1107,7 @@ void idle(void)
                 forward = 's';
                 
                 atxFinal = eyex;
-                atzFinal += 10*fabs(eyez);
+                atzFinal += 5*fabs(eyez);
                 
                 p1 = *vec4create(atx, aty, atz, 1.0, &p1);
                 p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
@@ -1122,7 +1122,7 @@ void idle(void)
                 forward = 'n';
                 
                 atxFinal = eyex;
-                atzFinal -= 10*fabs(eyez);
+                atzFinal -= 5*fabs(eyez);
                 
                 p1 = *vec4create(atx, aty, atz, 1.0, &p1);
                 p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
@@ -1141,7 +1141,7 @@ void idle(void)
                 //Update current row & column
                 currRow -= 1;
                 
-                atz -= 10*fabs(eyez);
+                atz -= 5*fabs(eyez);
                 eyexFinal = eyex;
                 eyezFinal = eyez - 0.25;
                 
@@ -1157,7 +1157,7 @@ void idle(void)
                 //Update current row & column
                 currRow += 1;
                 
-                atz += 10*fabs(eyez);
+                atz += 5*fabs(eyez);
                 eyexFinal = eyex;
                 eyezFinal = eyez + 0.25;
                 
@@ -1173,7 +1173,7 @@ void idle(void)
                 //Update current row & column
                 currCol += 1;
                 
-                atx += 10*fabs(eyex);
+                atx += 5*fabs(eyex);
                 eyezFinal = eyez;
                 eyexFinal = eyex + 0.25;
                 
@@ -1189,7 +1189,7 @@ void idle(void)
                 //Update current row & column
                 currCol -= 1;
                 
-                atx -= 10*fabs(eyex);
+                atx -= 5*fabs(eyex);
                 eyezFinal = eyez;
                 eyexFinal = eyex - 0.25;
                 
@@ -1210,7 +1210,7 @@ void idle(void)
                 forward = 'w';
                 
                 atzFinal = eyez;
-                atxFinal -= 10*fabs(eyex);
+                atxFinal -= 5*fabs(eyex);
                 
                 p1 = *vec4create(atx, aty, atz, 1.0, &p1);
                 p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
@@ -1226,7 +1226,7 @@ void idle(void)
                 forward = 'e';
                 
                 atzFinal = eyez;
-                atxFinal += 10*fabs(eyex);
+                atxFinal += 5*fabs(eyex);
                 
                 p1 = *vec4create(atx, aty, atz, 1.0, &p1);
                 p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
@@ -1241,7 +1241,7 @@ void idle(void)
                 forward = 'n';
                 
                 atxFinal = eyex;
-                atzFinal -= 10*fabs(eyez);
+                atzFinal -= 5*fabs(eyez);
                 
                 p1 = *vec4create(atx, aty, atz, 1.0, &p1);
                 p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
@@ -1256,7 +1256,7 @@ void idle(void)
                 forward = 's';
                 
                 atxFinal = eyex;
-                atzFinal += 10*fabs(eyez);
+                atzFinal += 5*fabs(eyez);
                 
                 p1 = *vec4create(atx, aty, atz, 1.0, &p1);
                 p2 = *vec4create(atxFinal, aty, atzFinal, 1.0, &p2);
@@ -1272,7 +1272,7 @@ void idle(void)
             // must turn to face south
             forward = 'w';
             
-            atxFinal -= 10* fabs(eyex);
+            atxFinal -= 5* fabs(eyex);
             atzFinal = eyez;
             eyex = 1.2;
             
@@ -1298,7 +1298,7 @@ void idle(void)
             Mat4 tempMatrix = look_at(eyex, eyey, eyez, currAt.x, currAt.y, currAt.z, 0.0, 1.0, 0.0);
             model_view_matrix = tempMatrix;
             
-            alpha += 0.02;
+            alpha += 0.025;
         }
         else
         {
@@ -1334,7 +1334,7 @@ void idle(void)
             Mat4 tempMatrix = look_at(currEye.x, currEye.y, currEye.z, atx, aty, atz, 0.0, 1.0, 0.0);
             model_view_matrix = tempMatrix;
             
-            alpha += 0.02;
+            alpha += 0.025;
         }
         else
         {
@@ -1354,7 +1354,7 @@ void idle(void)
             //Update current row & column
             currRow -= 1;
             
-            atz -= 10*fabs(eyez);
+            atz -= 5*fabs(eyez);
             eyexFinal = eyex;
             eyezFinal = eyez - 0.25;
             
@@ -1370,7 +1370,7 @@ void idle(void)
             //Update current row & column
             currRow += 1;
             
-            atz += 10*fabs(eyez);
+            atz += 5*fabs(eyez);
             eyexFinal = eyex;
             eyezFinal = eyez + 0.25;
             
@@ -1386,7 +1386,7 @@ void idle(void)
             //Update current row & column
             currCol += 1;
             
-            atx += 10*fabs(eyex);
+            atx += 5*fabs(eyex);
             eyezFinal = eyez;
             eyexFinal = eyex + 0.25;
             
@@ -1402,7 +1402,7 @@ void idle(void)
             //Update current row & column
             currCol -= 1;
             
-            atx -= 10*fabs(eyex);
+            atx -= 5*fabs(eyex);
             eyezFinal = eyez;
             eyexFinal = eyex - 0.25;
             
