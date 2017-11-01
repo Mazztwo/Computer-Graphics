@@ -7,7 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CA1EA0E81FAA532700F55491 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = CA1EA0E71FAA532700F55491 /* main.c */; };
+		CACE4DD31FAA53B2006DD1A0 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = CACE4DCE1FAA53B1006DD1A0 /* main.c */; };
+		CACE4DD41FAA53B2006DD1A0 /* initShader.c in Sources */ = {isa = PBXBuildFile; fileRef = CACE4DCF1FAA53B1006DD1A0 /* initShader.c */; };
+		CACE4DD51FAA53B2006DD1A0 /* funct.c in Sources */ = {isa = PBXBuildFile; fileRef = CACE4DD11FAA53B1006DD1A0 /* funct.c */; };
+		CACE4DD81FAA5405006DD1A0 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CACE4DD71FAA53FF006DD1A0 /* GLUT.framework */; };
+		CACE4DDA1FAA5413006DD1A0 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CACE4DD91FAA540A006DD1A0 /* OpenGL.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,8 +27,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CA10D39F1FAA57FA00A95058 /* fshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = fshader.glsl; path = "../../../../../../Library/Developer/Xcode/DerivedData/Project_3-epeqdxiplmyzjiaflyrhvezspiew/Build/Products/Debug/fshader.glsl"; sourceTree = "<group>"; };
+		CA10D3A01FAA57FA00A95058 /* vshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = vshader.glsl; path = "../../../../../../Library/Developer/Xcode/DerivedData/Project_3-epeqdxiplmyzjiaflyrhvezspiew/Build/Products/Debug/vshader.glsl"; sourceTree = "<group>"; };
 		CA1EA0E41FAA532700F55491 /* Project_3 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Project_3; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA1EA0E71FAA532700F55491 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		CACE4DCE1FAA53B1006DD1A0 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		CACE4DCF1FAA53B1006DD1A0 /* initShader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = initShader.c; sourceTree = "<group>"; };
+		CACE4DD01FAA53B1006DD1A0 /* funct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = funct.h; sourceTree = "<group>"; };
+		CACE4DD11FAA53B1006DD1A0 /* funct.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = funct.c; sourceTree = "<group>"; };
+		CACE4DD21FAA53B1006DD1A0 /* initShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = initShader.h; sourceTree = "<group>"; };
+		CACE4DD71FAA53FF006DD1A0 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		CACE4DD91FAA540A006DD1A0 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +44,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CACE4DDA1FAA5413006DD1A0 /* OpenGL.framework in Frameworks */,
+				CACE4DD81FAA5405006DD1A0 /* GLUT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,8 +55,15 @@
 		CA1EA0DB1FAA532700F55491 = {
 			isa = PBXGroup;
 			children = (
-				CA1EA0E61FAA532700F55491 /* Project_3 */,
+				CACE4DD11FAA53B1006DD1A0 /* funct.c */,
+				CACE4DD01FAA53B1006DD1A0 /* funct.h */,
+				CACE4DCF1FAA53B1006DD1A0 /* initShader.c */,
+				CACE4DD21FAA53B1006DD1A0 /* initShader.h */,
+				CACE4DCE1FAA53B1006DD1A0 /* main.c */,
 				CA1EA0E51FAA532700F55491 /* Products */,
+				CA10D39F1FAA57FA00A95058 /* fshader.glsl */,
+				CA10D3A01FAA57FA00A95058 /* vshader.glsl */,
+				CACE4DD61FAA53FF006DD1A0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,12 +75,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CA1EA0E61FAA532700F55491 /* Project_3 */ = {
+		CACE4DD61FAA53FF006DD1A0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CA1EA0E71FAA532700F55491 /* main.c */,
+				CACE4DD91FAA540A006DD1A0 /* OpenGL.framework */,
+				CACE4DD71FAA53FF006DD1A0 /* GLUT.framework */,
 			);
-			path = Project_3;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -119,7 +141,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA1EA0E81FAA532700F55491 /* main.c in Sources */,
+				CACE4DD51FAA53B2006DD1A0 /* funct.c in Sources */,
+				CACE4DD41FAA53B2006DD1A0 /* initShader.c in Sources */,
+				CACE4DD31FAA53B2006DD1A0 /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -233,6 +257,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = /opt/local/include/;
+				LIBRARY_SEARCH_PATHS = /opt/local/lib/;
+				OTHER_LDFLAGS = "-IGLEW";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -241,6 +268,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = /opt/local/include/;
+				LIBRARY_SEARCH_PATHS = /opt/local/lib/;
+				OTHER_LDFLAGS = "-IGLEW";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
