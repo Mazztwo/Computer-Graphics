@@ -798,7 +798,7 @@ Mat4* scaleMatrix(Mat4 *tr_matrix, float scalingFactor, Mat4 *productMatrix)
         {0.0,0.0,0.0,1.0}
     };
     
-    productMatrix = matMultiplication(tr_matrix, &scalingMatrix, productMatrix);
+    productMatrix = matMultiplication(&scalingMatrix, tr_matrix,  productMatrix);
     
     return productMatrix;
 }
@@ -823,7 +823,7 @@ Mat4* translate(Mat4 *tr_matrix, float x, float y, float z, Mat4 *productMatrix)
         {x, y, z, 1.0}
     };
     
-    productMatrix = matMultiplication(tr_matrix, &translationMatrix, productMatrix);
+    productMatrix = matMultiplication(&translationMatrix,tr_matrix,  productMatrix);
     
     return productMatrix;
 }

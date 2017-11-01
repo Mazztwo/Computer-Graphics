@@ -36,21 +36,28 @@ Vec4 vertices[2*1176];
 // Color each face of object
 Vec4 colors[2*1176];
 
-// Vertex index
-int v_index = 0;
-
-float eyex, eyey, eyez;
-float atx, aty, atz;
-
-float lightx = 0, lighty = 3.0, lightz = 0;
-
 // Declare number of verticies (cube+sphere) * 2
 int num_vertices = 2 * 1176;
 
-GLuint ctm_location;
+// Vertex index
+int v_index = 0;
 
+// Declare eye and at
+float eyex, eyey, eyez;
+float atx, aty, atz;
+
+
+///////////////// LIGHT //////////////////
+float lightx = 0, lighty = 3, lightz = -1;
+//////////////////////////////////////////
+
+
+GLuint ctm_location;
 Mat4 model_view;
 
+// Initialize tr matricies
+// One for each of the 4 objects
+// (sphere, cube, and each shadow)
 Mat4 transformation_matricies[4] =
 {
     {{1,0,0,0},
@@ -121,7 +128,7 @@ Vec4 cube_vertices[36] =
     {1.0, 1.0, 1.0, 1.0},            // bottom left
     {1.0, 1.0, -1.0, 1.0},              // bottom right
     
-    // Botto Face 6
+    // Bottom Face 6
     {1.0, -1.0, -1.0, 1.0},              // bottom left
     {-1.0, -1.0, -1.0, 1.0},             // top left
     {-1.0, -1.0, 1.0, 1.0},            // top right
@@ -134,47 +141,47 @@ Vec4 cube_vertices[36] =
 // Color each face of object
 Vec4 cube_colors[36] =
 {
-    {0.8, 0.0, 0.0, 1.0},    // red
-    {0.8, 0.0, 0.0, 1.0},
-    {0.8, 0.0, 0.0, 1.0},
-    {0.8, 0.0, 0.0, 1.0},
-    {0.8, 0.0, 0.0, 1.0},
-    {0.8, 0.0, 0.0, 1.0},
+    {0.7, 0.0, 0.1, 1.0},    // red
+    {0.7, 0.0, 0.1, 1.0},
+    {0.7, 0.0, 0.1, 1.0},
+    {0.7, 0.0, 0.1, 1.0},
+    {0.7, 0.0, 0.1, 1.0},
+    {0.7, 0.0, 0.1, 1.0},
     
-    {0.0, 0.0, 0.8, 1.0},    // Blue
-    {0.0, 0.0, 0.8, 1.0},
-    {0.0, 0.0, 0.8, 1.0},
-    {0.0, 0.0, 0.8, 1.0},
-    {0.0, 0.0, 0.8, 1.0},
-    {0.0, 0.0, 0.8, 1.0},
+    {0.1, 0.0, 0.7, 1.0},    // Blue
+    {0.1, 0.0, 0.7, 1.0},
+    {0.1, 0.0, 0.7, 1.0},
+    {0.1, 0.0, 0.7, 1.0},
+    {0.1, 0.0, 0.7, 1.0},
+    {0.1, 0.0, 0.7, 1.0},
     
-    {0.8, 0.0, 0.0, 1.0},    // red
-    {0.8, 0.0, 0.0, 1.0},
-    {0.8, 0.0, 0.0, 1.0},
-    {0.8, 0.0, 0.0, 1.0},
-    {0.8, 0.0, 0.0, 1.0},
-    {0.8, 0.0, 0.0, 1.0},
+    {0.7, 0.1, 0.0, 1.0},    // red
+    {0.7, 0.1, 0.0, 1.0},
+    {0.7, 0.1, 0.0, 1.0},
+    {0.7, 0.1, 0.0, 1.0},
+    {0.7, 0.1, 0.0, 1.0},
+    {0.7, 0.1, 0.0, 1.0},
     
-    {0.0, 0.0, 0.8, 1.0},    // Blue
-    {0.0, 0.0, 0.8, 1.0},
-    {0.0, 0.0, 0.8, 1.0},
-    {0.0, 0.0, 0.8, 1.0},
-    {0.0, 0.0, 0.8, 1.0},
-    {0.0, 0.0, 0.8, 1.0},
+    {0.0, 0.1, 0.7, 1.0},    // Blue
+    {0.0, 0.1, 0.7, 1.0},
+    {0.0, 0.1, 0.7, 1.0},
+    {0.0, 0.1, 0.7, 1.0},
+    {0.0, 0.1, 0.7, 1.0},
+    {0.0, 0.1, 0.7, 1.0},
     
-    {0.0, 0.8, 0.0, 1.0},    // Green
-    {0.0, 0.8, 0.0, 1.0},
-    {0.0, 0.8, 0.0, 1.0},
-    {0.0, 0.8, 0.0, 1.0},
-    {0.0, 0.8, 0.0, 1.0},
-    {0.0, 0.8, 0.0, 1.0},
-    
-    {0.0, 0.8, 0.0, 1.0},    // Green
-    {0.0, 0.8, 0.0, 1.0},
-    {0.0, 0.8, 0.0, 1.0},
-    {0.0, 0.8, 0.0, 1.0},
-    {0.0, 0.8, 0.0, 1.0},
-    {0.0, 0.8, 0.0, 1.0},
+    {0.1, 0.7, 0.0, 1.0},    // Green
+    {0.1, 0.7, 0.0, 1.0},
+    {0.1, 0.7, 0.0, 1.0},
+    {0.1, 0.7, 0.0, 1.0},
+    {0.1, 0.7, 0.0, 1.0},
+    {0.1, 0.7, 0.0, 1.0},
+
+    {0.0, 0.7, 0.1, 1.0},    // Green
+    {0.0, 0.7, 0.1, 1.0},
+    {0.0, 0.7, 0.1, 1.0},
+    {0.0, 0.7, 0.1, 1.0},
+    {0.0, 0.7, 0.1, 1.0},
+    {0.0, 0.7, 0.1, 1.0},
 };
 
 
@@ -298,6 +305,7 @@ void initCube()
 
 
 
+
 void initShadows()
 {
     for(int i = 0; i < 1176; i++)
@@ -323,32 +331,52 @@ void initShadows()
 void init(void)
 {
     
-    eyex = .1;
-    eyey = .2;
-    eyez = .2;
     
-    atx = 0;
-    aty = 0;
-    atz = 0;
-
+    eyex = 0, eyey = 0, eyez = 1;
+    
+    atx = 0, aty = 0, atz = 0;
+    
     model_view = look_at(eyex, eyey, eyez, atx, aty, atz, 0, 1, 0);
     
+    /*
     // Translate objects and shadows
-    Mat4 temp1 = *translate(&transformation_matricies[0], -0.5, 0.25, 0,&temp1);
-    Mat4 temp2 = *translate(&transformation_matricies[1], 0.5, 0.25, 0,&temp2);
-    Mat4 temp3 = *translate(&transformation_matricies[2], -0.5, 0, 0,&temp3);
-    Mat4 temp4 = *translate(&transformation_matricies[3], 0.5, 0, 0,&temp4);
+    // Objects
+    Mat4 temp1 = *translate(&transformation_matricies[0], -0.5, 0.25, 0, &temp1);
+    Mat4 temp2 = *translate(&transformation_matricies[1],  0.5, 0.25, 0, &temp2);
+     
+    // Shadows
+    Mat4 temp3 = *translate(&transformation_matricies[2], -0.5, 0,  0, &temp3);
+    Mat4 temp4 = *translate(&transformation_matricies[3],  0.5, 0 , 0, &temp4);
     
     // Scale objects and shadows
-    
     // Objects
     Mat4 temp5 = *scaleMatrix(&temp1, .25, &temp5);
     Mat4 temp6 = *scaleMatrix(&temp2, .25, &temp6);
     
-    //Shadows
+    // Shadows
     Mat4 temp7 = *scaleMatrix(&temp3, .25, &temp7);
     Mat4 temp8 = *scaleMatrix(&temp4, .25, &temp8);
-
+    */
+    
+    // Scale objects and shadows about origin
+    // Objects
+    Mat4 temp1 = *scaleMatrix(&transformation_matricies[0], .25, &temp1);
+    Mat4 temp2 = *scaleMatrix(&transformation_matricies[1], .25, &temp2);
+    
+    // Shadows
+    Mat4 temp3 = *scaleMatrix(&transformation_matricies[2], .25, &temp3);
+    Mat4 temp4 = *scaleMatrix(&transformation_matricies[3], .25, &temp4);
+    
+    // Translate objects and shadows to correct points
+    // Objects
+    Mat4 temp5 = *translate(&temp1, -0.5, 0.0, 0, &temp5);
+    Mat4 temp6 = *translate(&temp2,  0.5, 0.0, 0, &temp6);
+    
+    // Shadows
+    Mat4 temp7 = *translate(&temp3,  0.5, 0.25, 0, &temp7);
+    Mat4 temp8 = *translate(&temp4, 0.5, 0.25, 0, &temp8);
+    
+    
     // Apply model view
     // Objects
     temp1 = *matMultiplication(&temp5, &model_view, &temp1);
@@ -391,6 +419,8 @@ void init(void)
     glClearColor(0.3, 0.5, 0.5, 1.0);
     glDepthRange(1,0);
 }
+
+
 
 void display(void)
 {
@@ -448,13 +478,14 @@ int main(int argc, char **argv)
     
     /*
     printf("Please enter an eye point: ");
-    scanf("(%f,%f,%f)", &eyex, &eyey, &eyez);
-    fflush(stdout);
+    scanf("%f,%f,%f*", &eyex, &eyey, &eyez);
     
     printf("Please enter an at point: ");
-    scanf("\n(%f,%f,%f)", &atx, &aty, &atz);
-    fflush(stdout);
-    */
+    scanf("%f,%f,%f*", &atx, &aty, &atz);
+    
+    printf("Please enter a light point: ");
+    scanf("%f,%f,%f*", &lightx, &lighty, &lightz);
+     */
     
     initShadows();
     
@@ -462,7 +493,7 @@ int main(int argc, char **argv)
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
     glutInitWindowSize(512, 512);
-    glutInitWindowPosition(100,100);
+    glutInitWindowPosition(50,50);
     glutCreateWindow("Lab3 Sphere");
     //glewInit();
     init();
