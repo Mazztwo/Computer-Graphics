@@ -48,7 +48,7 @@ float atx, aty, atz;
 
 
 ///////////////// LIGHT //////////////////
-float lightx = 0, lighty = 3, lightz = -1;
+float lightx = 0, lighty = 0, lightz = 0;
 //////////////////////////////////////////
 
 
@@ -332,31 +332,11 @@ void init(void)
 {
     
     
-    eyex = 0, eyey = 0, eyez = 1;
+    eyex = 2, eyey = 1, eyez = 1;
     
     atx = 0, aty = 0, atz = 0;
     
     model_view = look_at(eyex, eyey, eyez, atx, aty, atz, 0, 1, 0);
-    
-    /*
-    // Translate objects and shadows
-    // Objects
-    Mat4 temp1 = *translate(&transformation_matricies[0], -0.5, 0.25, 0, &temp1);
-    Mat4 temp2 = *translate(&transformation_matricies[1],  0.5, 0.25, 0, &temp2);
-     
-    // Shadows
-    Mat4 temp3 = *translate(&transformation_matricies[2], -0.5, 0,  0, &temp3);
-    Mat4 temp4 = *translate(&transformation_matricies[3],  0.5, 0 , 0, &temp4);
-    
-    // Scale objects and shadows
-    // Objects
-    Mat4 temp5 = *scaleMatrix(&temp1, .25, &temp5);
-    Mat4 temp6 = *scaleMatrix(&temp2, .25, &temp6);
-    
-    // Shadows
-    Mat4 temp7 = *scaleMatrix(&temp3, .25, &temp7);
-    Mat4 temp8 = *scaleMatrix(&temp4, .25, &temp8);
-    */
     
     // Scale objects and shadows about origin
     // Objects
@@ -369,12 +349,12 @@ void init(void)
     
     // Translate objects and shadows to correct points
     // Objects
-    Mat4 temp5 = *translate(&temp1, -0.5, 0.0, 0, &temp5);
-    Mat4 temp6 = *translate(&temp2,  0.5, 0.0, 0, &temp6);
+    Mat4 temp5 = *translate(&temp1, -0.5, 0.25, 0, &temp5);
+    Mat4 temp6 = *translate(&temp2,  0.5, 0.25, 0, &temp6);
     
     // Shadows
-    Mat4 temp7 = *translate(&temp3,  0.5, 0.25, 0, &temp7);
-    Mat4 temp8 = *translate(&temp4, 0.5, 0.25, 0, &temp8);
+    Mat4 temp7 = *translate(&temp3, -0.5, 0, 0, &temp7);
+    Mat4 temp8 = *translate(&temp4,  0.5, 0, 0, &temp8);
     
     
     // Apply model view
@@ -476,7 +456,6 @@ int main(int argc, char **argv)
     initSphere();
     initCube();
     
-    /*
     printf("Please enter an eye point: ");
     scanf("%f,%f,%f*", &eyex, &eyey, &eyez);
     
@@ -485,7 +464,7 @@ int main(int argc, char **argv)
     
     printf("Please enter a light point: ");
     scanf("%f,%f,%f*", &lightx, &lighty, &lightz);
-     */
+    
     
     initShadows();
     
