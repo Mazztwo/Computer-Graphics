@@ -219,7 +219,9 @@ void init(void)
         translated = *translate(&scaled, x, y, z, &translated);
         
         // Apply model view
+        transformed = *matMultiplication(&model_view_matrix, &translated, &transformed);
         
+        transformation_matricies[i] = transformed;
         
         // Move center of next sphere
         x += 0.5;
