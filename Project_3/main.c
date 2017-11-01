@@ -31,9 +31,10 @@ Main file for Project 2
 #define BUFFER_OFFSET( offset )   ((GLvoid*) (offset))
 
 #define windowSize 375
-# define num_spheres 5
+#define num_spheres 5
+#define groundVertices 6
 ///////// num_vertices is 16206 for a 5 degree increment
-#define num_vertices num_spheres*16206
+#define num_vertices (num_spheres*16206) + groundVertices
 ////////////////////////////////////////////////////////
 
 Vec4 vertices[num_vertices];
@@ -186,7 +187,11 @@ void initSphere(float divisionDegrees)
     printf("Num vertices: %d\n",v_index);
 }
 
-
+void initGround()
+{
+    
+    
+}
 
 void init(void)
 {
@@ -203,6 +208,7 @@ void init(void)
     float x = 0, y = 0.5 , z = 0;
     Mat4 scaled;
     Mat4 translated;
+    Mat4 transformed;
 
     for(int i = 0; i < num_spheres; i++)
     {
@@ -213,6 +219,7 @@ void init(void)
         translated = *translate(&scaled, x, y, z, &translated);
         
         // Apply model view
+        
         
         // Move center of next sphere
         x += 0.5;
@@ -249,7 +256,7 @@ void init(void)
     glEnable(GL_DEPTH_TEST);
 
     
-    glClearColor(0.0, 0.5, 1.0, 1.0);
+    glClearColor(0.0, 0.0, 0.0, 1.0);
     glDepthRange(1,0);
 }
 
@@ -260,12 +267,14 @@ void display(void)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     glUniformMatrix4fv(projection_matrix_location, 1, GL_FALSE, (GLfloat *) &projection_matrix);
-    glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &model_view_matrix);
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_FILL);
     
     
+    // Draw objects
     glDrawArrays(GL_TRIANGLES, 0, num_vertices);
+    //glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &model_view_matrix);
+    glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[0]);
     
     glutSwapBuffers();
 }
@@ -296,6 +305,7 @@ void idle(void)
 
 int main(int argc, char **argv)
 {
+    initGround();
     initSphere(5.0);
     
     
