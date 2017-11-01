@@ -31,20 +31,22 @@ Main file for Project 2
 #define BUFFER_OFFSET( offset )   ((GLvoid*) (offset))
 
 #define windowSize 375
-#define num_vertices 1140
+# define num_spheres 5
+///////// num_vertices is 16206 for a 5 degree increment
+#define num_vertices num_spheres*16206
+////////////////////////////////////////////////////////
 
 Vec4 vertices[num_vertices];
 Vec4 colors[num_vertices];
 
-
-
 ///////////// Lookat and frustum variables/////////////////////////////////////////
-float eyex = 0, eyey = 0, eyez = 1, distanceFromOrigin = 0.0;
-float atx = 0.0, aty = 0.0, atz = 0.0, near = -0.05, far = -100.0;
-float left = -0.05, right = 0.05, bottom = -0.05, top = 0.05, scalingFactor = 0.0;
+float eyex = 0, eyey = 0, eyez = 1;
+float atx = 0.0, aty = 0.0, atz = 0.0;
+float left = -0.05, right = 0.05, bottom = -0.05, top = 0.05, near = -0.05, far = -100.0;
 ///////////////////////////////////////////////////////////////////////////////////
 
 float DegreesToRadians = M_PI / 180.0;;
+
 int enableIdle = 0;
 int v_index = 0;
 
@@ -71,19 +73,20 @@ Mat4 projection_matrix =
 };
 
 
-void initSphere()
+
+void initSphere(float divisionDegrees)
 {
     srand ( time(NULL) );
     
-    for (float phi = -90.0; phi <= 90.0; phi += 20.0)
+    for (float phi = -90.0; phi <= 90.0; phi += divisionDegrees)
     {
         float phir = phi * DegreesToRadians;
-        float phir20 = (phi + 20.0)*DegreesToRadians;
+        float phir20 = (phi + divisionDegrees)*DegreesToRadians;
         
-        for(float theta = -180.0; theta <= 180.0; theta += 20.0)
+        for(float theta = -180.0; theta <= 180.0; theta += divisionDegrees)
         {
             float thetar = theta*DegreesToRadians;
-            float thetar20 = (theta+20.0)*DegreesToRadians;
+            float thetar20 = (theta + divisionDegrees)*DegreesToRadians;
             
             vertices[v_index].x = sin(thetar)*cos(phir);
             vertices[v_index].y = cos(thetar)*cos(phir);
@@ -153,8 +156,8 @@ void initSphere()
             v_index++;
         }
     }
+    printf("Num vertices: %d\n",v_index);
 }
-
 
 
 
@@ -244,6 +247,9 @@ void idle(void)
 
 int main(int argc, char **argv)
 {
+    initSphere(5.0);
+    
+    
     // OpenGL initializaiton code
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
