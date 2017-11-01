@@ -72,6 +72,33 @@ Mat4 projection_matrix =
     
 };
 
+Mat4 transformation_matricies[num_spheres] =
+{
+    {{1,0,0,0},
+    {0,1,0,0},
+    {0,0,1,0},
+    {0,0,0,1}},
+    
+    {{1,0,0,0},
+    {0,1,0,0},
+    {0,0,1,0},
+    {0,0,0,1}},
+    
+    {{1,0,0,0},
+    {0,1,0,0},
+    {0,0,1,0},
+    {0,0,0,1}},
+    
+    {{1,0,0,0},
+    {0,1,0,0},
+    {0,0,1,0},
+    {0,0,0,1}},
+    
+    {{1,0,0,0},
+    {0,1,0,0},
+    {0,0,1,0},
+    {0,0,0,1}},
+};
 
 
 void initSphere(float divisionDegrees)
@@ -164,13 +191,33 @@ void initSphere(float divisionDegrees)
 void init(void)
 {
     // Initialize model_view matrix
-    Mat4 tempMatrix = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-    Mat4 tempMatrix2 = *matMultiplication(&tempMatrix, &model_view_matrix, &tempMatrix2);
-    model_view_matrix = tempMatrix2;
+    Mat4 temp = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
+    model_view_matrix = temp;
     
     // Initialize frustum
     //tempMatrix = frustum(left, right, bottom, top, near, far);
     //projection_matrix = tempMatrix;
+    
+    // Initialize spheres
+    // x,y,z coordinates sphere centers
+    float x = 0, y = 0.5 , z = 0;
+    Mat4 scaled;
+    Mat4 translated;
+
+    for(int i = 0; i < num_spheres; i++)
+    {
+        // Scale sphere by half to make radius = 1
+        scaled = *scaleMatrix(&transformation_matricies[i], 0.5, &scaled);
+        
+        // Translate sphere to desired point
+        translated = *translate(&scaled, x, y, z, &translated);
+        
+        // Apply model view
+        
+        // Move center of next sphere
+        x += 0.5;
+    }
+    
     
     
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
@@ -214,10 +261,10 @@ void display(void)
     
     glUniformMatrix4fv(projection_matrix_location, 1, GL_FALSE, (GLfloat *) &projection_matrix);
     glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &model_view_matrix);
-    
-    
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_FILL);
+    
+    
     glDrawArrays(GL_TRIANGLES, 0, num_vertices);
     
     glutSwapBuffers();
@@ -244,6 +291,8 @@ void idle(void)
 {
     glutPostRedisplay();
 }
+
+
 
 int main(int argc, char **argv)
 {
