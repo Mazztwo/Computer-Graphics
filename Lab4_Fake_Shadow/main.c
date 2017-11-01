@@ -42,7 +42,7 @@ int v_index = 0;
 float eyex, eyey, eyez;
 float atx, aty, atz;
 
-float lightx = 0, lighty = 5.0, lightz = 0;
+float lightx = 0, lighty = 3.0, lightz = -3;
 
 // Declare number of verticies (cube+sphere) * 2
 int num_vertices = 2 * 1176;
@@ -50,6 +50,7 @@ int num_vertices = 2 * 1176;
 GLuint ctm_location;
 
 Mat4 model_view;
+
 
 // First 3 cols are the scaling factor
 // Last col is point of center of object
@@ -65,17 +66,8 @@ Mat4 tr_matrix[4] =
     {0.0, 0.0, 0.25, 0.0},
     {0.5, 0.25, 0.0, 1.0}},
     
-    {{0.25, 0.0, 0.0, 0.0},
-    {0.0, 0.25, 0.0, 0.0},
-    {0.0, 0.0, 0.25, 0.0},
-    {0, 0, 0, 1}},
-
-    {{0.25, 0.0, 0.0, 0.0},
-    {0.0, 0.25, 0.0, 0.0},
-    {0.0, 0.0, 0.25, 0.0},
-    {0, 0, 0, 1}}
-
 };
+
 
 Vec4 cube_vertices[36] =
 {
@@ -184,6 +176,8 @@ Vec4 cube_colors[36] =
 
 
 
+
+
 void initSphere()
 {
     srand ( time(NULL) );
@@ -270,7 +264,6 @@ void initSphere()
 
 
 
-
 void initCube()
 {
     int j;
@@ -297,6 +290,7 @@ void initCube()
         
     
 }
+
 
 
 void initShadows()
@@ -335,16 +329,16 @@ void init(void)
     
     // Apply lookat matrix based on user input to each object
     model_view = look_at(eyex, eyey, eyez, atx, aty, atz, 0, 1, 0);
-    Mat4 temp1 = *matMultiplication(&model_view, &tr_matrix[0], &temp1);
-    Mat4 temp2 = *matMultiplication(&model_view, &tr_matrix[1], &temp2);
-    Mat4 temp3 = *matMultiplication(&model_view, &tr_matrix[3], &temp3);
-    Mat4 temp4 = *matMultiplication(&model_view, &tr_matrix[4], &temp4);
+    Mat4 temp1 = *matMultiplication(&tr_matrix[0], &model_view, &temp1);
+    Mat4 temp2 = *matMultiplication(&tr_matrix[1], &model_view, &temp2);
+    Mat4 temp3 = *matMultiplication(&tr_matrix[2], &model_view, &temp3);
+    Mat4 temp4 = *matMultiplication(&tr_matrix[3], &model_view, &temp4);
     
     tr_matrix[0] = temp1;
     tr_matrix[1] = temp2;
     tr_matrix[2] = temp3;
     tr_matrix[3] = temp4;
-    
+     
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
     glUseProgram(program);
     
@@ -380,6 +374,7 @@ void display(void)
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_FILL);
     
+    
     // Draw Sphere
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &tr_matrix[0]);
     glDrawArrays(GL_TRIANGLES, 0, 1140);
@@ -389,11 +384,11 @@ void display(void)
     glDrawArrays(GL_TRIANGLES, 1140, 36);
     
     // Draw Sphere Shadow
-    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &tr_matrix[2]);
+    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &tr_matrix[0]);
     glDrawArrays(GL_TRIANGLES, 1176, 1140);
     
     // Draw Cube shadow
-    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &tr_matrix[3]);
+    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &tr_matrix[1]);
     glDrawArrays(GL_TRIANGLES, 2316, 36);
     
     
@@ -417,29 +412,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         exit(0);
     }
-    else if(key == 'y')
-    {
-        eyey -= .1;
-        printf("eyex: %f, eyey: %f, eyez: %f\n",eyex,eyey,eyez);
-    }
-    else if(key == 'Y')
-    {
-        eyey += .1;
-        printf("eyex: %f, eyey: %f, eyez: %f\n",eyex,eyey,eyez);
-    }
-    
-    // Apply lookat matrix based on user input to each object
-    Mat4 model_view = look_at(eyex, eyey, eyez, atx, aty, atz, 0, 1, 0);
-    Mat4 temp1 = *matMultiplication(&model_view, &tr_matrix[0], &temp1);
-    Mat4 temp2 = *matMultiplication(&model_view, &tr_matrix[1], &temp2);
-    Mat4 temp3 = *matMultiplication(&model_view, &tr_matrix[3], &temp3);
-    Mat4 temp4 = *matMultiplication(&model_view, &tr_matrix[4], &temp4);
-    
-    tr_matrix[0] = temp1;
-    tr_matrix[1] = temp2;
-    tr_matrix[2] = temp3;
-    tr_matrix[3] = temp4;
-    
+     
     glutPostRedisplay();
     
 }
