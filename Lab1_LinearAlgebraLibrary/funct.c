@@ -788,7 +788,7 @@ Mat4* matRotateAboutZ(float theta, Mat4 *productMatrix)
  Outputs:
      productMatrix --> result of scaling matrix
  */
-Mat4* scaleMatrix(Mat4 *tr_matrix, float scalingFactor, Mat4 *productMatrix)
+Mat4* scaleMatrix(float scalingFactor, Mat4 *productMatrix)
 {
     Mat4 scalingMatrix =
     {
@@ -798,7 +798,9 @@ Mat4* scaleMatrix(Mat4 *tr_matrix, float scalingFactor, Mat4 *productMatrix)
         {0.0,0.0,0.0,1.0}
     };
     
-    productMatrix = matMultiplication(&scalingMatrix, tr_matrix,  productMatrix);
+    //productMatrix = matMultiplication(&scalingMatrix, tr_matrix,  productMatrix);
+    
+    productMatrix = &scalingMatrix;
     
     return productMatrix;
 }
@@ -813,7 +815,7 @@ Mat4* scaleMatrix(Mat4 *tr_matrix, float scalingFactor, Mat4 *productMatrix)
  Outputs:
      productMatrix --> result of translating matrix
  */
-Mat4* translate(Mat4 *tr_matrix, float x, float y, float z, Mat4 *productMatrix)
+Mat4* translate(float x, float y, float z, Mat4 *productMatrix)
 {
     Mat4 translationMatrix =
     {
@@ -823,7 +825,9 @@ Mat4* translate(Mat4 *tr_matrix, float x, float y, float z, Mat4 *productMatrix)
         {x, y, z, 1.0}
     };
     
-    productMatrix = matMultiplication(&translationMatrix,tr_matrix,  productMatrix);
+    //productMatrix = matMultiplication(&translationMatrix,tr_matrix,  productMatrix);
+    
+    productMatrix = &translationMatrix;
     
     return productMatrix;
 }
