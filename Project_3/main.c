@@ -33,8 +33,9 @@ Main file for Project 2
 #define windowSize 375
 #define num_spheres 5
 #define groundVertices 6
+#define sphereVertices 16206
 ///////// num_vertices is 16206 for a 5 degree increment
-#define num_vertices (num_spheres*16206) + groundVertices
+#define num_vertices (num_spheres*sphereVertices) + groundVertices
 ////////////////////////////////////////////////////////
 
 Vec4 vertices[num_vertices];
@@ -100,6 +101,7 @@ Mat4 transformation_matricies[num_spheres] =
     {0,0,1,0},
     {0,0,0,1}},
 };
+
 
 
 void initSphere(float divisionDegrees)
@@ -212,8 +214,10 @@ void init(void)
 
     for(int i = 0; i < num_spheres; i++)
     {
+        initSphere(5.0);
+        
         // Scale sphere by half to make radius = 1
-        scaled = *scaleMatrix(&transformation_matricies[i], 0.5, &scaled);
+        scaled = *scaleMatrix(&transformation_matricies[i], 0.25, &scaled);
         
         // Translate sphere to desired point
         translated = *translate(&scaled, x, y, z, &translated);
@@ -268,18 +272,38 @@ void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
+    // load frustum
     glUniformMatrix4fv(projection_matrix_location, 1, GL_FALSE, (GLfloat *) &projection_matrix);
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_FILL);
     
     
     // Draw objects
-    glDrawArrays(GL_TRIANGLES, 0, num_vertices);
     //glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &model_view_matrix);
+    //glDrawArrays(GL_TRIANGLES, START_INDEX, HOW_MANY_VERTICES_TO_DRAW);
+    //Sphere 1
     glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[0]);
+    glDrawArrays(GL_TRIANGLES, 0, sphereVertices);
+    
+    //Sphere 2
+    glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[1]);
+    glDrawArrays(GL_TRIANGLES, sphereVertices, sphereVertices);
+    
+    //Sphere 3
+    glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[2]);
+    glDrawArrays(GL_TRIANGLES, sphereVertices*2, sphereVertices);
+    
+    //Sphere 4
+    glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[3]);
+    glDrawArrays(GL_TRIANGLES, sphereVertices*3, sphereVertices);
+    
+    //Sphere 5
+    glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[4]);
+    glDrawArrays(GL_TRIANGLES, sphereVertices*4, sphereVertices);
     
     glutSwapBuffers();
 }
+
 
 
 
@@ -298,6 +322,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
 
 
 
+
 void idle(void)
 {
     glutPostRedisplay();
@@ -308,8 +333,6 @@ void idle(void)
 int main(int argc, char **argv)
 {
     initGround();
-    initSphere(5.0);
-    
     
     // OpenGL initializaiton code
     glutInit(&argc, argv);
