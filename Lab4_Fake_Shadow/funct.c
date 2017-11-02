@@ -823,7 +823,7 @@ Mat4* translate(Mat4 *tr_matrix, float x, float y, float z, Mat4 *productMatrix)
         {x, y, z, 1.0}
     };
     
-    productMatrix = matMultiplication(&translationMatrix,tr_matrix,  productMatrix);
+    productMatrix = matMultiplication(&translationMatrix, tr_matrix,  productMatrix);
     
     return productMatrix;
 }

@@ -272,7 +272,9 @@ void initSphere()
             v_index++;
         }
     }
+    
 }
+
 
 
 
@@ -332,9 +334,9 @@ void init(void)
 {
     
     
-    eyex = 2, eyey = 1, eyez = 1;
+    //eyex = 2, eyey = 1, eyez = 1;
     
-    atx = 0, aty = 0, atz = 0;
+    //atx = 0, aty = 0, atz = 0;
     
     model_view = look_at(eyex, eyey, eyez, atx, aty, atz, 0, 1, 0);
     
@@ -455,6 +457,13 @@ int main(int argc, char **argv)
 {
     initSphere();
     initCube();
+    
+    // eye 0,1,2
+    // light 1,2,0
+    //
+    // eye 1,2,0
+    // light 0,2,5
+    
     
     printf("Please enter an eye point: ");
     scanf("%f,%f,%f*", &eyex, &eyey, &eyez);
