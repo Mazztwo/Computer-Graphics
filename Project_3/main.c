@@ -52,12 +52,7 @@ float DegreesToRadians = M_PI / 180.0;;
 int enableIdle = 0;
 
 // degrees for rotation of each sphere
-float degrees[5] = {0,0,0,0,0};
-
-// Degree increment for every sphere.
-// This lets each sphere rotate about Y
-// axis at a different speed
-float deg_increments[5] = {1,2,3,4,5};
+float degrees[5] = {1,1.2,1.4,1.6,1.8};
 
 // vertices[] and colors[] index
 int v_index = 0;
@@ -366,7 +361,6 @@ void idle(void)
     
     if(enableIdle)
     {
-        
         for(i = 0; i < num_spheres; i++)
         {
             // Generate rotation matrix for each sphere
@@ -376,9 +370,6 @@ void idle(void)
             // Apply rotation matrix
             temp = *matMultiplication(&rotation_matrices[i], &transformation_matricies[i], &temp);
             transformation_matricies[i] = temp;
-            
-            // Increment degrees
-            degrees[i] += deg_increments[i];
         }
         
     }
