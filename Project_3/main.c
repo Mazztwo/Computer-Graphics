@@ -42,7 +42,7 @@ Vec4 vertices[num_vertices];
 Vec4 colors[num_vertices];
 
 ///////////// Lookat and frustum variables/////////////////////////////////////////
-float eyex = 0, eyey = 0, eyez = 1;
+float eyex = 0, eyey = 1, eyez = 1;
 float atx = 0.0, aty = 0.0, atz = 0.0;
 float left = -0.05, right = 0.05, bottom = -0.05, top = 0.05, near = -0.05, far = -100.0;
 ///////////////////////////////////////////////////////////////////////////////////
@@ -74,6 +74,7 @@ Mat4 projection_matrix =
     
 };
 
+// Transformation matricies for each sphere
 Mat4 transformation_matricies[num_spheres] =
 {
     {{1,0,0,0},
@@ -102,6 +103,15 @@ Mat4 transformation_matricies[num_spheres] =
     {0,0,0,1}},
 };
 
+// Color for each of the 5 spheres
+Vec4 sphere_colors[5] =
+{
+    {1,1,0,1},          // Yellow
+    {1,0,0,1},          // Red
+    {0,1,0,1},          // Green
+    {0,0,1,1},          // Blue
+    {1,.65,0,1}         // Orange
+};
 
 
 void initSphere(float divisionDegrees)
@@ -186,7 +196,6 @@ void initSphere(float divisionDegrees)
             v_index++;
         }
     }
-    printf("Num vertices: %d\n",v_index);
 }
 
 void initGround()
@@ -202,8 +211,8 @@ void init(void)
     model_view_matrix = temp;
     
     // Initialize frustum
-    //tempMatrix = frustum(left, right, bottom, top, near, far);
-    //projection_matrix = tempMatrix;
+    //temp = frustum(left, right, bottom, top, near, far);
+    //projection_matrix = temp;
     
     // Initialize spheres
     // x,y,z coordinates sphere centers
@@ -272,34 +281,23 @@ void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    // load frustum
+    // Load frustum
     glUniformMatrix4fv(projection_matrix_location, 1, GL_FALSE, (GLfloat *) &projection_matrix);
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_FILL);
     
-    
-    // Draw objects
+    // For Reference:
     //glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &model_view_matrix);
     //glDrawArrays(GL_TRIANGLES, START_INDEX, HOW_MANY_VERTICES_TO_DRAW);
-    //Sphere 1
-    glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[0]);
-    glDrawArrays(GL_TRIANGLES, 0, sphereVertices);
     
-    //Sphere 2
-    glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[1]);
-    glDrawArrays(GL_TRIANGLES, sphereVertices, sphereVertices);
     
-    //Sphere 3
-    glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[2]);
-    glDrawArrays(GL_TRIANGLES, sphereVertices*2, sphereVertices);
-    
-    //Sphere 4
-    glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[3]);
-    glDrawArrays(GL_TRIANGLES, sphereVertices*3, sphereVertices);
-    
-    //Sphere 5
-    glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[4]);
-    glDrawArrays(GL_TRIANGLES, sphereVertices*4, sphereVertices);
+    // Draw 5 spheres
+    for(int i = 0; i < num_spheres; i++)
+    {
+        glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
+        glDrawArrays(GL_TRIANGLES, sphereVertices * i, sphereVertices);
+    }
+
     
     glutSwapBuffers();
 }
@@ -314,7 +312,44 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         exit(0);
     }
+    else if(key == 'x')
+    {
+        eyex -= 0.05;
+    }
+    else if(key == 'X')
+    {
+        eyex += 0.05;
+    }
+    else if(key == 'y')
+    {
+        eyey -= 0.05;
+    }
+    else if(key == 'Y')
+    {
+        eyey += 0.05;
+    }
+    else if(key == 'z')
+    {
+        eyez -= 0.05;
+    }
+    else if(key == 'Z')
+    {
+        eyez += 0.05;
+    }
    
+    
+    Mat4 temp = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
+    model_view_matrix = temp;
+    
+    printf("eyex: %f, eyey: %f, eyez: %f\n", eyex, eyey, eyez);
+
+    
+    // Reapply new model view
+    for(int i = 0; i < num_spheres; i++)
+    {
+        temp = *matMultiplication(&model_view_matrix, &transformation_matricies[i], &temp);
+        transformation_matricies[i] = temp;
+    }
     
     glutPostRedisplay();
     
