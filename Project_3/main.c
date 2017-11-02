@@ -243,7 +243,6 @@ void init(void)
         temp2 = *matMultiplication(&model_view_matrix, &temp1, &temp2);
         transformation_matricies[i] = temp2;
         
-        
         // Move center of next sphere
         x += 0.2;
     }
@@ -272,6 +271,8 @@ void init(void)
     glEnableVertexAttribArray(vColor);
     glVertexAttribPointer(vColor, 4, GL_FLOAT, GL_FALSE, 0, (GLvoid *) sizeof(vertices));
     
+    // What I'm passing in as 'model_view_matrix' isn't actually that variable, but
+    // each object's transformation_matrix.
     projection_matrix_location = glGetUniformLocation(program, "projection_matrix");
     model_view_matrix_location = glGetUniformLocation(program, "model_view_matrix");
 
@@ -350,18 +351,6 @@ void keyboard(unsigned char key, int mousex, int mousey)
     }
    
     
-    Mat4 temp = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-    model_view_matrix = temp;
-    
-    printf("eyex: %f, eyey: %f, eyez: %f\n", eyex, eyey, eyez);
-
-    
-    // Reapply new model view
-    for(int i = 0; i < num_spheres; i++)
-    {
-        temp = *matMultiplication(&model_view_matrix, &transformation_matricies[i], &temp);
-        transformation_matricies[i] = temp;
-    }
     
     glutPostRedisplay();
     
@@ -377,7 +366,7 @@ void idle(void)
     
     if(enableIdle)
     {
-        /*
+        
         for(i = 0; i < num_spheres; i++)
         {
             // Generate rotation matrix for each sphere
@@ -388,15 +377,9 @@ void idle(void)
             temp = *matMultiplication(&rotation_matrices[i], &transformation_matricies[i], &temp);
             transformation_matricies[i] = temp;
             
-            
             // Increment degrees
             degrees[i] += deg_increments[i];
         }
-         */
-        
-        
-    
-        
         
     }
     glutPostRedisplay();
