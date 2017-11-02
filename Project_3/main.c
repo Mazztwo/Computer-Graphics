@@ -44,7 +44,7 @@ Vec4 colors[num_vertices];
 ///////////// Lookat and frustum variables/////////////////////////////////////////
 float eyex = 0, eyey = 0, eyez = 1;
 float atx = 0.0, aty = 0.0, atz = 0.0;
-float left = -0.05, right = 0.05, bottom = -0.05, top = 0.05, near = -0.05, far = -100.0;
+float left = -0.5, right = 0.5, bottom = -0.5, top = 0.5, near = -0.5, far = -100.0;
 ///////////////////////////////////////////////////////////////////////////////////
 
 float DegreesToRadians = M_PI / 180.0;;
@@ -204,6 +204,7 @@ void initGround()
 }
 
 
+
 void init(void)
 {
     // Initialize model_view matrix
@@ -213,8 +214,8 @@ void init(void)
     Mat4 temp2;
     
     // Initialize frustum
-    //temp = frustum(left, right, bottom, top, near, far);
-    //projection_matrix = temp;
+    temp1 = frustum(left, right, bottom, top, near, far);
+    projection_matrix = temp1;
     
     // Initialize spheres
     // x,y,z coordinates sphere centers
@@ -309,6 +310,7 @@ void display(void)
 
 
 
+
 void keyboard(unsigned char key, int mousex, int mousey)
 {
     // Quit program
@@ -344,8 +346,54 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         enableIdle = 1;
     }
+    else if (key == 't')
+    {
+        top -=.1;
+    }
+    else if (key == 'T')
+    {
+        top +=.1;
+    }
+    else if (key == 'b')
+    {
+        bottom -= .1;
+    }
+    else if (key == 'B')
+    {
+        bottom += .1;
+    }
+    else if (key == 'l')
+    {
+        left -= .1;
+    }
+    else if (key == 'L')
+    {
+        left += .1;
+    }
+    else if (key == 'r')
+    {
+        right -= .1;
+    }
+    else if (key == 'R')
+    {
+        right += .1;
+    }
+    else if (key == 'n')
+    {
+        near -= .1;
+    }
+    else if (key == 'N')
+    {
+        near += .1;
+    }
    
+    printf("Top: %f, Bottom: %f\n", top, bottom);
+    printf("Left: %f, Right: %f\n", left, right);
+    printf("Near: %f, Far: %f\n", near, far);
     
+    // Initialize frustum
+    Mat4 temp1 = frustum(left, right, bottom, top, near, far);
+    projection_matrix = temp1;
     
     glutPostRedisplay();
     
