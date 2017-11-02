@@ -42,7 +42,7 @@ Vec4 vertices[num_vertices];
 Vec4 colors[num_vertices];
 
 ///////////// Lookat and frustum variables/////////////////////////////////////////
-float eyex = 0, eyey = 1, eyez = 1;
+float eyex = 0, eyey = 0, eyez = 1;
 float atx = 0.0, aty = 0.0, atz = 0.0;
 float left = -0.05, right = 0.05, bottom = -0.05, top = 0.05, near = -0.05, far = -100.0;
 ///////////////////////////////////////////////////////////////////////////////////
@@ -50,7 +50,20 @@ float left = -0.05, right = 0.05, bottom = -0.05, top = 0.05, near = -0.05, far 
 float DegreesToRadians = M_PI / 180.0;;
 
 int enableIdle = 0;
+
+// degrees for rotation of each sphere
+float degrees[5] = {0,0,0,0,0};
+
+// Degree increment for every sphere.
+// This lets each sphere rotate about Y
+// axis at a different speed
+float deg_increments[5] = {1,2,3,4,5};
+
+// vertices[] and colors[] index
 int v_index = 0;
+
+// sphere_color index
+int c_index = 0;
 
 GLuint projection_matrix_location;
 GLuint model_view_matrix_location;
@@ -103,6 +116,36 @@ Mat4 transformation_matricies[num_spheres] =
     {0,0,0,1}},
 };
 
+// Rotation matrices for each sphere
+Mat4 rotation_matrices[num_spheres] =
+{
+    {{1,0,0,0},
+        {0,1,0,0},
+        {0,0,1,0},
+        {0,0,0,1}},
+    
+    {{1,0,0,0},
+        {0,1,0,0},
+        {0,0,1,0},
+        {0,0,0,1}},
+    
+    {{1,0,0,0},
+        {0,1,0,0},
+        {0,0,1,0},
+        {0,0,0,1}},
+    
+    {{1,0,0,0},
+        {0,1,0,0},
+        {0,0,1,0},
+        {0,0,0,1}},
+    
+    {{1,0,0,0},
+        {0,1,0,0},
+        {0,0,1,0},
+        {0,0,0,1}},
+};
+
+
 // Color for each of the 5 spheres
 Vec4 sphere_colors[5] =
 {
@@ -114,9 +157,9 @@ Vec4 sphere_colors[5] =
 };
 
 
+
 void initSphere(float divisionDegrees)
 {
-    srand ( time(NULL) );
     
     for (float phi = -90.0; phi <= 90.0; phi += divisionDegrees)
     {
@@ -128,75 +171,36 @@ void initSphere(float divisionDegrees)
             float thetar = theta*DegreesToRadians;
             float thetar20 = (theta + divisionDegrees)*DegreesToRadians;
             
-            vertices[v_index].x = sin(thetar)*cos(phir);
-            vertices[v_index].y = cos(thetar)*cos(phir);
-            vertices[v_index].z = sin(phir);
-            vertices[v_index].w = 1.0;
-            
-            colors[v_index].x = rand() / (float)RAND_MAX;
-            colors[v_index].y = rand() / (float)RAND_MAX;
-            colors[v_index].z = rand() / (float)RAND_MAX;
-            colors[v_index].w = 1.0;
+            vecArrayAdd(&vertices, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 1);
+            vecArrayAdd(&colors, v_index, sphere_colors[c_index].x, sphere_colors[c_index].y, sphere_colors[c_index].z, 1);
             v_index++;
             
-            vertices[v_index].x = sin(thetar)*cos(phir20);
-            vertices[v_index].y = cos(thetar)*cos(phir20);
-            vertices[v_index].z = sin(phir20);
-            vertices[v_index].w = 1.0;
-            
-            colors[v_index].x = rand() / (float)RAND_MAX;
-            colors[v_index].y = rand() / (float)RAND_MAX;
-            colors[v_index].z = rand() / (float)RAND_MAX;
-            colors[v_index].w = 1.0;
+            vecArrayAdd(&vertices, v_index, sin(thetar)*cos(phir20), cos(thetar)*cos(phir20), sin(phir20), 1);
+            vecArrayAdd(&colors, v_index, sphere_colors[c_index].x, sphere_colors[c_index].y, sphere_colors[c_index].z, 1);
+            v_index++;
+  
+            vecArrayAdd(&vertices, v_index, sin(thetar20)*cos(phir20), cos(thetar20)*cos(phir20), sin(phir20), 1);
+            vecArrayAdd(&colors, v_index, sphere_colors[c_index].x, sphere_colors[c_index].y, sphere_colors[c_index].z, 1);
             v_index++;
             
-            vertices[v_index].x = sin(thetar20)*cos(phir20);
-            vertices[v_index].y = cos(thetar20)*cos(phir20);
-            vertices[v_index].z = sin(phir20);
-            vertices[v_index].w = 1.0;
-            
-            colors[v_index].x = rand() / (float)RAND_MAX;
-            colors[v_index].y = rand() / (float)RAND_MAX;
-            colors[v_index].z = rand() / (float)RAND_MAX;
-            colors[v_index].w = 1.0;
+            vecArrayAdd(&vertices, v_index, sin(thetar20)*cos(phir20), cos(thetar20)*cos(phir20), sin(phir20), 1);
+            vecArrayAdd(&colors, v_index, sphere_colors[c_index].x, sphere_colors[c_index].y, sphere_colors[c_index].z, 1);
             v_index++;
             
-            
-            vertices[v_index].x = sin(thetar20)*cos(phir20);
-            vertices[v_index].y = cos(thetar20)*cos(phir20);
-            vertices[v_index].z = sin(phir20);
-            vertices[v_index].w = 1.0;
-            
-            colors[v_index].x = rand() / (float)RAND_MAX;
-            colors[v_index].y = rand() / (float)RAND_MAX;
-            colors[v_index].z = rand() / (float)RAND_MAX;
-            colors[v_index].w = 1.0;
+            vecArrayAdd(&vertices, v_index, sin(thetar20)*cos(phir), cos(thetar20)*cos(phir), sin(phir), 1);
+            vecArrayAdd(&colors, v_index, sphere_colors[c_index].x, sphere_colors[c_index].y, sphere_colors[c_index].z, 1);
             v_index++;
-            
-            vertices[v_index].x = sin(thetar20)*cos(phir);
-            vertices[v_index].y = cos(thetar20)*cos(phir);
-            vertices[v_index].z = sin(phir);
-            vertices[v_index].w = 1.0;
-            
-            colors[v_index].x = rand() / (float)RAND_MAX;
-            colors[v_index].y = rand() / (float)RAND_MAX;
-            colors[v_index].z = rand() / (float)RAND_MAX;
-            colors[v_index].w = 1.0;
-            v_index++;
-            
-            vertices[v_index].x = sin(thetar)*cos(phir);
-            vertices[v_index].y = cos(thetar)*cos(phir);
-            vertices[v_index].z = sin(phir);
-            vertices[v_index].w = 1.0;
-            
-            colors[v_index].x = rand() / (float)RAND_MAX;
-            colors[v_index].y = rand() / (float)RAND_MAX;
-            colors[v_index].z = rand() / (float)RAND_MAX;
-            colors[v_index].w = 1.0;
+             
+            vecArrayAdd(&vertices, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 1);
+            vecArrayAdd(&colors, v_index, sphere_colors[c_index].x, sphere_colors[c_index].y, sphere_colors[c_index].z, 1);
             v_index++;
         }
     }
+    
+    // Increment sphere_color each time a new sphere is made
+    c_index++;
 }
+
 
 void initGround()
 {
@@ -204,11 +208,14 @@ void initGround()
     
 }
 
+
 void init(void)
 {
     // Initialize model_view matrix
-    Mat4 temp = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-    model_view_matrix = temp;
+    Mat4 temp1 = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
+    model_view_matrix = temp1;
+    
+    Mat4 temp2;
     
     // Initialize frustum
     //temp = frustum(left, right, bottom, top, near, far);
@@ -216,28 +223,29 @@ void init(void)
     
     // Initialize spheres
     // x,y,z coordinates sphere centers
-    float x = 0, y = 0.5 , z = 0;
-    Mat4 scaled;
-    Mat4 translated;
+    float x = 0, y = 0 , z = 0;
+    Mat4 scaling_matrix;
+    Mat4 translation_matrix;
     Mat4 transformed;
 
     for(int i = 0; i < num_spheres; i++)
     {
         initSphere(5.0);
         
-        // Scale sphere by half to make radius = 1
-        scaled = *scaleMatrix(&transformation_matricies[i], 0.25, &scaled);
+        // Generate scaling matrix
+        scaling_matrix = *scaleMatrix(0.1, &scaling_matrix);
         
-        // Translate sphere to desired point
-        translated = *translate(&scaled, x, y, z, &translated);
+        // Generate Translation matrix
+        translation_matrix = *translate(x, y, z, &translation_matrix);
         
-        // Apply model view
-        transformed = *matMultiplication(&model_view_matrix, &translated, &transformed);
+        // Apply scaling, then translation, then finally model view
+        temp1 = *matMultiplication(&translation_matrix, &scaling_matrix, &temp1);
+        temp2 = *matMultiplication(&model_view_matrix, &temp1, &temp2);
+        transformation_matricies[i] = temp2;
         
-        transformation_matricies[i] = transformed;
         
         // Move center of next sphere
-        x += 0.5;
+        x += 0.2;
     }
     
     
@@ -336,6 +344,10 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         eyez += 0.05;
     }
+    else if (key == ' ')
+    {
+        enableIdle = 1;
+    }
    
     
     Mat4 temp = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
@@ -360,6 +372,33 @@ void keyboard(unsigned char key, int mousex, int mousey)
 
 void idle(void)
 {
+    int i = 0;
+    Mat4 temp;
+    
+    if(enableIdle)
+    {
+        /*
+        for(i = 0; i < num_spheres; i++)
+        {
+            // Generate rotation matrix for each sphere
+            temp = *matRotateAboutY(degrees[i], &temp);
+            rotation_matrices[i] = temp;
+            
+            // Apply rotation matrix
+            temp = *matMultiplication(&rotation_matrices[i], &transformation_matricies[i], &temp);
+            transformation_matricies[i] = temp;
+            
+            
+            // Increment degrees
+            degrees[i] += deg_increments[i];
+        }
+         */
+        
+        
+    
+        
+        
+    }
     glutPostRedisplay();
 }
 
