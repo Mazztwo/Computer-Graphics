@@ -42,7 +42,7 @@ Vec4 vertices[num_vertices];
 Vec4 colors[num_vertices];
 
 ///////////// Lookat and frustum variables/////////////////////////////////////////
-float eyex = 0, eyey = 3.5, eyez = 6;
+float eyex = 0.0, eyey = 2.0, eyez = 2.0;
 float atx = 0.0, aty = 0.0, atz = 0.0;
 float left = -0.5, right = 0.5, bottom = -0.5, top = 0.5, near = -0.5, far = -100.0;
 ///////////////////////////////////////////////////////////////////////////////////
@@ -86,31 +86,54 @@ Mat4 projection_matrix =
 // Transformation matricies for each sphere
 Mat4 transformation_matricies[num_spheres] =
 {
-    {{1,0,0,0},
-    {0,1,0,0},
-    {0,0,1,0},
-    {0,0,0,1}},
+    {{1.0, 0.0, 0.0, 0.0},
+        {0.0, 1.0, 0.0, 0.0},
+        {0.0, 0.0, 1.0, 0.0},
+        {0.0, 0.0, 0.0, 1.0}},
     
-    {{1,0,0,0},
-    {0,1,0,0},
-    {0,0,1,0},
-    {0,0,0,1}},
+    {{1.0, 0.0, 0.0, 0.0},
+        {0.0, 1.0, 0.0, 0.0},
+        {0.0, 0.0, 1.0, 0.0},
+        {0.0, 0.0, 0.0, 1.0}},
     
-    {{1,0,0,0},
-    {0,1,0,0},
-    {0,0,1,0},
-    {0,0,0,1}},
+    {{1.0, 0.0, 0.0, 0.0},
+        {0.0, 1.0, 0.0, 0.0},
+        {0.0, 0.0, 1.0, 0.0},
+        {0.0, 0.0, 0.0, 1.0}},
     
-    {{1,0,0,0},
-    {0,1,0,0},
-    {0,0,1,0},
-    {0,0,0,1}},
+    {{1.0, 0.0, 0.0, 0.0},
+        {0.0, 1.0, 0.0, 0.0},
+        {0.0, 0.0, 1.0, 0.0},
+        {0.0, 0.0, 0.0, 1.0}},
     
-    {{1,0,0,0},
-    {0,1,0,0},
-    {0,0,1,0},
-    {0,0,0,1}},
+    {{1.0, 0.0, 0.0, 0.0},
+        {0.0, 1.0, 0.0, 0.0},
+        {0.0, 0.0, 1.0, 0.0},
+        {0.0, 0.0, 0.0, 1.0}},
 };
+
+// ctm for ground
+Mat4 ground_transformation =
+{
+    {1.0, 0.0, 0.0, 0.0},
+    {0.0, 1.0, 0.0, 0.0},
+    {0.0, 0.0, 1.0, 0.0},
+    {0.0, 0.0, 0.0, 1.0}
+};
+
+// ground vertices
+Vec4 ground_vertices[6] =
+{
+    {-4.0, 0.0, -4.0, 1.0},
+    {-4.0, 0.0,  4.0, 1.0},
+    { 4.0, 0.0, -4.0, 1.0},
+    
+    { 4.0, 0.0, -4.0, 1.0},
+    {-4.0, 0.0,  4.0, 1.0},
+    { 4.0, 0.0,  4.0, 1.0}
+};
+
+Vec4 ground_color = {0.0,0.4,0.0,1.0 };
 
 // Rotation matrices for each sphere
 Mat4 rotation_matrices[num_spheres] =
@@ -151,6 +174,7 @@ Vec4 sphere_colors[5] =
     {0,0,1,1},          // Blue
     {1,.65,0,1}         // Orange
 };
+
 
 
 
@@ -201,7 +225,13 @@ void initSphere(float divisionDegrees)
 
 void initGround()
 {
+    for(int i = 0; i < groundVertices; i++)
+    {
+        vertices[v_index] = ground_vertices[i];
+        colors[v_index] = ground_color;
     
+        v_index++;
+    }
     
 }
 
@@ -220,7 +250,7 @@ void init(void)
     
     // Initialize spheres
     // x,y,z coordinates sphere centers
-    float x = 0, y = 0 , z = 0;
+    float x = 0, y = 0.1 , z = 0;
     Mat4 scaling_matrix;
     Mat4 translation_matrix;
     Mat4 transformed;
@@ -268,7 +298,7 @@ void init(void)
     glVertexAttribPointer(vColor, 4, GL_FLOAT, GL_FALSE, 0, (GLvoid *) sizeof(vertices));
     
     
-    
+    // Load in matricies to the vertex shader
     projection_matrix_location = glGetUniformLocation(program, "projection_matrix");
     model_view_matrix_location = glGetUniformLocation(program, "model_view_matrix");
     ctm_location = glGetUniformLocation(program, "ctm");
@@ -302,11 +332,15 @@ void display(void)
     //glDrawArrays(GL_TRIANGLES, START_INDEX, HOW_MANY_VERTICES_TO_DRAW);
     
     
-    // Draw 5 spheres
+    // Load ground ctm
+    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ground_transformation);
+    glDrawArrays(GL_TRIANGLES, 0, groundVertices);
+    
+    // Load ctm's of spheres
     for(int i = 0; i < num_spheres; i++)
     {
         glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
-        glDrawArrays(GL_TRIANGLES, sphereVertices * i, sphereVertices);
+        glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
     }
 
     
