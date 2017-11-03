@@ -42,7 +42,7 @@ Vec4 vertices[num_vertices];
 Vec4 colors[num_vertices];
 
 ///////////// Lookat and frustum variables/////////////////////////////////////////
-float eyex = 0, eyey = 0, eyez = 1;
+float eyex = 0, eyey = 3.5, eyez = 6;
 float atx = 0.0, aty = 0.0, atz = 0.0;
 float left = -0.5, right = 0.5, bottom = -0.5, top = 0.5, near = -0.5, far = -100.0;
 ///////////////////////////////////////////////////////////////////////////////////
@@ -154,6 +154,7 @@ Vec4 sphere_colors[5] =
 
 
 
+
 void initSphere(float divisionDegrees)
 {
     
@@ -206,13 +207,12 @@ void initGround()
 
 
 
+
 void init(void)
 {
     // Initialize model_view matrix
     Mat4 temp1 = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
     model_view_matrix = temp1;
-    
-    Mat4 temp2;
     
     // Initialize frustum
     temp1 = frustum(left, right, bottom, top, near, far);
@@ -235,10 +235,9 @@ void init(void)
         // Generate Translation matrix
         translation_matrix = *translate(x, y, z, &translation_matrix);
         
-        // Apply scaling, then translation, then finally model view
+        // Apply scaling, then translation
         temp1 = *matMultiplication(&translation_matrix, &scaling_matrix, &temp1);
-        temp2 = *matMultiplication(&model_view_matrix, &temp1, &temp2);
-        transformation_matricies[i] = temp2;
+        transformation_matricies[i] = temp1;
         
         // Move center of next sphere
         x += 0.2;
@@ -397,13 +396,22 @@ void keyboard(unsigned char key, int mousex, int mousey)
         near += .1;
     }
    
+    printf("MODEL VIEW: \N");
+    printf("eyex: %f, eyey: %f, eyez: %f", eyex, eyey, eyez);
+    printf("\n");
+    /*
+    printf("FRUSTUM: \N");
     printf("Top: %f, Bottom: %f\n", top, bottom);
     printf("Left: %f, Right: %f\n", left, right);
     printf("Near: %f, Far: %f\n", near, far);
+    */
+    // Recalculate model_view matrix
+    Mat4 temp1 = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
+    model_view_matrix = temp1;
     
-    // Initialize frustum
-    Mat4 temp1 = frustum(left, right, bottom, top, near, far);
-    projection_matrix = temp1;
+    // Recalculate frustum
+    //temp1 = frustum(left, right, bottom, top, near, far);
+    //projection_matrix = temp1;
     
     glutPostRedisplay();
     
