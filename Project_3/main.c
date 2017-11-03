@@ -62,6 +62,7 @@ int c_index = 0;
 
 GLuint projection_matrix_location;
 GLuint model_view_matrix_location;
+GLuint ctm_location;
 
 
 Mat4 model_view_matrix =
@@ -267,10 +268,12 @@ void init(void)
     glEnableVertexAttribArray(vColor);
     glVertexAttribPointer(vColor, 4, GL_FLOAT, GL_FALSE, 0, (GLvoid *) sizeof(vertices));
     
-    // What I'm passing in as 'model_view_matrix' isn't actually that variable, but
-    // each object's transformation_matrix.
+    
+    
     projection_matrix_location = glGetUniformLocation(program, "projection_matrix");
     model_view_matrix_location = glGetUniformLocation(program, "model_view_matrix");
+    ctm_location = glGetUniformLocation(program, "ctm");
+    
 
 
     glEnable(GL_DEPTH_TEST);
@@ -282,14 +285,18 @@ void init(void)
 
 
 
+
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glPolygonMode(GL_FRONT, GL_FILL);
+    glPolygonMode(GL_BACK, GL_FILL);
     
     // Load frustum
     glUniformMatrix4fv(projection_matrix_location, 1, GL_FALSE, (GLfloat *) &projection_matrix);
-    glPolygonMode(GL_FRONT, GL_FILL);
-    glPolygonMode(GL_BACK, GL_FILL);
+    
+    // Load Model view
+    glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &model_view_matrix);
     
     // For Reference:
     //glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &model_view_matrix);
@@ -299,10 +306,13 @@ void display(void)
     // Draw 5 spheres
     for(int i = 0; i < num_spheres; i++)
     {
-        glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
+        glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
         glDrawArrays(GL_TRIANGLES, sphereVertices * i, sphereVertices);
     }
 
+    
+    
+    
     
     glutSwapBuffers();
 }
