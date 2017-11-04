@@ -35,6 +35,14 @@ typedef struct
     float z;
 } Vec3;
 
+typedef struct
+{
+    Vec4 reflect_ambient;
+    Vec4 reflect_diffuse;
+    Vec4 reflect_specular;
+    GLfloat shininess;
+} material;
+
 
 
 void printVec4(Vec4 *vectorToPrint);

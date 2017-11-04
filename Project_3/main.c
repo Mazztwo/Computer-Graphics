@@ -177,11 +177,26 @@ Vec4 sphere_colors[num_spheres] =
     {1,0,0,1},          // Red
     {0,1,0,1},          // Green
     {0,0,1,1},          // Blue
-    {1,.65,0,1},         // Orange
+    {1,.5,0,1},         // Orange
     {1,1,1,1}           // White
 };
 
+// Lighting model attributes
+Vec4 light_diffuse = {1.0, 1.0, 1.0, 1.0};
+Vec4 light_specular = {1.0, 1.0, 1.0, 1.0};
+Vec4 light_ambient = {0.2, 0.2, 0.2, 1.0};
 
+
+// materials
+material ball_materials[5] =
+{
+    {{1.0, 0.0, 0.0, 1.0}, {1.0, 0.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},
+    {{0.0, 1.0, 0.0, 1.0}, {0.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},
+    {{0.0, 0.0, 1.0, 1.0}, {0.0, 0.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},
+    {{1.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},
+    {{1.0, 0.5, 0.0, 1.0}, {1.0, 0.5, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10}
+    
+};
 
 
 
@@ -270,7 +285,7 @@ void init(void)
         // Generate scaling matrix
         scaling_matrix = *scaleMatrix(0.1, &scaling_matrix);
         
-        // Generate Translation matrix
+        // Generate Translation matrix1
         translation_matrix = *translate(x, y, z, &translation_matrix);
         
         // Apply scaling, then translation
