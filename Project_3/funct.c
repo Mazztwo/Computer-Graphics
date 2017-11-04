@@ -272,6 +272,31 @@ float vecMagnitude(Vec4 *vec)
     return magnitude;
 }
 
+/*
+ To calculate values of variables ambient, diffuse, and specular,
+ we need to define a special product operation.
+ 
+ Note: This is NOT matrix multiplication.
+ 
+ 
+ This will allow use to calculate all red, green,
+ and blue, component in one function.
+*/
+Vec4* product(Vec4 u, Vec4 v, Vec4 *result)
+{
+    result->x = u.x * v.x;
+    result->y = u.y * v.y;
+    result->z = u.z * v.z;
+    result->w = u.w * v.w;
+    
+    return result;
+}
+
+
+
+
+
+
 
 /*
 Function:

@@ -54,6 +54,7 @@ Vec4* vec4subtraction(Vec4* vec1, Vec4* vec2, Vec4 *subVec);
 float angleBetweenVectors(Vec4 *vec1, Vec4 *vec2);
 Vec4* vec4create(float x, float y, float z, float w, Vec4 *result);
 float vecMagnitude(Vec4 *vec);
+Vec4* product(Vec4 u, Vec4 v, Vec4 *result);
 
 void printMat4(Mat4 *mat);
 Mat4* scalarMultMatrix(float scalar, Mat4 *mat, Mat4 *productMatrix);

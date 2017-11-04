@@ -60,9 +60,9 @@ int v_index = 0;
 // sphere_color index
 int c_index = 0;
 
-GLuint projection_matrix_location;
-GLuint model_view_matrix_location;
-GLuint ctm_location;
+GLuint projection_matrix_location, model_view_matrix_location, ctm_location;
+GLuint AmbientProduct_location, DiffuseProduct_location, SpecularProduct_location, LightPosition_location;
+GLuint shininess_location, attenuation_constant_location, attenuation_linear_location, attenuation_quadratic_location;
 
 
 Mat4 model_view_matrix =
@@ -208,7 +208,16 @@ material materials[num_spheres + 1] =
 
 
 // Light position
-float lightx = 0, lighty = .5, lightz = 0;
+Vec4 LightPosition = {0, .5, 0, 1.0};
+
+Vec4 AmbientProduct, DiffuseProduct, SpecularProduct;
+float shininess, attenuation_constant, attenuation_linear, attenuation_quadratic;
+
+
+
+
+
+
 
 void initSphere(float divisionDegrees)
 {
@@ -309,7 +318,7 @@ void init(void)
     initSphere(5.0);
     
     scaling_matrix = *scaleMatrix(.02, &scaling_matrix);
-    translation_matrix = *translate(lightx,lighty,lightz, &translation_matrix);
+    translation_matrix = *translate(LightPosition.x,LightPosition.y,LightPosition.z, &translation_matrix);
     
     // i = current index after other spheres have been initialized
     // Apply scaling, then translation
@@ -332,13 +341,18 @@ void init(void)
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
     glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices), sizeof(colors), colors);
     
+    
+    // Send in position
     GLuint vPosition = glGetAttribLocation(program, "vPosition");
     glEnableVertexAttribArray(vPosition);
     glVertexAttribPointer(vPosition, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
     
-    GLuint vColor = glGetAttribLocation(program, "vColor");
-    glEnableVertexAttribArray(vColor);
-    glVertexAttribPointer(vColor, 4, GL_FLOAT, GL_FALSE, 0, (GLvoid *) sizeof(vertices));
+    
+    // Send in normal
+    // Used to be vColor
+    GLuint vNormal = glGetAttribLocation(program, "vNormal");
+    glEnableVertexAttribArray(vNormal);
+    glVertexAttribPointer(vNormal, 4, GL_FLOAT, GL_FALSE, 0, (GLvoid *) sizeof(vertices));
     
     
     // Load in matricies to the vertex shader
@@ -346,7 +360,17 @@ void init(void)
     model_view_matrix_location = glGetUniformLocation(program, "model_view_matrix");
     ctm_location = glGetUniformLocation(program, "ctm");
     
-
+    // Load the rest
+    AmbientProduct_location = glGetUniformLocation(program, "AmbientProduct");
+    DiffuseProduct_location = glGetUniformLocation(program, "DiffuseProduct");
+    SpecularProduct_location = glGetUniformLocation(program, "SpecularProduct");
+    LightPosition_location = glGetUniformLocation(program, "LightPosition");
+    
+    shininess_location = glGetUniformLocation(program, "shininess");
+    attenuation_constant_location = glGetUniformLocation(program, "attenuation_constant");
+    attenuation_linear_location = glGetUniformLocation(program, "attenuation_linear");
+    attenuation_quadratic_location = glGetUniformLocation(program, "attenuation_quadratic");
+   
 
     glEnable(GL_DEPTH_TEST);
 
@@ -385,6 +409,41 @@ void display(void)
         glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
     }
     
+    
+     // Load in rest of data
+     
+     // Ambient product (array of vectors)
+    Vec4 temp = *product(materials[0].reflect_ambient, light_ambient, &temp);
+    AmbientProduct = temp;
+    glUniform4fv(AmbientProduct_location, 1, (GLfloat *) &AmbientProduct);
+    
+    // Diffuse product (array of vectors)
+    temp = *product(materials[0].reflect_diffuse, light_diffuse, &temp);
+    DiffuseProduct = temp;
+    glUniform4fv(DiffuseProduct_location, 1, (GLfloat *) &DiffuseProduct);
+    
+    // Specular product (array of vectors)
+    temp = *product(materials[0].reflect_specular, light_specular, &temp);
+    SpecularProduct = temp;
+    glUniform4fv(SpecularProduct_location, 1, (GLfloat *) &SpecularProduct);
+    
+    // Shininess (array of floats, just sent 1 here)
+    glUniform1fv(shininess_location, 1, (GLfloat *) &materials[0].shininess);
+    
+    // Light Position
+    // If light source is fixed based on camera frame, no need to transform.
+    // If light source is fixed based on object frame, it must be transformed
+    glUniform1fv(LightPosition_location, 1, (GLfloat *) &LightPosition);
+    
+    
+    
+    
+    /*
+     uniform float attenuation_constant, attenuation_linear, attenuation_quadratic;
+     
+     GLuint attenuation_constant_location, attenuation_linear_location, attenuation_quadratic_location;
+     
+     */
     
     
     
