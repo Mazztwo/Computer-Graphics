@@ -182,24 +182,33 @@ Vec4 sphere_colors[num_spheres] =
 };
 
 // Lighting model attributes
+Vec4 light_ambient = {0.2, 0.2, 0.2, 1.0};
 Vec4 light_diffuse = {1.0, 1.0, 1.0, 1.0};
 Vec4 light_specular = {1.0, 1.0, 1.0, 1.0};
-Vec4 light_ambient = {0.2, 0.2, 0.2, 1.0};
+
 
 
 // materials
-material ball_materials[5] =
+material materials[num_spheres + 1] =
 {
-    {{1.0, 0.0, 0.0, 1.0}, {1.0, 0.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},
-    {{0.0, 1.0, 0.0, 1.0}, {0.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},
-    {{0.0, 0.0, 1.0, 1.0}, {0.0, 0.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},
-    {{1.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},
-    {{1.0, 0.5, 0.0, 1.0}, {1.0, 0.5, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10}
+    // Ground
+    {{0.0, 0.4, 0.0, 1.0}, {0.0, 0.4, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  //Dark green
+    
+    // Spheres
+    {{1.0, 0.0, 0.0, 1.0}, {1.0, 0.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Red
+    {{0.0, 1.0, 0.0, 1.0}, {0.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Green
+    {{0.0, 0.0, 1.0, 1.0}, {0.0, 0.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Blue
+    {{1.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Yellow
+    {{1.0, 0.5, 0.0, 1.0}, {1.0, 0.5, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Orange
+    
+    // Light ball
+    {{1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10}   // White
     
 };
 
 
-
+// Light position
+float lightx = 0, lighty = .5, lightz = 0;
 
 void initSphere(float divisionDegrees)
 {
@@ -299,9 +308,8 @@ void init(void)
     // Init tiny light ball above
     initSphere(5.0);
     
-    x = 0, y = .5, z = 0;
     scaling_matrix = *scaleMatrix(.02, &scaling_matrix);
-    translation_matrix = *translate(x,y,z, &translation_matrix);
+    translation_matrix = *translate(lightx,lighty,lightz, &translation_matrix);
     
     // i = current index after other spheres have been initialized
     // Apply scaling, then translation
