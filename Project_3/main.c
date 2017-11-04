@@ -31,7 +31,7 @@ Main file for Project 2
 #define BUFFER_OFFSET( offset )   ((GLvoid*) (offset))
 
 #define windowSize 375
-#define num_spheres 5
+#define num_spheres 6
 #define groundVertices 6
 #define sphereVertices 16206
 ///////// num_vertices is 16206 for a 5 degree increment
@@ -86,6 +86,11 @@ Mat4 projection_matrix =
 // Transformation matricies for each sphere
 Mat4 transformation_matricies[num_spheres] =
 {
+    {{1.0, 0.0, 0.0, 0.0},
+        {0.0, 1.0, 0.0, 0.0},
+        {0.0, 0.0, 1.0, 0.0},
+        {0.0, 0.0, 0.0, 1.0}},
+    
     {{1.0, 0.0, 0.0, 0.0},
         {0.0, 1.0, 0.0, 0.0},
         {0.0, 0.0, 1.0, 0.0},
@@ -166,14 +171,16 @@ Mat4 rotation_matrices[num_spheres] =
 
 
 // Color for each of the 5 spheres
-Vec4 sphere_colors[5] =
+Vec4 sphere_colors[num_spheres] =
 {
     {1,1,0,1},          // Yellow
     {1,0,0,1},          // Red
     {0,1,0,1},          // Green
     {0,0,1,1},          // Blue
-    {1,.65,0,1}         // Orange
+    {1,.65,0,1},         // Orange
+    {1,1,1,1}           // White
 };
+
 
 
 
@@ -248,14 +255,15 @@ void init(void)
     temp1 = frustum(left, right, bottom, top, near, far);
     projection_matrix = temp1;
     
-    // Initialize spheres
+    // Initialize spheress
     // x,y,z coordinates sphere centers
     float x = 0, y = 0.1 , z = 0;
     Mat4 scaling_matrix;
     Mat4 translation_matrix;
     Mat4 transformed;
+    int i;
 
-    for(int i = 0; i < num_spheres; i++)
+    for(i = 0; i < 5; i++)
     {
         initSphere(5.0);
         
@@ -272,6 +280,18 @@ void init(void)
         // Move center of next sphere
         x += 0.2;
     }
+    
+    // Init tiny light ball above
+    initSphere(5.0);
+    
+    x = 0, y = .5, z = 0;
+    scaling_matrix = *scaleMatrix(.02, &scaling_matrix);
+    translation_matrix = *translate(x,y,z, &translation_matrix);
+    
+    // i = current index after other spheres have been initialized
+    // Apply scaling, then translation
+    temp1 = *matMultiplication(&translation_matrix, &scaling_matrix, &temp1);
+    transformation_matricies[i] = temp1;
     
     
     
@@ -314,7 +334,6 @@ void init(void)
 
 
 
-
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -342,7 +361,6 @@ void display(void)
         glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
         glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
     }
-
     
     
     
@@ -430,22 +448,22 @@ void keyboard(unsigned char key, int mousex, int mousey)
         near += .1;
     }
    
-    printf("MODEL VIEW: \N");
+    printf("MODEL VIEW: \n");
     printf("eyex: %f, eyey: %f, eyez: %f", eyex, eyey, eyez);
     printf("\n");
-    /*
-    printf("FRUSTUM: \N");
+    
+    printf("FRUSTUM: \n");
     printf("Top: %f, Bottom: %f\n", top, bottom);
     printf("Left: %f, Right: %f\n", left, right);
     printf("Near: %f, Far: %f\n", near, far);
-    */
+    
     // Recalculate model_view matrix
     Mat4 temp1 = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
     model_view_matrix = temp1;
     
     // Recalculate frustum
-    //temp1 = frustum(left, right, bottom, top, near, far);
-    //projection_matrix = temp1;
+    temp1 = frustum(left, right, bottom, top, near, far);
+    projection_matrix = temp1;
     
     glutPostRedisplay();
     
