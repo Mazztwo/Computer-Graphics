@@ -390,6 +390,10 @@ void display(void)
     // Load Model view
     glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &model_view_matrix);
     
+    
+    // Light Position
+    glUniform1fv(LightPosition_location, 1, (GLfloat *) &LightPosition);
+    
     // Load Ground information
     /////////////////////////////////////////////////////////////////
     // Ambient product (array of vectors)
@@ -445,12 +449,6 @@ void display(void)
         glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
         glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
     }
-   
-    // Light Position
-    // If light source is fixed based on camera frame, no need to transform.
-    // If light source is fixed based on object frame, it must be transformed
-    glUniform1fv(LightPosition_location, 1, (GLfloat *) &LightPosition);
-    
     
     
     /*
@@ -476,91 +474,74 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         exit(0);
     }
-    else if(key == 'x')
+    // Controls for eye
+    else if(key == 'l')
     {
         eyex -= 0.05;
     }
-    else if(key == 'X')
+    else if(key == 'L')
     {
         eyex += 0.05;
     }
-    else if(key == 'y')
+    else if(key == 'o')
     {
         eyey -= 0.05;
     }
-    else if(key == 'Y')
+    else if(key == 'O')
     {
         eyey += 0.05;
     }
+    else if(key == 'p')
+    {
+        eyez -= 0.2;
+    }
+    else if(key == 'P')
+    {
+        eyez += 0.2;
+    }
+    // Controls for light position
+    else if(key == 'x')
+    {
+        LightPosition.x -= 0.05;
+    }
+    else if(key == 'X')
+    {
+        LightPosition.x += 0.05;
+    }
+    else if(key == 'y')
+    {
+        LightPosition.y -= 0.05;
+    }
+    else if(key == 'Y')
+    {
+        LightPosition.y += 0.05;
+    }
     else if(key == 'z')
     {
-        eyez -= 0.05;
+        LightPosition.z -= 0.05;
     }
     else if(key == 'Z')
     {
-        eyez += 0.05;
+        LightPosition.z += 0.05;
     }
+    // Starts rotation
     else if (key == ' ')
     {
         enableIdle = 1;
     }
-    else if (key == 't')
-    {
-        top -=.1;
-    }
-    else if (key == 'T')
-    {
-        top +=.1;
-    }
-    else if (key == 'b')
-    {
-        bottom -= .1;
-    }
-    else if (key == 'B')
-    {
-        bottom += .1;
-    }
-    else if (key == 'l')
-    {
-        left -= .1;
-    }
-    else if (key == 'L')
-    {
-        left += .1;
-    }
-    else if (key == 'r')
-    {
-        right -= .1;
-    }
-    else if (key == 'R')
-    {
-        right += .1;
-    }
-    else if (key == 'n')
-    {
-        near -= .1;
-    }
-    else if (key == 'N')
-    {
-        near += .1;
-    }
-   
-    printf("MODEL VIEW: \n");
-    printf("eyex: %f, eyey: %f, eyez: %f", eyex, eyey, eyez);
-    printf("\n");
-    
-    printf("FRUSTUM: \n");
-    printf("Top: %f, Bottom: %f\n", top, bottom);
-    printf("Left: %f, Right: %f\n", left, right);
-    printf("Near: %f, Far: %f\n", near, far);
-    
+ 
+
     // Recalculate model_view matrix
     Mat4 temp1 = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
     model_view_matrix = temp1;
     
-    // Recalculate frustum
-    temp1 = frustum(left, right, bottom, top, near, far);
-    projection_matrix = temp1;
+    // Recalculate light ball translation
+    Mat4 scaling_matrix = *scaleMatrix(.02, &scaling_matrix);
+    Mat4 translation_matrix = *translate(LightPosition.x,LightPosition.y,LightPosition.z, &translation_matrix);
+    
+    // Apply scaling, then translation
+    temp1 = *matMultiplication(&translation_matrix, &scaling_matrix, &temp1);
+    transformation_matricies[5] = temp1;
     
     glutPostRedisplay();
     
@@ -587,7 +568,6 @@ void idle(void)
             temp = *matMultiplication(&rotation_matrices[i], &transformation_matricies[i], &temp);
             transformation_matricies[i] = temp;
         }
-        
     }
     glutPostRedisplay();
 }
