@@ -180,7 +180,7 @@ Vec4 sphere_colors[num_spheres] =
 };
 
 // Lighting model attributes
-Vec4 light_ambient = {0.2, 0.2, 0.2, 1.0};
+Vec4 light_ambient = {0.4, 0.4, 0.4, 1.0};
 Vec4 light_diffuse = {1.0, 1.0, 1.0, 1.0};
 Vec4 light_specular = {1.0, 1.0, 1.0, 1.0};
 
@@ -410,6 +410,8 @@ void display(void)
     // Shininess (array of floats, just sent 1 here)
     glUniform1fv(shininess_location, 1, (GLfloat *) &ground_material.shininess);
     
+    // Draw ground after sending in all light info.
+    // Else will use whatever is in memory
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ground_transformation);
     glDrawArrays(GL_TRIANGLES, 0, groundVertices);
     /////////////////////////////////////////////////////////////////
@@ -438,6 +440,8 @@ void display(void)
         // Shininess (array of floats, just sent 1 here)
         glUniform1fv(shininess_location, 1, (GLfloat *) &sphere_materials[i].shininess);
         
+        // Draw sphere after sending in all light info.
+        // Else will use whatever is in memory
         glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
         glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
     }
