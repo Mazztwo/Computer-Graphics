@@ -392,9 +392,6 @@ void display(void)
     
     // Load Ground information
     /////////////////////////////////////////////////////////////////
-    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ground_transformation);
-    glDrawArrays(GL_TRIANGLES, 0, groundVertices);
-    
     // Ambient product (array of vectors)
     Vec4 temp = *product(ground_material.reflect_ambient, light_ambient, &temp);
     AmbientProduct = temp;
@@ -412,6 +409,9 @@ void display(void)
     
     // Shininess (array of floats, just sent 1 here)
     glUniform1fv(shininess_location, 1, (GLfloat *) &ground_material.shininess);
+    
+    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ground_transformation);
+    glDrawArrays(GL_TRIANGLES, 0, groundVertices);
     /////////////////////////////////////////////////////////////////
     
     
@@ -419,9 +419,7 @@ void display(void)
     /////////////////////////////////////////////////////////////////
     for(int i = 0; i < num_spheres; i++)
     {
-        glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
-        glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
-        
+       
         // Ambient product (array of vectors)
         temp = *product(sphere_materials[i].reflect_ambient, light_ambient, &temp);
         AmbientProduct = temp;
@@ -439,6 +437,9 @@ void display(void)
         
         // Shininess (array of floats, just sent 1 here)
         glUniform1fv(shininess_location, 1, (GLfloat *) &sphere_materials[i].shininess);
+        
+        glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
+        glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
     }
    
     // Light Position
