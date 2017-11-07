@@ -1,9 +1,9 @@
 /*
-Alessio Mazzone
-CS1566 Computer Graphics
-University of Pittsburgh
+ Alessio Mazzone
+ CS1566 Computer Graphics
+ University of Pittsburgh
  
-Linear Algebra & helper functions.
+ Linear Algebra & helper functions.
  */
 
 

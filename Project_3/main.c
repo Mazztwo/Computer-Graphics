@@ -3,7 +3,7 @@
  CS1566 Computer Graphics
  University of Pittsburgh
  
-Main file for Project 2
+ Main file for Project 3
  */
 
 #ifdef __APPLE__  // include Mac OS X verions of headers
@@ -39,11 +39,10 @@ Main file for Project 2
 ////////////////////////////////////////////////////////
 
 Vec4 vertices[num_vertices];
-// Vec4 colors[num_vertices];
 Vec4 normals[num_vertices];
 
 ///////////// Lookat and frustum variables/////////////////////////////////////////
-float eyex = 0.0, eyey = 1.0, eyez = 1.0;
+float eyex = 0.0, eyey = 1.5, eyez = 2.0;
 float atx = 0.0, aty = 0.0, atz = 0.0;
 float left = -0.5, right = 0.5, bottom = -0.5, top = 0.5, near = -0.5, far = -100.0;
 ///////////////////////////////////////////////////////////////////////////////////
@@ -55,11 +54,8 @@ int enableIdle = 0;
 // degrees for rotation of each sphere
 float degrees[5] = {1,1.2,1.4,1.6,1.8};
 
-// vertices[] and colors[] index
+// vertices[] and normals[] index
 int v_index = 0;
-
-// sphere_color index
-//int c_index = 0;
 
 GLuint projection_matrix_location, model_view_matrix_location, ctm_location;
 GLuint AmbientProduct_location, DiffuseProduct_location, SpecularProduct_location, LightPosition_location;
@@ -84,7 +80,7 @@ Mat4 projection_matrix =
     
 };
 
-// Transformation matricies for each sphere
+// Transformation matricies for each sphere + light ball
 Mat4 transformation_matricies[num_spheres] =
 {
     {{1.0, 0.0, 0.0, 0.0},
@@ -112,6 +108,7 @@ Mat4 transformation_matricies[num_spheres] =
         {0.0, 0.0, 1.0, 0.0},
         {0.0, 0.0, 0.0, 1.0}},
     
+    // Light ball
     {{1.0, 0.0, 0.0, 0.0},
         {0.0, 1.0, 0.0, 0.0},
         {0.0, 0.0, 1.0, 0.0},
@@ -128,7 +125,7 @@ Mat4 ground_transformation =
 };
 
 // ground vertices
-Vec4 ground_vertices[6] =
+Vec4 ground_vertices[groundVertices] =
 {
     {-2.0, 0.0, -2.0, 1.0},
     {-2.0, 0.0,  2.0, 1.0},
@@ -139,9 +136,7 @@ Vec4 ground_vertices[6] =
     { 2.0, 0.0,  2.0, 1.0}
 };
 
-Vec4 ground_color = {0.0,0.4,0.0,1.0 };
-
-// Rotation matrices for each sphere
+// Rotation matrices for each color sphere
 Mat4 rotation_matrices[num_spheres] =
 {
     {{1,0,0,0},
@@ -171,7 +166,7 @@ Mat4 rotation_matrices[num_spheres] =
 };
 
 
-// Color for each of the 5 spheres
+// Color for each of the 5 spheres + light bal
 Vec4 sphere_colors[num_spheres] =
 {
     {1,1,0,1},          // Yellow
@@ -179,6 +174,8 @@ Vec4 sphere_colors[num_spheres] =
     {0,1,0,1},          // Green
     {0,0,1,1},          // Blue
     {1,.5,0,1},         // Orange
+    
+    // Light ball
     {1,1,1,1}           // White
 };
 
@@ -188,13 +185,9 @@ Vec4 light_diffuse = {1.0, 1.0, 1.0, 1.0};
 Vec4 light_specular = {1.0, 1.0, 1.0, 1.0};
 
 
-
 // materials
-material materials[num_spheres + 1] =
+material sphere_materials[num_spheres] =
 {
-    // Ground
-    {{0.0, 0.4, 0.0, 1.0}, {0.0, 0.4, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  //Dark green
-    
     // Spheres
     {{1.0, 0.0, 0.0, 1.0}, {1.0, 0.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Red
     {{0.0, 1.0, 0.0, 1.0}, {0.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Green
@@ -207,19 +200,15 @@ material materials[num_spheres + 1] =
     
 };
 
+// Ground
+material ground_material = {{0.0, 0.4, 0.0, 1.0}, {0.0, 0.4, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10};  //Dark green
+
 
 // Light position
 Vec4 LightPosition = {0, .5, 0, 1.0};
 
 Vec4 AmbientProduct, DiffuseProduct, SpecularProduct;
 float shininess, attenuation_constant, attenuation_linear, attenuation_quadratic;
-
-
-
-
-
-
-
 
 
 void initSphere(float divisionDegrees)
@@ -234,34 +223,7 @@ void initSphere(float divisionDegrees)
         {
             float thetar = theta*DegreesToRadians;
             float thetar20 = (theta + divisionDegrees)*DegreesToRadians;
-            
-            /* OLD, WORKING SPHERE GENERATION BEFORE
-            // INTRODUCTION OF NORMALS
-            vecArrayAdd(&vertices, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 1);
-            vecArrayAdd(&colors, v_index, sphere_colors[c_index].x, sphere_colors[c_index].y, sphere_colors[c_index].z, 1);
-            v_index++;
-            
-            vecArrayAdd(&vertices, v_index, sin(thetar)*cos(phir20), cos(thetar)*cos(phir20), sin(phir20), 1);
-            vecArrayAdd(&colors, v_index, sphere_colors[c_index].x, sphere_colors[c_index].y, sphere_colors[c_index].z, 1);
-            v_index++;
-  
-            vecArrayAdd(&vertices, v_index, sin(thetar20)*cos(phir20), cos(thetar20)*cos(phir20), sin(phir20), 1);
-            vecArrayAdd(&colors, v_index, sphere_colors[c_index].x, sphere_colors[c_index].y, sphere_colors[c_index].z, 1);
-            v_index++;
-            
-            vecArrayAdd(&vertices, v_index, sin(thetar20)*cos(phir20), cos(thetar20)*cos(phir20), sin(phir20), 1);
-            vecArrayAdd(&colors, v_index, sphere_colors[c_index].x, sphere_colors[c_index].y, sphere_colors[c_index].z, 1);
-            v_index++;
-            
-            vecArrayAdd(&vertices, v_index, sin(thetar20)*cos(phir), cos(thetar20)*cos(phir), sin(phir), 1);
-            vecArrayAdd(&colors, v_index, sphere_colors[c_index].x, sphere_colors[c_index].y, sphere_colors[c_index].z, 1);
-            v_index++;
-             
-            vecArrayAdd(&vertices, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 1);
-            vecArrayAdd(&colors, v_index, sphere_colors[c_index].x, sphere_colors[c_index].y, sphere_colors[c_index].z, 1);
-            v_index++;
-             */
-            
+        
             vecArrayAdd(&vertices, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 1);
             vecArrayAdd(&normals, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 0);;
             v_index++;
@@ -287,9 +249,6 @@ void initSphere(float divisionDegrees)
             v_index++;
         }
     }
-    
-    // Increment sphere_color each time a new sphere is made
-    //c_index++;
 }
 
 
@@ -405,9 +364,9 @@ void init(void)
     LightPosition_location = glGetUniformLocation(program, "LightPosition");
     
     shininess_location = glGetUniformLocation(program, "shininess");
-    attenuation_constant_location = glGetUniformLocation(program, "attenuation_constant");
-    attenuation_linear_location = glGetUniformLocation(program, "attenuation_linear");
-    attenuation_quadratic_location = glGetUniformLocation(program, "attenuation_quadratic");
+    //attenuation_constant_location = glGetUniformLocation(program, "attenuation_constant");
+    //attenuation_linear_location = glGetUniformLocation(program, "attenuation_linear");
+    //attenuation_quadratic_location = glGetUniformLocation(program, "attenuation_quadratic");
     
 
     glEnable(GL_DEPTH_TEST);
@@ -437,22 +396,22 @@ void display(void)
     glDrawArrays(GL_TRIANGLES, 0, groundVertices);
     
     // Ambient product (array of vectors)
-    Vec4 temp = *product(materials[0].reflect_ambient, light_ambient, &temp);
+    Vec4 temp = *product(ground_material.reflect_ambient, light_ambient, &temp);
     AmbientProduct = temp;
     glUniform4fv(AmbientProduct_location, 1, (GLfloat *) &AmbientProduct);
     
     // Diffuse product (array of vectors)
-    temp = *product(materials[0].reflect_diffuse, light_diffuse, &temp);
+    temp = *product(ground_material.reflect_diffuse, light_diffuse, &temp);
     DiffuseProduct = temp;
     glUniform4fv(DiffuseProduct_location, 1, (GLfloat *) &DiffuseProduct);
     
     // Specular product (array of vectors)
-    temp = *product(materials[0].reflect_specular, light_specular, &temp);
+    temp = *product(ground_material.reflect_specular, light_specular, &temp);
     SpecularProduct = temp;
     glUniform4fv(SpecularProduct_location, 1, (GLfloat *) &SpecularProduct);
     
     // Shininess (array of floats, just sent 1 here)
-    glUniform1fv(shininess_location, 1, (GLfloat *) &materials[0].shininess);
+    glUniform1fv(shininess_location, 1, (GLfloat *) &ground_material.shininess);
     /////////////////////////////////////////////////////////////////
     
     
@@ -464,22 +423,22 @@ void display(void)
         glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
         
         // Ambient product (array of vectors)
-        temp = *product(materials[i+1].reflect_ambient, light_ambient, &temp);
+        temp = *product(sphere_materials[i].reflect_ambient, light_ambient, &temp);
         AmbientProduct = temp;
         glUniform4fv(AmbientProduct_location, 1, (GLfloat *) &AmbientProduct);
         
         // Diffuse product (array of vectors)
-        temp = *product(materials[i+1].reflect_diffuse, light_diffuse, &temp);
+        temp = *product(sphere_materials[i].reflect_diffuse, light_diffuse, &temp);
         DiffuseProduct = temp;
         glUniform4fv(DiffuseProduct_location, 1, (GLfloat *) &DiffuseProduct);
         
         // Specular product (array of vectors)
-        temp = *product(materials[i+1].reflect_specular, light_specular, &temp);
+        temp = *product(sphere_materials[i].reflect_specular, light_specular, &temp);
         SpecularProduct = temp;
         glUniform4fv(SpecularProduct_location, 1, (GLfloat *) &SpecularProduct);
         
         // Shininess (array of floats, just sent 1 here)
-        glUniform1fv(shininess_location, 1, (GLfloat *) &materials[i+1].shininess);
+        glUniform1fv(shininess_location, 1, (GLfloat *) &sphere_materials[i].shininess);
     }
    
     // Light Position

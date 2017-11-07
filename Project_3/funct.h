@@ -1,7 +1,7 @@
 /*
-Alessio Mazzone
-CS1566 Computer Graphics
-University of Pittsburgh
+ Alessio Mazzone
+ CS1566 Computer Graphics
+ University of Pittsburgh
  
  Header file Linear Algebra & helper functions.
 */

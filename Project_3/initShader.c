@@ -1,8 +1,5 @@
 /*
- * initShader.c
- *
- *  Created on: Aug 28, 2017
- *      Author: Thumrongsak Kosiyatrakul
+ initShader.c
  */
 
 #include "initShader.h"

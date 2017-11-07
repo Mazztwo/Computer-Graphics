@@ -1,10 +1,6 @@
 /*
- * initShader.h
- *
- *  Created on: Aug 28, 2017
- *      Author: Thumrongsak Kosiyatrakul
- */
-
+ initShader.h
+*/
 #ifndef INITSHADER_H_
 #define INITSHADER_H_
 
