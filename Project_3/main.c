@@ -39,6 +39,7 @@ Main file for Project 2
 ////////////////////////////////////////////////////////
 
 Vec4 vertices[num_vertices];
+Vec4 normals[num_vertices]
 Vec4 colors[num_vertices];
 
 ///////////// Lookat and frustum variables/////////////////////////////////////////
@@ -325,15 +326,12 @@ void init(void)
     temp1 = *matMultiplication(&translation_matrix, &scaling_matrix, &temp1);
     transformation_matricies[i] = temp1;
     
-    
-    
+
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
     glUseProgram(program);
     
-    GLuint vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
     
+    // Generate buffer to store normals and vertices
     GLuint buffer;
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
@@ -349,10 +347,10 @@ void init(void)
     
     
     // Send in normal
-    // Used to be vColor
-    GLuint vNormal = glGetAttribLocation(program, "vNormal");
-    glEnableVertexAttribArray(vNormal);
-    glVertexAttribPointer(vNormal, 4, GL_FLOAT, GL_FALSE, 0, (GLvoid *) sizeof(vertices));
+    // Used to be vNormal
+    GLuint vColor = glGetAttribLocation(program, "vColor");
+    glEnableVertexAttribArray(vColor);
+    glVertexAttribPointer(vColor, 4, GL_FLOAT, GL_FALSE, 0, (GLvoid *) sizeof(vertices));
     
     
     // Load in matricies to the vertex shader
@@ -360,6 +358,7 @@ void init(void)
     model_view_matrix_location = glGetUniformLocation(program, "model_view_matrix");
     ctm_location = glGetUniformLocation(program, "ctm");
     
+    /*
     // Load the rest
     AmbientProduct_location = glGetUniformLocation(program, "AmbientProduct");
     DiffuseProduct_location = glGetUniformLocation(program, "DiffuseProduct");
@@ -370,7 +369,7 @@ void init(void)
     attenuation_constant_location = glGetUniformLocation(program, "attenuation_constant");
     attenuation_linear_location = glGetUniformLocation(program, "attenuation_linear");
     attenuation_quadratic_location = glGetUniformLocation(program, "attenuation_quadratic");
-   
+     */
 
     glEnable(GL_DEPTH_TEST);
 
@@ -409,9 +408,9 @@ void display(void)
         glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
     }
     
-    
+    /*
      // Load in rest of data
-     
+
      // Ambient product (array of vectors)
     Vec4 temp = *product(materials[0].reflect_ambient, light_ambient, &temp);
     AmbientProduct = temp;
@@ -434,8 +433,7 @@ void display(void)
     // If light source is fixed based on camera frame, no need to transform.
     // If light source is fixed based on object frame, it must be transformed
     glUniform1fv(LightPosition_location, 1, (GLfloat *) &LightPosition);
-    
-    
+    */
     
     
     /*
