@@ -598,7 +598,8 @@ void idle(void)
     
     if(enableIdle)
     {
-        for(i = 0; i < num_spheres; i++)
+        // Start at 1 and go to num_spheres -1 to ignore middle sphere and light ball
+        for(i = 1; i < num_spheres-1; i++)
         {
             // Generate rotation matrix for each sphere
             temp = *matRotateAboutY(degrees[i], &temp);
