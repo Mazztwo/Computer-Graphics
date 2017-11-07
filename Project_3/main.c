@@ -59,7 +59,7 @@ float degrees[5] = {1,1.2,1.4,1.6,1.8};
 int v_index = 0;
 
 // sphere_color index
-int c_index = 0;
+//int c_index = 0;
 
 GLuint projection_matrix_location, model_view_matrix_location, ctm_location;
 GLuint AmbientProduct_location, DiffuseProduct_location, SpecularProduct_location, LightPosition_location;
@@ -221,6 +221,7 @@ float shininess, attenuation_constant, attenuation_linear, attenuation_quadratic
 
 
 
+
 void initSphere(float divisionDegrees)
 {
     
@@ -288,7 +289,7 @@ void initSphere(float divisionDegrees)
     }
     
     // Increment sphere_color each time a new sphere is made
-    c_index++;
+    //c_index++;
 }
 
 
@@ -386,9 +387,9 @@ void init(void)
     
     // Send in normal
     // Used to be vNormal
-    GLuint vColor = glGetAttribLocation(program, "vColor");
-    glEnableVertexAttribArray(vColor);
-    glVertexAttribPointer(vColor, 4, GL_FLOAT, GL_FALSE, 0, (GLvoid *) sizeof(vertices));
+    GLuint vNormal = glGetAttribLocation(program, "vNormal");
+    glEnableVertexAttribArray(vNormal);
+    glVertexAttribPointer(vNormal, 4, GL_FLOAT, GL_FALSE, 0, (GLvoid *) sizeof(vertices));
     
     
     // Load in matricies to the vertex shader
