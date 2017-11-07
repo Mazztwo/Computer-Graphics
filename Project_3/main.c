@@ -39,8 +39,8 @@ Main file for Project 2
 ////////////////////////////////////////////////////////
 
 Vec4 vertices[num_vertices];
-Vec4 normals[num_vertices]
-Vec4 colors[num_vertices];
+// Vec4 colors[num_vertices];
+Vec4 normals[num_vertices];
 
 ///////////// Lookat and frustum variables/////////////////////////////////////////
 float eyex = 0.0, eyey = 2.0, eyez = 2.0;
@@ -220,6 +220,7 @@ float shininess, attenuation_constant, attenuation_linear, attenuation_quadratic
 
 
 
+
 void initSphere(float divisionDegrees)
 {
     
@@ -233,6 +234,8 @@ void initSphere(float divisionDegrees)
             float thetar = theta*DegreesToRadians;
             float thetar20 = (theta + divisionDegrees)*DegreesToRadians;
             
+            /* OLD, WORKING SPHERE GENERATION BEFORE
+            // INTRODUCTION OF NORMALS
             vecArrayAdd(&vertices, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 1);
             vecArrayAdd(&colors, v_index, sphere_colors[c_index].x, sphere_colors[c_index].y, sphere_colors[c_index].z, 1);
             v_index++;
@@ -256,6 +259,31 @@ void initSphere(float divisionDegrees)
             vecArrayAdd(&vertices, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 1);
             vecArrayAdd(&colors, v_index, sphere_colors[c_index].x, sphere_colors[c_index].y, sphere_colors[c_index].z, 1);
             v_index++;
+             */
+            
+            vecArrayAdd(&vertices, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 1);
+            vecArrayAdd(&normals, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 0);;
+            v_index++;
+            
+            vecArrayAdd(&vertices, v_index, sin(thetar)*cos(phir20), cos(thetar)*cos(phir20), sin(phir20), 1);
+            vecArrayAdd(&normals, v_index, sin(thetar)*cos(phir20), cos(thetar)*cos(phir20), sin(phir20), 0);
+            v_index++;
+            
+            vecArrayAdd(&vertices, v_index, sin(thetar20)*cos(phir20), cos(thetar20)*cos(phir20), sin(phir20), 1);
+            vecArrayAdd(&normals, v_index, sin(thetar20)*cos(phir20), cos(thetar20)*cos(phir20), sin(phir20), 0);
+            v_index++;
+            
+            vecArrayAdd(&vertices, v_index, sin(thetar20)*cos(phir20), cos(thetar20)*cos(phir20), sin(phir20), 1);
+            vecArrayAdd(&normals, v_index, sin(thetar20)*cos(phir20), cos(thetar20)*cos(phir20), sin(phir20), 0);
+            v_index++;
+            
+            vecArrayAdd(&vertices, v_index, sin(thetar20)*cos(phir), cos(thetar20)*cos(phir), sin(phir), 1);
+            vecArrayAdd(&normals, v_index, sin(thetar20)*cos(phir), cos(thetar20)*cos(phir), sin(phir), 0);
+            v_index++;
+            
+            vecArrayAdd(&vertices, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 1);
+            vecArrayAdd(&normals, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 0);
+            v_index++;
         }
     }
     
@@ -268,9 +296,19 @@ void initGround()
 {
     for(int i = 0; i < groundVertices; i++)
     {
+        /* OLD BEFORE INTRODUCTION OF NORAMLS
         vertices[v_index] = ground_vertices[i];
-        colors[v_index] = ground_color;
+        normals[v_index] = ground_color;
     
+        v_index++;
+        */
+        
+        //vertices[v_index] = ground_vertices[i];
+        //normals[v_index] = ground_color;
+        
+        vecArrayAdd(&vertices, v_index, ground_vertices[i].x, ground_vertices[i].y, ground_vertices[i].z, 1);
+        vecArrayAdd(&normals, v_index, ground_vertices[i].x, ground_vertices[i].y, ground_vertices[i].z, 0);
+        
         v_index++;
     }
     
@@ -335,9 +373,9 @@ void init(void)
     GLuint buffer;
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(colors), NULL, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(normals), NULL, GL_STATIC_DRAW);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-    glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices), sizeof(colors), colors);
+    glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices), sizeof(normals), normals);
     
     
     // Send in position
@@ -358,7 +396,7 @@ void init(void)
     model_view_matrix_location = glGetUniformLocation(program, "model_view_matrix");
     ctm_location = glGetUniformLocation(program, "ctm");
     
-    /*
+    
     // Load the rest
     AmbientProduct_location = glGetUniformLocation(program, "AmbientProduct");
     DiffuseProduct_location = glGetUniformLocation(program, "DiffuseProduct");
@@ -369,7 +407,7 @@ void init(void)
     attenuation_constant_location = glGetUniformLocation(program, "attenuation_constant");
     attenuation_linear_location = glGetUniformLocation(program, "attenuation_linear");
     attenuation_quadratic_location = glGetUniformLocation(program, "attenuation_quadratic");
-     */
+    
 
     glEnable(GL_DEPTH_TEST);
 
@@ -408,7 +446,7 @@ void display(void)
         glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
     }
     
-    /*
+    
      // Load in rest of data
 
      // Ambient product (array of vectors)
@@ -433,7 +471,7 @@ void display(void)
     // If light source is fixed based on camera frame, no need to transform.
     // If light source is fixed based on object frame, it must be transformed
     glUniform1fv(LightPosition_location, 1, (GLfloat *) &LightPosition);
-    */
+    
     
     
     /*
