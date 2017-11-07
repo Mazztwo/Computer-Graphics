@@ -43,7 +43,7 @@ Vec4 vertices[num_vertices];
 Vec4 normals[num_vertices];
 
 ///////////// Lookat and frustum variables/////////////////////////////////////////
-float eyex = 0.0, eyey = 2.0, eyez = 2.0;
+float eyex = 0.0, eyey = 1.0, eyez = 1.0;
 float atx = 0.0, aty = 0.0, atz = 0.0;
 float left = -0.5, right = 0.5, bottom = -0.5, top = 0.5, near = -0.5, far = -100.0;
 ///////////////////////////////////////////////////////////////////////////////////
@@ -431,26 +431,12 @@ void display(void)
     // Load Model view
     glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &model_view_matrix);
     
-    // For Reference:
-    //glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &model_view_matrix);
-    //glDrawArrays(GL_TRIANGLES, START_INDEX, HOW_MANY_VERTICES_TO_DRAW);
-    
-    
-    // Load ground ctm
+    // Load Ground information
+    /////////////////////////////////////////////////////////////////
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ground_transformation);
     glDrawArrays(GL_TRIANGLES, 0, groundVertices);
     
-    // Load ctm's of spheres
-    for(int i = 0; i < num_spheres; i++)
-    {
-        glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
-        glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
-    }
-    
-    
-     // Load in rest of data
-
-     // Ambient product (array of vectors)
+    // Ambient product (array of vectors)
     Vec4 temp = *product(materials[0].reflect_ambient, light_ambient, &temp);
     AmbientProduct = temp;
     glUniform4fv(AmbientProduct_location, 1, (GLfloat *) &AmbientProduct);
@@ -467,7 +453,35 @@ void display(void)
     
     // Shininess (array of floats, just sent 1 here)
     glUniform1fv(shininess_location, 1, (GLfloat *) &materials[0].shininess);
+    /////////////////////////////////////////////////////////////////
     
+    
+    // Load Sphere information
+    /////////////////////////////////////////////////////////////////
+    for(int i = 0; i < num_spheres; i++)
+    {
+        glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
+        glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
+        
+        // Ambient product (array of vectors)
+        temp = *product(materials[i+1].reflect_ambient, light_ambient, &temp);
+        AmbientProduct = temp;
+        glUniform4fv(AmbientProduct_location, 1, (GLfloat *) &AmbientProduct);
+        
+        // Diffuse product (array of vectors)
+        temp = *product(materials[i+1].reflect_diffuse, light_diffuse, &temp);
+        DiffuseProduct = temp;
+        glUniform4fv(DiffuseProduct_location, 1, (GLfloat *) &DiffuseProduct);
+        
+        // Specular product (array of vectors)
+        temp = *product(materials[i+1].reflect_specular, light_specular, &temp);
+        SpecularProduct = temp;
+        glUniform4fv(SpecularProduct_location, 1, (GLfloat *) &SpecularProduct);
+        
+        // Shininess (array of floats, just sent 1 here)
+        glUniform1fv(shininess_location, 1, (GLfloat *) &materials[i+1].shininess);
+    }
+   
     // Light Position
     // If light source is fixed based on camera frame, no need to transform.
     // If light source is fixed based on object frame, it must be transformed
