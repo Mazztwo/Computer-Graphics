@@ -59,11 +59,11 @@ int v_index = 0;
 
 GLuint projection_matrix_location, model_view_matrix_location, ctm_location;
 GLuint AmbientProduct_location, DiffuseProduct_location, SpecularProduct_location, LightPosition_location;
-GLuint shininess_location, attenuation_constant_location, attenuation_linear_location, attenuation_quadratic_location;
+GLuint shininess_location, attenuation_constant_location, attenuation_linear_location, attenuation_quadratic_location, isShadow_location;
 
 Vec4 AmbientProduct, DiffuseProduct, SpecularProduct;
-float shininess;
-float attenuation_constant = 1.0, attenuation_linear = 0.1, attenuation_quadratic = 0.01;
+float shininess, isShadow;
+float attenuation_constant = 1.0, attenuation_linear = 0.01, attenuation_quadratic = 0.001;
 
 // Lighting model attributes
 Vec4 light_ambient = {0.2, 0.2, 0.2, 1.0};
@@ -366,6 +366,7 @@ void init(void)
     LightPosition_location = glGetUniformLocation(program, "LightPosition");
     
     shininess_location = glGetUniformLocation(program, "shininess");
+    isShadow_location = glGetUniformLocation(program, "isShadow");
     attenuation_constant_location = glGetUniformLocation(program, "attenuation_constant");
     attenuation_linear_location = glGetUniformLocation(program, "attenuation_linear");
     attenuation_quadratic_location = glGetUniformLocation(program, "attenuation_quadratic");
@@ -474,6 +475,8 @@ void display(void)
         }
     }
     
+    // Load Shadows....
+    glUniform1fv(isShadow_location, 1, (GLfloat *) &isShadow);
     
     
     
@@ -590,7 +593,10 @@ void idle(void)
             // Apply rotation matrix
             temp = *matMultiplication(&rotation_matrices[i], &transformation_matricies[i], &temp);
             transformation_matricies[i] = temp;
+            
+            glutPostRedisplay();
         }
+        
     }
     glutPostRedisplay();
 }
