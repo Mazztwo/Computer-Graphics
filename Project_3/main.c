@@ -180,9 +180,12 @@ Vec4 sphere_colors[num_spheres] =
 };
 
 // Lighting model attributes
-Vec4 light_ambient = {0.4, 0.4, 0.4, 1.0};
+Vec4 light_ambient = {0.5, 0.5, 0.5, 1.0};
 Vec4 light_diffuse = {1.0, 1.0, 1.0, 1.0};
 Vec4 light_specular = {1.0, 1.0, 1.0, 1.0};
+
+Vec4 LightPosition = {0, .5, 0, 1.0};
+Vec4 Light_Color = {1.0, 1.0, 1.0, 1.0};
 
 
 // materials
@@ -204,12 +207,12 @@ material sphere_materials[num_spheres] =
 material ground_material = {{0.0, 0.4, 0.0, 1.0}, {0.0, 0.4, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10};  //Dark green
 
 
-// Light position
-Vec4 LightPosition = {0, .5, 0, 1.0};
-Vec4 Light_Color = {1.0, 1.0, 1.0, 1.0};
+
 
 Vec4 AmbientProduct, DiffuseProduct, SpecularProduct;
-float shininess, attenuation_constant, attenuation_linear, attenuation_quadratic;
+float shininess;
+float attenuation_constant = 1.0, attenuation_linear = 0.1, attenuation_quadratic = 0.01;
+
 
 
 void initSphere(float divisionDegrees)
@@ -225,32 +228,33 @@ void initSphere(float divisionDegrees)
             float thetar = theta*DegreesToRadians;
             float thetar20 = (theta + divisionDegrees)*DegreesToRadians;
         
-            vecArrayAdd(&vertices, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 1);
-            vecArrayAdd(&normals, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 0);;
+            vecArrayAdd(vertices, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 1);
+            vecArrayAdd(normals, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 0);;
             v_index++;
             
-            vecArrayAdd(&vertices, v_index, sin(thetar)*cos(phir20), cos(thetar)*cos(phir20), sin(phir20), 1);
-            vecArrayAdd(&normals, v_index, sin(thetar)*cos(phir20), cos(thetar)*cos(phir20), sin(phir20), 0);
+            vecArrayAdd(vertices, v_index, sin(thetar)*cos(phir20), cos(thetar)*cos(phir20), sin(phir20), 1);
+            vecArrayAdd(normals, v_index, sin(thetar)*cos(phir20), cos(thetar)*cos(phir20), sin(phir20), 0);
             v_index++;
             
-            vecArrayAdd(&vertices, v_index, sin(thetar20)*cos(phir20), cos(thetar20)*cos(phir20), sin(phir20), 1);
-            vecArrayAdd(&normals, v_index, sin(thetar20)*cos(phir20), cos(thetar20)*cos(phir20), sin(phir20), 0);
+            vecArrayAdd(vertices, v_index, sin(thetar20)*cos(phir20), cos(thetar20)*cos(phir20), sin(phir20), 1);
+            vecArrayAdd(normals, v_index, sin(thetar20)*cos(phir20), cos(thetar20)*cos(phir20), sin(phir20), 0);
             v_index++;
             
-            vecArrayAdd(&vertices, v_index, sin(thetar20)*cos(phir20), cos(thetar20)*cos(phir20), sin(phir20), 1);
-            vecArrayAdd(&normals, v_index, sin(thetar20)*cos(phir20), cos(thetar20)*cos(phir20), sin(phir20), 0);
+            vecArrayAdd(vertices, v_index, sin(thetar20)*cos(phir20), cos(thetar20)*cos(phir20), sin(phir20), 1);
+            vecArrayAdd(normals, v_index, sin(thetar20)*cos(phir20), cos(thetar20)*cos(phir20), sin(phir20), 0);
             v_index++;
             
-            vecArrayAdd(&vertices, v_index, sin(thetar20)*cos(phir), cos(thetar20)*cos(phir), sin(phir), 1);
-            vecArrayAdd(&normals, v_index, sin(thetar20)*cos(phir), cos(thetar20)*cos(phir), sin(phir), 0);
+            vecArrayAdd(vertices, v_index, sin(thetar20)*cos(phir), cos(thetar20)*cos(phir), sin(phir), 1);
+            vecArrayAdd(normals, v_index, sin(thetar20)*cos(phir), cos(thetar20)*cos(phir), sin(phir), 0);
             v_index++;
             
-            vecArrayAdd(&vertices, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 1);
-            vecArrayAdd(&normals, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 0);
+            vecArrayAdd(vertices, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 1);
+            vecArrayAdd(normals, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 0);
             v_index++;
         }
     }
 }
+
 
 
 void initGround()
@@ -267,13 +271,14 @@ void initGround()
         //vertices[v_index] = ground_vertices[i];
         //normals[v_index] = ground_color;
         
-        vecArrayAdd(&vertices, v_index, ground_vertices[i].x, ground_vertices[i].y, ground_vertices[i].z, 1);
-        vecArrayAdd(&normals, v_index, ground_vertices[i].x, ground_vertices[i].y, ground_vertices[i].z, 0);
+        vecArrayAdd(vertices, v_index, ground_vertices[i].x, ground_vertices[i].y, ground_vertices[i].z, 1);
+        vecArrayAdd(normals, v_index, ground_vertices[i].x, ground_vertices[i].y, ground_vertices[i].z, 0);
         
         v_index++;
     }
     
 }
+
 
 
 
@@ -293,7 +298,6 @@ void init(void)
     float x = 0, y = 0.1 , z = 0;
     Mat4 scaling_matrix;
     Mat4 translation_matrix;
-    Mat4 transformed;
     int i;
 
     for(i = 0; i < 5; i++)
@@ -365,9 +369,9 @@ void init(void)
     LightPosition_location = glGetUniformLocation(program, "LightPosition");
     
     shininess_location = glGetUniformLocation(program, "shininess");
-    //attenuation_constant_location = glGetUniformLocation(program, "attenuation_constant");
-    //attenuation_linear_location = glGetUniformLocation(program, "attenuation_linear");
-    //attenuation_quadratic_location = glGetUniformLocation(program, "attenuation_quadratic");
+    attenuation_constant_location = glGetUniformLocation(program, "attenuation_constant");
+    attenuation_linear_location = glGetUniformLocation(program, "attenuation_linear");
+    attenuation_quadratic_location = glGetUniformLocation(program, "attenuation_quadratic");
     
 
     glEnable(GL_DEPTH_TEST);
@@ -393,6 +397,11 @@ void display(void)
     
     // Light Position
     glUniform1fv(LightPosition_location, 1, (GLfloat *) &LightPosition);
+    
+    // Send attenuation info
+    glUniform1fv(attenuation_constant_location, 1, (GLfloat *) &attenuation_constant);
+    glUniform1fv(attenuation_linear_location, 1, (GLfloat *) &attenuation_linear);
+    glUniform1fv(attenuation_quadratic_location, 1, (GLfloat *) &attenuation_quadratic);
     
     // Load Ground information
     /////////////////////////////////////////////////////////////////
@@ -436,6 +445,7 @@ void display(void)
             glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
             glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
         }
+        // Colored spheres
         else
         {
             // Ambient product (array of vectors)
@@ -463,18 +473,6 @@ void display(void)
         }
     }
     
-    
-    
-    
-    
-    
-    
-    /*
-     uniform float attenuation_constant, attenuation_linear, attenuation_quadratic;
-     
-     GLuint attenuation_constant_location, attenuation_linear_location, attenuation_quadratic_location;
-     
-     */
     
     
     
