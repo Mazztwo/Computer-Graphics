@@ -62,7 +62,7 @@ GLuint AmbientProduct_location, DiffuseProduct_location, SpecularProduct_locatio
 GLuint shininess_location, attenuation_constant_location, attenuation_linear_location, attenuation_quadratic_location, isShadow_location;
 
 Vec4 AmbientProduct, DiffuseProduct, SpecularProduct;
-float shininess, isShadow;
+float shininess;
 float attenuation_constant = 1.0, attenuation_linear = 0.01, attenuation_quadratic = 0.001;
 
 // Lighting model attributes
@@ -427,6 +427,7 @@ void display(void)
     
     // Draw ground after sending in all light info.
     // Else will use whatever is in memory
+    glUniform1i(isShadow_location, 0);
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ground_transformation);
     glDrawArrays(GL_TRIANGLES, 0, groundVertices);
     /////////////////////////////////////////////////////////////////
@@ -444,6 +445,7 @@ void display(void)
             glUniform4fv(SpecularProduct_location, 1, (GLfloat *) &Light_Color);
             glUniform1fv(shininess_location, 1, (GLfloat *) &Light_Color);
             
+            glUniform1i(isShadow_location, 0);
             glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
             glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
         }
@@ -470,13 +472,19 @@ void display(void)
             
             // Draw sphere after sending in all light info.
             // Else will use whatever is in memory
+            glUniform1i(isShadow_location, 0);
             glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
             glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
+            
+            // Send in shadow info....
+            glUniform1i(isShadow_location, 1);
+             glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
+            glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
+        
         }
     }
+
     
-    // Load Shadows....
-    glUniform1fv(isShadow_location, 1, (GLfloat *) &isShadow);
     
     
     
