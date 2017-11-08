@@ -206,6 +206,7 @@ material ground_material = {{0.0, 0.4, 0.0, 1.0}, {0.0, 0.4, 0.0, 1.0}, {1.0, 1.
 
 // Light position
 Vec4 LightPosition = {0, .5, 0, 1.0};
+Vec4 Light_Color = {1.0, 1.0, 1.0, 1.0};
 
 Vec4 AmbientProduct, DiffuseProduct, SpecularProduct;
 float shininess, attenuation_constant, attenuation_linear, attenuation_quadratic;
@@ -390,7 +391,6 @@ void display(void)
     // Load Model view
     glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &model_view_matrix);
     
-    
     // Light Position
     glUniform1fv(LightPosition_location, 1, (GLfloat *) &LightPosition);
     
@@ -425,30 +425,48 @@ void display(void)
     /////////////////////////////////////////////////////////////////
     for(int i = 0; i < num_spheres; i++)
     {
-       
-        // Ambient product (array of vectors)
-        temp = *product(sphere_materials[i].reflect_ambient, light_ambient, &temp);
-        AmbientProduct = temp;
-        glUniform4fv(AmbientProduct_location, 1, (GLfloat *) &AmbientProduct);
-        
-        // Diffuse product (array of vectors)
-        temp = *product(sphere_materials[i].reflect_diffuse, light_diffuse, &temp);
-        DiffuseProduct = temp;
-        glUniform4fv(DiffuseProduct_location, 1, (GLfloat *) &DiffuseProduct);
-        
-        // Specular product (array of vectors)
-        temp = *product(sphere_materials[i].reflect_specular, light_specular, &temp);
-        SpecularProduct = temp;
-        glUniform4fv(SpecularProduct_location, 1, (GLfloat *) &SpecularProduct);
-        
-        // Shininess (array of floats, just sent 1 here)
-        glUniform1fv(shininess_location, 1, (GLfloat *) &sphere_materials[i].shininess);
-        
-        // Draw sphere after sending in all light info.
-        // Else will use whatever is in memory
-        glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
-        glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
+        // Light ball
+        if(i == 5)
+        {
+            glUniform4fv(AmbientProduct_location, 1, (GLfloat *) &Light_Color);
+            glUniform4fv(DiffuseProduct_location, 1, (GLfloat *) &Light_Color);
+            glUniform4fv(SpecularProduct_location, 1, (GLfloat *) &Light_Color);
+            glUniform1fv(shininess_location, 1, (GLfloat *) &Light_Color);
+            
+            glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
+            glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
+        }
+        else
+        {
+            // Ambient product (array of vectors)
+            temp = *product(sphere_materials[i].reflect_ambient, light_ambient, &temp);
+            AmbientProduct = temp;
+            glUniform4fv(AmbientProduct_location, 1, (GLfloat *) &AmbientProduct);
+            
+            // Diffuse product (array of vectors)
+            temp = *product(sphere_materials[i].reflect_diffuse, light_diffuse, &temp);
+            DiffuseProduct = temp;
+            glUniform4fv(DiffuseProduct_location, 1, (GLfloat *) &DiffuseProduct);
+            
+            // Specular product (array of vectors)
+            temp = *product(sphere_materials[i].reflect_specular, light_specular, &temp);
+            SpecularProduct = temp;
+            glUniform4fv(SpecularProduct_location, 1, (GLfloat *) &SpecularProduct);
+            
+            // Shininess (array of floats, just sent 1 here)
+            glUniform1fv(shininess_location, 1, (GLfloat *) &sphere_materials[i].shininess);
+            
+            // Draw sphere after sending in all light info.
+            // Else will use whatever is in memory
+            glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
+            glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
+        }
     }
+    
+    
+    
+    
+    
     
     
     /*
