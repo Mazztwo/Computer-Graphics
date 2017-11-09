@@ -32,6 +32,7 @@
 
 #define windowSize 375
 #define num_spheres 6
+#define num_shadows num_spheres-1
 #define groundVertices 6
 #define sphereVertices 16206
 ///////// num_vertices is 16206 for a 5 degree increment
@@ -63,14 +64,15 @@ GLuint shininess_location, attenuation_constant_location, attenuation_linear_loc
 
 Vec4 AmbientProduct, DiffuseProduct, SpecularProduct;
 float shininess;
-float attenuation_constant = 1.0, attenuation_linear = 0.01, attenuation_quadratic = 0.001;
+float attenuation_constant = 1.0, attenuation_linear = 0.1, attenuation_quadratic = 0.01;
 
 // Lighting model attributes
 Vec4 light_ambient = {0.2, 0.2, 0.2, 1.0};
 Vec4 light_diffuse = {1.0, 1.0, 1.0, 1.0};
 Vec4 light_specular = {1.0, 1.0, 1.0, 1.0};
+Vec4 LightPosition = {0, 0.5 , 0, 1.0};
 
-Vec4 LightPosition = {0, 0.5, 0, 1.0};
+// Light ball sphere, not actual light
 Vec4 Light_Color = {1.0, 1.0, 1.0, 1.0};
 
 
@@ -178,7 +180,7 @@ Mat4 rotation_matrices[num_spheres] =
 };
 
 
-// Color for each of the 5 spheres + light bal
+// Color for each of the 5 spheres + light ball
 Vec4 sphere_colors[num_spheres] =
 {
     {1,1,0,1},          // Yellow
@@ -208,7 +210,8 @@ material sphere_materials[num_spheres] =
 };
 
 // Ground
-material ground_material = {{0.0, .8, 0.0, 1.0}, {0.0, 0.8, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10};  //Dark green
+material ground_material = {{0.0, 0.7, 0.0, 1.0}, {0.0, 0.7, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10};
+
 
 
 
@@ -347,10 +350,9 @@ void init(void)
     
     
     // Send in normal
-    // Used to be vNormal
     GLuint vNormal = glGetAttribLocation(program, "vNormal");
     glEnableVertexAttribArray(vNormal);
-    glVertexAttribPointer(vNormal, 4, GL_FLOAT, GL_FALSE, 0, (GLvoid *) sizeof(vertices));
+    glVertexAttribPointer(vNormal, 4, GL_FLOAT, GL_FALSE, 0, (GLvoid *) sizeof(normals));
     
     
     // Load in matricies to the vertex shader
@@ -392,10 +394,9 @@ void display(void)
     glUniform4fv(LightPosition_location, 1, (GLfloat *) &LightPosition);
     
     // Send attenuation info
-    glUniform1fv(attenuation_constant_location, 1, (GLfloat *) &attenuation_constant);
-    glUniform1fv(attenuation_linear_location, 1, (GLfloat *) &attenuation_linear);
-    glUniform1fv(attenuation_quadratic_location, 1, (GLfloat *) &attenuation_quadratic);
-    
+    glUniform1f(attenuation_constant_location, attenuation_constant);
+    glUniform1f(attenuation_linear_location, attenuation_linear);
+    glUniform1f(attenuation_quadratic_location, attenuation_quadratic);
     
     // Load frustum
     glUniformMatrix4fv(projection_matrix_location, 1, GL_FALSE, (GLfloat *) &projection_matrix);
@@ -403,14 +404,12 @@ void display(void)
     // Load Model view
     glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &model_view_matrix);
 
-    
     // Load Ground information
     /////////////////////////////////////////////////////////////////
     // Ambient product (array of vectors)
     Vec4 temp = *product(ground_material.reflect_ambient, light_ambient, &temp);
     AmbientProduct = temp;
     glUniform4fv(AmbientProduct_location, 1, (GLfloat *) &AmbientProduct);
-    
     
     // Diffuse product (array of vectors)
     temp = *product(ground_material.reflect_diffuse, light_diffuse, &temp);
@@ -423,7 +422,7 @@ void display(void)
     glUniform4fv(SpecularProduct_location, 1, (GLfloat *) &SpecularProduct);
     
     // Shininess (array of floats, just sent 1 here)
-    glUniform1fv(shininess_location, 1, (GLfloat *) &ground_material.shininess);
+    glUniform1f(shininess_location, ground_material.shininess);
     
     // Draw ground after sending in all light info.
     // Else will use whatever is in memory
@@ -445,13 +444,15 @@ void display(void)
             glUniform4fv(SpecularProduct_location, 1, (GLfloat *) &Light_Color);
             glUniform1fv(shininess_location, 1, (GLfloat *) &Light_Color);
             
-            glUniform1i(isShadow_location, 0);
+            
             glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
+            glUniform1i(isShadow_location, 0);
             glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
         }
         // Colored spheres
         else
         {
+            glUniform1i(isShadow_location, 0);
             // Ambient product (array of vectors)
             temp = *product(sphere_materials[i].reflect_ambient, light_ambient, &temp);
             AmbientProduct = temp;
@@ -468,19 +469,19 @@ void display(void)
             glUniform4fv(SpecularProduct_location, 1, (GLfloat *) &SpecularProduct);
             
             // Shininess (array of floats, just sent 1 here)
-            glUniform1fv(shininess_location, 1, (GLfloat *) &sphere_materials[i].shininess);
+            glUniform1f(shininess_location, sphere_materials[i].shininess);
             
             // Draw sphere after sending in all light info.
             // Else will use whatever is in memory
-            glUniform1i(isShadow_location, 0);
             glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
+            glUniform1i(isShadow_location, 0);
             glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
             
-            // Send in shadow info....
+            
+            // Send in shadow info
             glUniform1i(isShadow_location, 1);
-             glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
             glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
-        
+            
         }
     }
 
@@ -490,6 +491,7 @@ void display(void)
     
     glutSwapBuffers();
 }
+
 
 
 
@@ -555,7 +557,14 @@ void keyboard(unsigned char key, int mousex, int mousey)
     // Starts rotation
     else if (key == ' ')
     {
-        enableIdle = 1;
+        if(enableIdle)
+        {
+            enableIdle = 0;
+        }
+        else
+        {
+            enableIdle = 1;
+        }
     }
  
 
@@ -584,6 +593,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
 
 
 
+
 void idle(void)
 {
     int i = 0;
@@ -598,7 +608,7 @@ void idle(void)
             temp = *matRotateAboutY(degrees[i], &temp);
             rotation_matrices[i] = temp;
             
-            // Apply rotation matrix
+            // Apply rotation matrix to transofmation
             temp = *matMultiplication(&rotation_matrices[i], &transformation_matricies[i], &temp);
             transformation_matricies[i] = temp;
             
