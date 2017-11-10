@@ -50,6 +50,17 @@ float left = -0.5, right = 0.5, bottom = -0.5, top = 0.5, near = -0.5, far = -10
 
 float DegreesToRadians = M_PI / 180.0;;
 
+
+float degrees_x, degrees_y, radius;
+Mat4 model_view_rotation =
+{
+    {1.0, 0.0, 0.0, 0.0},
+    {0.0, 1.0, 0.0, 0.0},
+    {0.0, 0.0, 1.0, 0.0},
+    {0.0, 0.0, 0.0, 1.0}
+};
+
+
 int enableIdle = 0;
 
 // degrees for rotation of each sphere
@@ -193,7 +204,7 @@ Vec4 sphere_colors[num_spheres] =
     {1,1,1,1}           // White
 };
 
-/*
+
 // materials
 // Ambient, Diffuse, Specular
 material sphere_materials[num_spheres] =
@@ -212,9 +223,9 @@ material sphere_materials[num_spheres] =
 
 // Ground
 material ground_material = {{0.0, 0.7, 0.0, 1.0}, {0.0, 0.7, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10};
-*/
 
 
+/*
 // Fancy materials!
 material sphere_materials[num_spheres] =
 {
@@ -234,8 +245,8 @@ material sphere_materials[num_spheres] =
     
 };
 // Ground
-material ground_material = {{0.0, 0.7, 0.0, 1.0}, {0.0, 0.7, 0.0, 1.0}, {0.0, 0.7, 0.0, 1.0}, 10};
-
+material ground_material = {{0.0, 0.7, 0.0, 1.0}, {0.0, 0.7, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10};
+*/
 
 
 
@@ -322,6 +333,14 @@ void init(void)
     // Initialize frustum
     temp1 = frustum(left, right, bottom, top, near, far);
     projection_matrix = temp1;
+    
+    // Initialize degrees
+    Vec4 origin = {0,0,0,1.0};
+    radius = sqrt( (LightPosition.y * LightPosition.y) + (LightPosition.z * LightPosition.z));
+    degrees_x = (180.0 / M_PI) * asinf(LightPosition.y / radius);
+    degrees_y = (180.0 / M_PI) * asinf(LightPosition.x / radius );
+    
+    
     
     // Initialize spheress
     // x,y,z coordinates sphere centers
@@ -527,6 +546,7 @@ void display(void)
 
 
 
+
 void keyboard(unsigned char key, int mousex, int mousey)
 {
     // Quit program
@@ -537,27 +557,40 @@ void keyboard(unsigned char key, int mousex, int mousey)
     // Controls for eye
     else if(key == 'l')
     {
-        eyex -= 0.05;
+        //eyex -= 0.05;
+        
+        degrees_x -= 5.0;
+        model_view_rotation = *matRotateAboutX(degrees_x, &model_view_rotation);
     }
     else if(key == 'L')
     {
-        eyex += 0.05;
+        //eyex += 0.05;
+        
+        degrees_x += 5.0;
+        model_view_rotation = *matRotateAboutX(degrees_x, &model_view_rotation);
     }
     else if(key == 'o')
     {
-        eyey -= 0.05;
+        //eyey -= 0.05;
+        
+        degrees_y -= 5.0;
+        model_view_rotation = *matRotateAboutY(degrees_y, &model_view_rotation);
     }
     else if(key == 'O')
     {
-        eyey += 0.05;
+        //eyey += 0.05;
+        
+        degrees_y += 5.0;
+        model_view_rotation = *matRotateAboutY(degrees_y, &model_view_rotation);
     }
     else if(key == 'p')
     {
-        eyez -= 0.2;
+        //eyez -= 0.2;
+        
     }
     else if(key == 'P')
     {
-        eyez += 0.2;
+        //eyez += 0.2;
     }
     // Controls for light position
     else if(key == 'x')
@@ -599,16 +632,22 @@ void keyboard(unsigned char key, int mousex, int mousey)
  
 
     // Recalculate model_view matrix
-    Mat4 temp1 = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-    model_view_matrix = temp1;
+    //Mat4 temp1 = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
+    //model_view_matrix = temp1;
+    
+    
     
     // Recalculate light ball translation
     Mat4 scaling_matrix = *scaleMatrix(.02, &scaling_matrix);
     Mat4 translation_matrix = *translate(LightPosition.x,LightPosition.y,LightPosition.z, &translation_matrix);
     
     // Apply scaling, then translation
-    temp1 = *matMultiplication(&translation_matrix, &scaling_matrix, &temp1);
+    Mat4 temp1 = *matMultiplication(&translation_matrix, &scaling_matrix, &temp1);
     transformation_matricies[5] = temp1;
+    
+    
+    
+    // Apply rotation to all transformation matricies..?
     
     
     printf("LIGHT POSITION:\n");
