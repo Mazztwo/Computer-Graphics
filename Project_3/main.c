@@ -43,7 +43,7 @@ Vec4 vertices[num_vertices];
 Vec4 normals[num_vertices];
 
 ///////////// Lookat and frustum variables/////////////////////////////////////////
-float eyex = 0.0, eyey = 1.5, eyez = 2.0;
+float eyex = 0.0, eyey = 1.5, eyez = 1.2;
 float atx = 0.0, aty = 0.0, atz = 0.0;
 float left = -0.5, right = 0.5, bottom = -0.5, top = 0.5, near = -0.5, far = -100.0;
 ///////////////////////////////////////////////////////////////////////////////////
