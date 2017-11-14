@@ -75,7 +75,7 @@ GLuint shininess_location, attenuation_constant_location, attenuation_linear_loc
 
 Vec4 AmbientProduct, DiffuseProduct, SpecularProduct;
 float shininess;
-float attenuation_constant = 1.0, attenuation_linear = 0.1, attenuation_quadratic = 0.01;
+float attenuation_constant = 0.2, attenuation_linear = 1.0, attenuation_quadratic = 1.0;
 
 // Lighting model attributes
 Vec4 light_ambient = {0.2, 0.2, 0.2, 1.0};
@@ -210,11 +210,11 @@ Vec4 sphere_colors[num_spheres] =
 material sphere_materials[num_spheres] =
 {
     // Spheres
-    {{1.0, 0.0, 0.0, 1.0}, {1.0, 0.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 20},  // Red
-    {{0.0, 1.0, 0.0, 1.0}, {0.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 20},  // Green
-    {{0.0, 0.0, 1.0, 1.0}, {0.0, 0.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 20},  // Blue
-    {{1.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 20},  // Yellow
-    {{1.0, 0.5, 0.0, 1.0}, {1.0, 0.5, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 20},  // Orange
+    {{1.0, 0.0, 0.0, 1.0}, {1.0, 0.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Red
+    {{0.0, 1.0, 0.0, 1.0}, {0.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Green
+    {{0.0, 0.0, 1.0, 1.0}, {0.0, 0.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Blue
+    {{1.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Yellow
+    {{1.0, 0.5, 0.0, 1.0}, {1.0, 0.5, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Orange
     
     // Light ball
     {{1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10}   // White
@@ -247,6 +247,7 @@ material sphere_materials[num_spheres] =
 // Ground
 material ground_material = {{0.0, 0.7, 0.0, 1.0}, {0.0, 0.7, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10};
 */
+
 
 
 
