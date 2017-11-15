@@ -32,13 +32,9 @@
 
 #define windowSize 375
 #define groundVertices 6
+// numvertices is 16206 for a 5 degree increment for sphere
 #define sphereVertices 16206
-///////// num_vertices is 16206 for a 5 degree increment
-#define num_vertices sphereVertices + groundVertices
-////////////////////////////////////////////////////////
 
-Vec4 vertices[num_vertices];
-Vec4 colors[num_vertices];
 
 ///////////// Lookat and frustum variables/////////////////////////////////////////
 float eyex = 0.0, eyey = 1.5, eyez = 1.5;
@@ -48,22 +44,10 @@ float left = -0.5, right = 0.5, bottom = -0.5, top = 0.5, near = -0.5, far = -10
 
 float DegreesToRadians = M_PI / 180.0;;
 
-Mat4 model_view_rotation =
-{
-    {1.0, 0.0, 0.0, 0.0},
-    {0.0, 1.0, 0.0, 0.0},
-    {0.0, 0.0, 1.0, 0.0},
-    {0.0, 0.0, 0.0, 1.0}
-};
-
 
 int enableIdle = 0;
 
-// vertices[] and colors[] index
-int v_index = 0;
-
 GLuint projection_matrix_location, model_view_matrix_location, ctm_location;
-
 
 Mat4 model_view_matrix =
 {
@@ -72,7 +56,6 @@ Mat4 model_view_matrix =
     {0.0, 0.0, 1.0, 0.0},
     {0.0, 0.0, 0.0, 1.0}
 };
-
 
 Mat4 projection_matrix =
 {
@@ -83,7 +66,7 @@ Mat4 projection_matrix =
     
 };
 
-// Transformation matricies for sphere and ground
+// Transformation matricies for ground and sphere
 Mat4 transformation_matricies[2] =
 {
     {{1.0, 0.0, 0.0, 0.0},
@@ -97,7 +80,10 @@ Mat4 transformation_matricies[2] =
         {0.0, 0.0, 0.0, 1.0}},
 };
 
-// ground vertices
+Vec4 sphere_vertices[sphereVertices];
+Vec4 sphere_colors[sphereVertices];
+
+// Ground vertices
 Vec4 ground_vertices[groundVertices] =
 {
     {-2.0, 0.0, -2.0, 1.0},
@@ -109,19 +95,32 @@ Vec4 ground_vertices[groundVertices] =
     { 2.0, 0.0,  2.0, 1.0}
 };
 
-// Rotation matrix for sphere
-Mat4 rotation_matrix[1] =
+// Ground colors
+Vec4 ground_colors[groundVertices] =
 {
-    {{1,0,0,0},
+    {0, 0, 0.5, 1.0},
+    {0, 0, 0.5, 1.0},
+    {0, 0, 0.5, 1.0},
+    
+    {0, 0, 0.5, 1.0},
+    {0, 0, 0.5, 1.0},
+    {0, 0, 0.5, 1.0}
+};
+
+// Rotation matrix for sphere
+Mat4 rotation_matrix =
+{
+    {1,0,0,0},
     {0,1,0,0},
     {0,0,1,0},
-    {0,0,0,1}}
+    {0,0,0,1}
 };
 
 
 
 void initSphere(float divisionDegrees)
 {
+    int v_index = 0;
     
     for (float phi = -90.0; phi <= 90.0; phi += divisionDegrees)
     {
@@ -133,49 +132,32 @@ void initSphere(float divisionDegrees)
             float thetar = theta*DegreesToRadians;
             float thetar20 = (theta + divisionDegrees)*DegreesToRadians;
         
-            vecArrayAdd(vertices, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 1);
-            vecArrayAdd(colors, v_index, 0, 0, 0, 1);;
+            vecArrayAdd(sphere_vertices, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 1);
+            vecArrayAdd(sphere_colors, v_index, 0, 0, 0, 1);;
             v_index++;
             
-            vecArrayAdd(vertices, v_index, sin(thetar)*cos(phir20), cos(thetar)*cos(phir20), sin(phir20), 1);
-            vecArrayAdd(colors, v_index, 1, 1, 1, 1);
+            vecArrayAdd(sphere_vertices, v_index, sin(thetar)*cos(phir20), cos(thetar)*cos(phir20), sin(phir20), 1);
+            vecArrayAdd(sphere_colors, v_index, 1, 1, 1, 1);
             v_index++;
             
-            vecArrayAdd(vertices, v_index, sin(thetar20)*cos(phir20), cos(thetar20)*cos(phir20), sin(phir20), 1);
-            vecArrayAdd(colors, v_index, 0, 0, 0, 1);
+            vecArrayAdd(sphere_vertices, v_index, sin(thetar20)*cos(phir20), cos(thetar20)*cos(phir20), sin(phir20), 1);
+            vecArrayAdd(sphere_colors, v_index, 0, 0, 0, 1);
             v_index++;
             
-            vecArrayAdd(vertices, v_index, sin(thetar20)*cos(phir20), cos(thetar20)*cos(phir20), sin(phir20), 1);
-            vecArrayAdd(colors, v_index, 1, 1, 1, 1);
+            vecArrayAdd(sphere_vertices, v_index, sin(thetar20)*cos(phir20), cos(thetar20)*cos(phir20), sin(phir20), 1);
+            vecArrayAdd(sphere_colors, v_index, 1, 1, 1, 1);
             v_index++;
             
-            vecArrayAdd(vertices, v_index, sin(thetar20)*cos(phir), cos(thetar20)*cos(phir), sin(phir), 1);
-            vecArrayAdd(colors, v_index, 0, 0, 0, 1);
+            vecArrayAdd(sphere_vertices, v_index, sin(thetar20)*cos(phir), cos(thetar20)*cos(phir), sin(phir), 1);
+            vecArrayAdd(sphere_colors, v_index, 0, 0, 0, 1);
             v_index++;
             
-            vecArrayAdd(vertices, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 1);
-            vecArrayAdd(colors, v_index, 1, 1, 1, 1);
+            vecArrayAdd(sphere_vertices, v_index, sin(thetar)*cos(phir), cos(thetar)*cos(phir), sin(phir), 1);
+            vecArrayAdd(sphere_colors, v_index, 1, 1, 1, 1);
             v_index++;
         }
     }
 }
-
-
-
-void initGround()
-{
-    for(int i = 0; i < groundVertices; i++)
-    {
-        vecArrayAdd(vertices, v_index, ground_vertices[i].x, ground_vertices[i].y, ground_vertices[i].z, 1);
-        vecArrayAdd(colors, v_index, 0, 0, 0.5, 1);
-        
-        v_index++;
-    }
-    
-}
-
-
-
 
 
 void init(void)
@@ -202,6 +184,11 @@ void init(void)
     temp1 = *matMultiplication(&scaling_matrix, &transformation_matricies[0], &temp1);
     transformation_matricies[0] = temp1;
    
+    
+    // Initialize size of total vertices and colors
+    size_t size_of_all_vertices = sizeof(sphere_vertices) + sizeof(ground_vertices);
+    size_t size_of_all_colors = sizeof(sphere_colors) + sizeof(ground_colors);
+    
 
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
     glUseProgram(program);
@@ -211,9 +198,15 @@ void init(void)
     GLuint buffer;
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(colors), NULL, GL_STATIC_DRAW);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-    glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices), sizeof(colors), colors);
+    glBufferData(GL_ARRAY_BUFFER, size_of_all_vertices + size_of_all_colors, NULL, GL_STATIC_DRAW);
+    
+    // Load ground & sphere vertices
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(ground_vertices), ground_vertices);
+    glBufferSubData(GL_ARRAY_BUFFER, sizeof(ground_vertices), sizeof(sphere_vertices), sphere_vertices);
+    
+    // Load ground & sphere colors
+    glBufferSubData(GL_ARRAY_BUFFER, size_of_all_vertices, sizeof(ground_colors), ground_colors);
+    glBufferSubData(GL_ARRAY_BUFFER, size_of_all_vertices + sizeof(ground_colors), sizeof(sphere_colors), sphere_colors);
     
     
     // Send in position
@@ -221,11 +214,10 @@ void init(void)
     glEnableVertexAttribArray(vPosition);
     glVertexAttribPointer(vPosition, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
     
-    
     // Send in normal
-    GLuint colors = glGetAttribLocation(program, "Colors");
-    glEnableVertexAttribArray(colors);
-    glVertexAttribPointer(colors, 4, GL_FLOAT, GL_FALSE, 0, (GLvoid *) sizeof(colors));
+    GLuint vColor = glGetAttribLocation(program, "vColor");
+    glEnableVertexAttribArray(vColor);
+    glVertexAttribPointer(vColor, 4, GL_FLOAT, GL_FALSE, 0, (GLvoid *) size_of_all_colors);
     
     
     // Load in matricies to the vertex shader
@@ -258,19 +250,12 @@ void display(void)
     glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &model_view_matrix);
 
     // Load Ground information
-    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[1]);
-    glDrawArrays(GL_TRIANGLES, 0, groundVertices);
+    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[0]);
+    glDrawArrays(GL_TRIANGLES, 0, ground_vertices);
     
     // Load Sphere information
-    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
-    glUniform1i(isShadow_location, 0);
-    glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
-
-
-
-    
-    
-    
+    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[1]);
+    glDrawArrays(GL_TRIANGLES, 0, sphere_vertices);
     
     glutSwapBuffers();
 }
@@ -288,85 +273,13 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         exit(0);
     }
-    // Controls for eye
-    else if(key == 'l')
-    {
-        eyex -= 0.2;
-    }
-    else if(key == 'L')
-    {
-        eyex += 0.2;
-    }
-    else if(key == 'o')
-    {
-        eyey -= 0.2;
-    }
-    else if(key == 'O')
-    {
-        eyey += 0.2;
-    }
-    else if(key == 'p')
-    {
-        eyez -= 0.2;
-        
-    }
-    else if(key == 'P')
-    {
-        eyez += 0.2;
-    }
-    // Controls for light position
-    else if(key == 'x')
-    {
-        LightPosition.x -= 0.05;
-    }
-    else if(key == 'X')
-    {
-        LightPosition.x += 0.05;
-    }
-    else if(key == 'y')
-    {
-        LightPosition.y -= 0.05;
-    }
-    else if(key == 'Y')
-    {
-        LightPosition.y += 0.05;
-    }
-    else if(key == 'z')
-    {
-        LightPosition.z -= 0.05;
-    }
-    else if(key == 'Z')
-    {
-        LightPosition.z += 0.05;
-    }
     // Starts rotation
     else if (key == ' ')
     {
-        if(enableIdle)
-        {
-            enableIdle = 0;
-        }
-        else
-        {
-            enableIdle = 1;
-        }
+     
     }
 
-    // Recalculate model_view matrix
-    Mat4 temp1 = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
-    model_view_matrix = temp1;
-    
-    
-    // Recalculate light ball translation
-    Mat4 scaling_matrix = *scaleMatrix(.02, &scaling_matrix);
-    Mat4 translation_matrix = *translate(LightPosition.x,LightPosition.y,LightPosition.z, &translation_matrix);
-    
-    // Apply scaling, then translation
-    temp1 = *matMultiplication(&translation_matrix, &scaling_matrix, &temp1);
-    transformation_matricies[5] = temp1;
-    
-    
-    
+
     glutPostRedisplay();
     
 }
@@ -380,38 +293,29 @@ void idle(void)
     int i = 0;
     Mat4 temp;
     
-    if(enableIdle)
-    {
-        // Start at 1 and go to num_spheres -1 to ignore middle sphere and light ball
-        for(i = 1; i < num_spheres-1; i++)
-        {
-            // Generate rotation matrix for each sphere
-            temp = *matRotateAboutY(degrees[i], &temp);
-            rotation_matrices[i] = temp;
+    // Generate rotation matrix for each sphere
+    temp = *matRotateAboutY(5, &temp);
+    rotation_matrix = temp;
             
-            // Apply rotation matrix to transofmation
-            temp = *matMultiplication(&rotation_matrices[i], &transformation_matricies[i], &temp);
-            transformation_matricies[i] = temp;
+    // Apply rotation matrix to transofmation
+    temp = *matMultiplication(&rotation_matrix, &transformation_matricies[1], &temp);
+    transformation_matricies[1] = temp;
             
-            glutPostRedisplay();
-        }
-        
-    }
     glutPostRedisplay();
+    
 }
 
 
 
 int main(int argc, char **argv)
 {
-    initGround();
     
     // OpenGL initializaiton code
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
     glutInitWindowSize(windowSize*2, windowSize*2);
     glutInitWindowPosition(100,100);
-    glutCreateWindow("Project 3 - Lights");
+    glutCreateWindow("Lab5 - Rolling Ball");
     //glewInit();
     init();
     glutDisplayFunc(display);

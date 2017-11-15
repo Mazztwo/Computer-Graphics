@@ -10,6 +10,8 @@
 		CA0289551FBCB795007739A1 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = CA0289541FBCB795007739A1 /* main.c */; };
 		CA02895C1FBCBA7C007739A1 /* initShader.c in Sources */ = {isa = PBXBuildFile; fileRef = CA0289581FBCBA7B007739A1 /* initShader.c */; };
 		CA02895D1FBCBA7C007739A1 /* funct.c in Sources */ = {isa = PBXBuildFile; fileRef = CA0289591FBCBA7B007739A1 /* funct.c */; };
+		CA0289621FBCC2DD007739A1 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA0289611FBCC2D8007739A1 /* OpenGL.framework */; };
+		CA0289641FBCC2E7007739A1 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA0289631FBCC2E2007739A1 /* GLUT.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -33,6 +35,10 @@
 		CA0289591FBCBA7B007739A1 /* funct.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = funct.c; sourceTree = "<group>"; };
 		CA02895A1FBCBA7B007739A1 /* funct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = funct.h; sourceTree = "<group>"; };
 		CA02895B1FBCBA7B007739A1 /* vshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vshader.glsl; sourceTree = "<group>"; };
+		CA02895E1FBCC2C1007739A1 /* vshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = vshader.glsl; path = "../../../../../../Library/Developer/Xcode/DerivedData/Lab5_RollingBall-ffmvgbshacnycseknsbtpklrcaqs/Build/Products/Debug/vshader.glsl"; sourceTree = "<group>"; };
+		CA02895F1FBCC2C1007739A1 /* fshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = fshader.glsl; path = "../../../../../../Library/Developer/Xcode/DerivedData/Lab5_RollingBall-ffmvgbshacnycseknsbtpklrcaqs/Build/Products/Debug/fshader.glsl"; sourceTree = "<group>"; };
+		CA0289611FBCC2D8007739A1 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		CA0289631FBCC2E2007739A1 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +46,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA0289641FBCC2E7007739A1 /* GLUT.framework in Frameworks */,
+				CA0289621FBCC2DD007739A1 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,9 +62,12 @@
 				CA02895A1FBCBA7B007739A1 /* funct.h */,
 				CA0289581FBCBA7B007739A1 /* initShader.c */,
 				CA0289561FBCBA7B007739A1 /* initShader.h */,
+				CA02895F1FBCC2C1007739A1 /* fshader.glsl */,
 				CA02895B1FBCBA7B007739A1 /* vshader.glsl */,
 				CA0289541FBCB795007739A1 /* main.c */,
 				CA02894B1FBCB72E007739A1 /* Products */,
+				CA02895E1FBCC2C1007739A1 /* vshader.glsl */,
+				CA0289601FBCC2D7007739A1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -66,6 +77,15 @@
 				CA02894A1FBCB72E007739A1 /* Lab5_RollingBall */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		CA0289601FBCC2D7007739A1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CA0289631FBCC2E2007739A1 /* GLUT.framework */,
+				CA0289611FBCC2D8007739A1 /* OpenGL.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
