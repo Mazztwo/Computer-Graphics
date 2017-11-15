@@ -104,9 +104,9 @@ Vec4 ground_colors[groundVertices] =
     {0, 0, 0.5, 1.0},
     {0, 0, 0.5, 1.0},
     
-    {0, 0, 0.5, 1.0},
-    {0, 0, 0.5, 1.0},
-    {0, 0, 0.5, 1.0}
+    {0, 0.5, 0, 1.0},
+    {0, 0.5, 0, 1.0},
+    {0, 0.5, 0, 1.0}
 };
 
 Mat4 ground_transformation =
@@ -173,13 +173,20 @@ void init(void)
 
     // Initialize sphere
     initSphere(5.0);
-    
+
     // Generate scaling matrix
-    Mat4 scaling_matrix = *scaleMatrix(0.5, &scaling_matrix);
+    Mat4 sphere_scaling = *scaleMatrix(0.5, &sphere_scaling);
    
-    // Apply scaling
-    temp1 = *matMultiplication(&scaling_matrix, &sphere_transformation, &temp1);
+    // Apply scaling to sphere
+    temp1 = *matMultiplication(&sphere_scaling, &sphere_transformation, &temp1);
     sphere_transformation = temp1;
+    
+    // Translate ground to be right under sphere
+    Mat4 ground_translation = *translate(0, 0.5, 0, &ground_translation);
+    
+    // Apply translation to ground
+    temp1 = *matMultiplication(&ground_translation, &ground_transformation, &temp1);
+    ground_transformation = temp1;
    
     // Initialize size of total vertices and colors
     size_t size_of_all_vertices = sizeof(sphere_vertices) + sizeof(ground_vertices);
@@ -254,28 +261,28 @@ void keyboard(unsigned char key, int mousex, int mousey)
         exit(0);
     }
     // Controls for eye
-    else if(key == 'l')
+    else if(key == 'x')
     {
         eyex -= 0.2;
     }
-    else if(key == 'L')
+    else if(key == 'X')
     {
         eyex += 0.2;
     }
-    else if(key == 'o')
+    else if(key == 'y')
     {
         eyey -= 0.2;
     }
-    else if(key == 'O')
+    else if(key == 'Y')
     {
         eyey += 0.2;
     }
-    else if(key == 'p')
+    else if(key == 'z')
     {
         eyez -= 0.2;
         
     }
-    else if(key == 'P')
+    else if(key == 'Z')
     {
         eyez += 0.2;
     }
@@ -305,7 +312,7 @@ void idle(void)
     sphere_transformation = temp;
             
     glutPostRedisplay();
-     
+    
     
 }
 
