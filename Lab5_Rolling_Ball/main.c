@@ -31,9 +31,9 @@
 #define BUFFER_OFFSET( offset )   ((GLvoid*) (offset))
 
 #define windowSize 375
-#define groundVertices 6
+#define numrGoundVertices 6
 // numvertices is 16206 for a 5 degree increment for sphere
-#define sphereVertices 16206
+#define numSphereVertices 16206
 
 
 ///////////// Lookat and frustum variables/////////////////////////////////////////
@@ -66,8 +66,8 @@ Mat4 projection_matrix =
     
 };
 
-Vec4 sphere_vertices[sphereVertices];
-Vec4 sphere_colors[sphereVertices];
+Vec4 sphere_vertices[numSphereVertices];
+Vec4 sphere_colors[numSphereVertices];
 
 Mat4 sphere_transformation =
 {   {1.0, 0.0, 0.0, 0.0},
@@ -86,7 +86,7 @@ Mat4 sphere_rotation =
 
 
 // Ground vertices
-Vec4 ground_vertices[groundVertices] =
+Vec4 ground_vertices[numGroundVertices] =
 {
     {-1.0, -1.0, -1.0, 1.0},
     {-1.0, -1.0,  1.0, 1.0},
@@ -98,7 +98,7 @@ Vec4 ground_vertices[groundVertices] =
 };
 
 // Ground colors
-Vec4 ground_colors[groundVertices] =
+Vec4 ground_colors[numGroundVertices] =
 {
     {0, 0, 0.5, 1.0},
     {0, 0, 0.5, 1.0},
@@ -117,6 +117,8 @@ Mat4 ground_transformation =
     {0.0, 0.0, 0.0, 1.0}
 };
 
+// Used for ground placement under sphere
+float x = 0.0 ,y = 0.5, z = 0.0;
 
 
 void initSphere(float divisionDegrees)
@@ -181,13 +183,6 @@ void init(void)
     temp1 = *matMultiplication(&sphere_scaling, &sphere_transformation, &temp1);
     sphere_transformation = temp1;
     
-    // Translate ground to be right under sphere
-    Mat4 ground_translation = *translate(0, 0.5, 0, &ground_translation);
-    
-    // Apply translation to ground
-    temp1 = *matMultiplication(&ground_translation, &ground_transformation, &temp1);
-    ground_transformation = temp1;
-   
     // Initialize size of total vertices and colors
     size_t size_of_all_vertices = sizeof(sphere_vertices) + sizeof(ground_vertices);
     size_t size_of_all_colors = sizeof(sphere_colors) + sizeof(ground_colors);
@@ -241,14 +236,30 @@ void display(void)
     
     // Load Model view
     glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &model_view_matrix);
-
-    // Load Ground information
-    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ground_transformation);
-    glDrawArrays(GL_TRIANGLES, 0, groundVertices);
+    
+    // Load Ground information x 5
+    for(int i = 0; i < 5; i++)
+    {
+        // Translate ground
+        Mat4 ground_translation = *translate(x, y, z, &ground_translation);
+        
+        // Apply translation to ground
+        temp1 = *matMultiplication(&ground_translation, &ground_transformation, &temp1);
+        ground_transformation = temp1;
+        
+        glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ground_transformation);
+        glDrawArrays(GL_TRIANGLES, numGroundVertices * i, numGroundVertices);
+        
+        z += 2.0;
+    }
+    
+    
+    
+    
     
     // Load Sphere information
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &sphere_transformation);
-    glDrawArrays(GL_TRIANGLES, groundVertices, sphereVertices);
+    glDrawArrays(GL_TRIANGLES, numGroundVertices, numSphereVertices);
     
     glutSwapBuffers();
 }
