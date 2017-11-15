@@ -34,7 +34,6 @@
 		CA0289581FBCBA7B007739A1 /* initShader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = initShader.c; sourceTree = "<group>"; };
 		CA0289591FBCBA7B007739A1 /* funct.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = funct.c; sourceTree = "<group>"; };
 		CA02895A1FBCBA7B007739A1 /* funct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = funct.h; sourceTree = "<group>"; };
-		CA02895B1FBCBA7B007739A1 /* vshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vshader.glsl; sourceTree = "<group>"; };
 		CA02895E1FBCC2C1007739A1 /* vshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = vshader.glsl; path = "../../../../../../Library/Developer/Xcode/DerivedData/Lab5_RollingBall-ffmvgbshacnycseknsbtpklrcaqs/Build/Products/Debug/vshader.glsl"; sourceTree = "<group>"; };
 		CA02895F1FBCC2C1007739A1 /* fshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = fshader.glsl; path = "../../../../../../Library/Developer/Xcode/DerivedData/Lab5_RollingBall-ffmvgbshacnycseknsbtpklrcaqs/Build/Products/Debug/fshader.glsl"; sourceTree = "<group>"; };
 		CA0289611FBCC2D8007739A1 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -63,7 +62,6 @@
 				CA0289581FBCBA7B007739A1 /* initShader.c */,
 				CA0289561FBCBA7B007739A1 /* initShader.h */,
 				CA02895F1FBCC2C1007739A1 /* fshader.glsl */,
-				CA02895B1FBCBA7B007739A1 /* vshader.glsl */,
 				CA0289541FBCB795007739A1 /* main.c */,
 				CA02894B1FBCB72E007739A1 /* Products */,
 				CA02895E1FBCC2C1007739A1 /* vshader.glsl */,

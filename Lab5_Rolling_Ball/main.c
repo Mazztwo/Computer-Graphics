@@ -66,33 +66,35 @@ Mat4 projection_matrix =
     
 };
 
-// Transformation matricies for ground and sphere
-Mat4 transformation_matricies[2] =
-{
-    {{1.0, 0.0, 0.0, 0.0},
-        {0.0, 1.0, 0.0, 0.0},
-        {0.0, 0.0, 1.0, 0.0},
-        {0.0, 0.0, 0.0, 1.0}},
-    
-    {{1.0, 0.0, 0.0, 0.0},
-        {0.0, 1.0, 0.0, 0.0},
-        {0.0, 0.0, 1.0, 0.0},
-        {0.0, 0.0, 0.0, 1.0}},
-};
-
 Vec4 sphere_vertices[sphereVertices];
 Vec4 sphere_colors[sphereVertices];
+
+Mat4 sphere_transformation =
+{   {1.0, 0.0, 0.0, 0.0},
+    {0.0, 1.0, 0.0, 0.0},
+    {0.0, 0.0, 1.0, 0.0},
+    {0.0, 0.0, 0.0, 1.0}
+};
+
+Mat4 sphere_rotation =
+{
+    {1,0,0,0},
+    {0,1,0,0},
+    {0,0,1,0},
+    {0,0,0,1}
+};
+
 
 // Ground vertices
 Vec4 ground_vertices[groundVertices] =
 {
-    {-2.0, 0.0, -2.0, 1.0},
-    {-2.0, 0.0,  2.0, 1.0},
-    { 2.0, 0.0, -2.0, 1.0},
+    {-1.0, 0.0, -1.0, 1.0},
+    {-1.0, 0.0,  1.0, 1.0},
+    { 1.0, 0.0, -1.0, 1.0},
     
-    { 2.0, 0.0, -2.0, 1.0},
-    {-2.0, 0.0,  2.0, 1.0},
-    { 2.0, 0.0,  2.0, 1.0}
+    { 1.0, 0.0, -1.0, 1.0},
+    {-1.0, 0.0,  1.0, 1.0},
+    { 1.0, 0.0,  1.0, 1.0}
 };
 
 // Ground colors
@@ -107,13 +109,12 @@ Vec4 ground_colors[groundVertices] =
     {0, 0, 0.5, 1.0}
 };
 
-// Rotation matrix for sphere
-Mat4 rotation_matrix =
+Mat4 ground_transformation =
 {
-    {1,0,0,0},
-    {0,1,0,0},
-    {0,0,1,0},
-    {0,0,0,1}
+    {1.0, 0.0, 0.0, 0.0},
+    {0.0, 1.0, 0.0, 0.0},
+    {0.0, 0.0, 1.0, 0.0},
+    {0.0, 0.0, 0.0, 1.0}
 };
 
 
@@ -170,9 +171,7 @@ void init(void)
     temp1 = frustum(left, right, bottom, top, near, far);
     projection_matrix = temp1;
 
-
-    // Initialize spher
-    // x,y,z coordinates sphere centers
+    // Initialize sphere
     Mat4 scaling_matrix;
 
     initSphere(5.0);
@@ -181,8 +180,8 @@ void init(void)
     scaling_matrix = *scaleMatrix(0.5, &scaling_matrix);
    
     // Apply scaling, then translation
-    temp1 = *matMultiplication(&scaling_matrix, &transformation_matricies[0], &temp1);
-    transformation_matricies[0] = temp1;
+    temp1 = *matMultiplication(&scaling_matrix, &sphere_transformation, &temp1);
+    sphere_transformation = temp1;
    
     
     // Initialize size of total vertices and colors
@@ -208,7 +207,6 @@ void init(void)
     glBufferSubData(GL_ARRAY_BUFFER, size_of_all_vertices, sizeof(ground_colors), ground_colors);
     glBufferSubData(GL_ARRAY_BUFFER, size_of_all_vertices + sizeof(ground_colors), sizeof(sphere_colors), sphere_colors);
     
-    
     // Send in position
     GLuint vPosition = glGetAttribLocation(program, "vPosition");
     glEnableVertexAttribArray(vPosition);
@@ -218,7 +216,6 @@ void init(void)
     GLuint vColor = glGetAttribLocation(program, "vColor");
     glEnableVertexAttribArray(vColor);
     glVertexAttribPointer(vColor, 4, GL_FLOAT, GL_FALSE, 0, (GLvoid *) size_of_all_colors);
-    
     
     // Load in matricies to the vertex shader
     projection_matrix_location = glGetUniformLocation(program, "projection_matrix");
@@ -233,10 +230,6 @@ void init(void)
     glDepthRange(1,0);
 }
 
-
-
-
-
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -250,21 +243,15 @@ void display(void)
     glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &model_view_matrix);
 
     // Load Ground information
-    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[0]);
+    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ground_transformation);
     glDrawArrays(GL_TRIANGLES, 0, ground_vertices);
     
     // Load Sphere information
-    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[1]);
+    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &sphere_transformation);
     glDrawArrays(GL_TRIANGLES, 0, sphere_vertices);
     
     glutSwapBuffers();
 }
-
-
-
-
-
-
 
 void keyboard(unsigned char key, int mousex, int mousey)
 {
@@ -279,27 +266,21 @@ void keyboard(unsigned char key, int mousex, int mousey)
      
     }
 
-
     glutPostRedisplay();
     
 }
 
-
-
-
-
 void idle(void)
 {
-    int i = 0;
     Mat4 temp;
     
     // Generate rotation matrix for each sphere
     temp = *matRotateAboutY(5, &temp);
-    rotation_matrix = temp;
+    sphere_rotation = temp;
             
     // Apply rotation matrix to transofmation
-    temp = *matMultiplication(&rotation_matrix, &transformation_matricies[1], &temp);
-    transformation_matricies[1] = temp;
+    temp = *matMultiplication(&sphere_rotation, &sphere_transformation, &temp);
+    sphere_transformation = temp;
             
     glutPostRedisplay();
     
