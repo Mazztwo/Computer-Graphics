@@ -257,6 +257,7 @@ material ground_material = {{0.0, 0.7, 0.0, 1.0}, {0.0, 0.7, 0.0, 1.0}, {1.0, 1.
 
 
 
+
 void initSphere(float divisionDegrees)
 {
     
@@ -296,6 +297,7 @@ void initSphere(float divisionDegrees)
         }
     }
 }
+
 
 
 
@@ -423,6 +425,7 @@ void init(void)
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glDepthRange(1,0);
 }
+
 
 
 
