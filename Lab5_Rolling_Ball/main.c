@@ -31,7 +31,7 @@
 #define BUFFER_OFFSET( offset )   ((GLvoid*) (offset))
 
 #define windowSize 375
-#define numrGoundVertices 6
+#define numGoundVertices 6
 // numvertices is 16206 for a 5 degree increment for sphere
 #define numSphereVertices 16206
 
@@ -86,7 +86,7 @@ Mat4 sphere_rotation =
 
 
 // Ground vertices
-Vec4 ground_vertices[numGroundVertices] =
+Vec4 ground_vertices[numGoundVertices] =
 {
     {-1.0, -1.0, -1.0, 1.0},
     {-1.0, -1.0,  1.0, 1.0},
@@ -98,7 +98,7 @@ Vec4 ground_vertices[numGroundVertices] =
 };
 
 // Ground colors
-Vec4 ground_colors[numGroundVertices] =
+Vec4 ground_colors[numGoundVertices] =
 {
     {0, 0, 0.5, 1.0},
     {0, 0, 0.5, 1.0},
@@ -183,6 +183,13 @@ void init(void)
     temp1 = *matMultiplication(&sphere_scaling, &sphere_transformation, &temp1);
     sphere_transformation = temp1;
     
+    // Translate ground
+    Mat4 ground_translation = *translate(x, y, z, &ground_translation);
+        
+    // Apply translation to ground
+    temp1 = *matMultiplication(&ground_translation, &ground_transformation, &temp1);
+    ground_transformation = temp1;
+   
     // Initialize size of total vertices and colors
     size_t size_of_all_vertices = sizeof(sphere_vertices) + sizeof(ground_vertices);
     size_t size_of_all_colors = sizeof(sphere_colors) + sizeof(ground_colors);
@@ -237,29 +244,13 @@ void display(void)
     // Load Model view
     glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &model_view_matrix);
     
-    // Load Ground information x 5
-    for(int i = 0; i < 5; i++)
-    {
-        // Translate ground
-        Mat4 ground_translation = *translate(x, y, z, &ground_translation);
-        
-        // Apply translation to ground
-        temp1 = *matMultiplication(&ground_translation, &ground_transformation, &temp1);
-        ground_transformation = temp1;
-        
-        glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ground_transformation);
-        glDrawArrays(GL_TRIANGLES, numGroundVertices * i, numGroundVertices);
-        
-        z += 2.0;
-    }
-    
-    
-    
-    
-    
+    // Load ground
+    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ground_transformation);
+    glDrawArrays(GL_TRIANGLES, 0 , numGoundVertices);
+
     // Load Sphere information
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &sphere_transformation);
-    glDrawArrays(GL_TRIANGLES, numGroundVertices, numSphereVertices);
+    glDrawArrays(GL_TRIANGLES, numGoundVertices, numSphereVertices);
     
     glutSwapBuffers();
 }
