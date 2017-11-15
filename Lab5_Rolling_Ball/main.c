@@ -78,23 +78,23 @@ Mat4 sphere_transformation =
 
 Mat4 sphere_rotation =
 {
-    {1,0,0,0},
-    {0,1,0,0},
-    {0,0,1,0},
-    {0,0,0,1}
+    {1.0, 0.0, 0.0, 0.0},
+    {0.0, 1.0, 0.0, 0.0},
+    {0.0, 0.0, 1.0, 0.0},
+    {0.0, 0.0, 0.0, 1.0}
 };
 
 
 // Ground vertices
 Vec4 ground_vertices[groundVertices] =
 {
-    {-1.0, 0.0, -1.0, 1.0},
-    {-1.0, 0.0,  1.0, 1.0},
-    { 1.0, 0.0, -1.0, 1.0},
+    {-1.0, -1.0, -1.0, 1.0},
+    {-1.0, -1.0,  1.0, 1.0},
+    { 1.0, -1.0, -1.0, 1.0},
     
-    { 1.0, 0.0, -1.0, 1.0},
-    {-1.0, 0.0,  1.0, 1.0},
-    { 1.0, 0.0,  1.0, 1.0}
+    { 1.0, -1.0, -1.0, 1.0},
+    {-1.0, -1.0,  1.0, 1.0},
+    { 1.0, -1.0,  1.0, 1.0}
 };
 
 // Ground colors
@@ -241,7 +241,7 @@ void display(void)
     
     // Load Sphere information
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &sphere_transformation);
-    glDrawArrays(GL_TRIANGLES, 0, sphereVertices);
+    glDrawArrays(GL_TRIANGLES, groundVertices, sphereVertices);
     
     glutSwapBuffers();
 }
@@ -253,10 +253,41 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         exit(0);
     }
+    // Controls for eye
+    else if(key == 'l')
+    {
+        eyex -= 0.2;
+    }
+    else if(key == 'L')
+    {
+        eyex += 0.2;
+    }
+    else if(key == 'o')
+    {
+        eyey -= 0.2;
+    }
+    else if(key == 'O')
+    {
+        eyey += 0.2;
+    }
+    else if(key == 'p')
+    {
+        eyez -= 0.2;
+        
+    }
+    else if(key == 'P')
+    {
+        eyez += 0.2;
+    }
     else if (key == ' ')
     {
      
     }
+    
+    // Recalculate model_view matrix
+    Mat4 temp1 = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
+    model_view_matrix = temp1;
+    
 
     glutPostRedisplay();
     
@@ -264,7 +295,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
 
 void idle(void)
 {
-    /*
+    
     // Generate rotation matrix sphere
     Mat4 temp = *matRotateAboutX(-5, &temp);
     sphere_rotation = temp;
@@ -274,7 +305,7 @@ void idle(void)
     sphere_transformation = temp;
             
     glutPostRedisplay();
-     */
+     
     
 }
 
