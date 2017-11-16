@@ -38,7 +38,7 @@
 
 
 ///////////// Lookat and frustum variables/////////////////////////////////////////
-float eyex = 0.0, eyey = 1.5, eyez = 1.5;
+float eyex = 0.0, eyey = 1.7, eyez = 1.5;
 float atx = 0.0, aty = 0.0, atz = 0.0;
 float left = -0.5, right = 0.5, bottom = -0.5, top = 0.5, near = -0.5, far = -100.0;
 ///////////////////////////////////////////////////////////////////////////////////
@@ -266,19 +266,6 @@ Mat4 ground_transformation[numGroundTiles] =
 // Used for ground placement under sphere
 float x = 0.0 ,y = 0.5, z = 0.5;
 
-// Used for world transformation (moving ground tiles)
-float worldx = 0.0, worldy = 0.5, worldz = 0.5;
-
-
-Mat4 world_transformation =
-{
-    {1.0, 0.0, 0.0, 0.0},
-    {0.0, 1.0, 0.0, 0.0},
-    {0.0, 0.0, 1.0, 0.0},
-    {0.0, 0.0, 0.0, 1.0}
-};
-
-
 
 void initSphere(float divisionDegrees)
 {
@@ -320,8 +307,6 @@ void initSphere(float divisionDegrees)
         }
     }
 }
-
-
 
 
 void init(void)
