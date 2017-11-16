@@ -32,6 +32,7 @@
 
 #define windowSize 375
 #define numGoundVertices 6
+#define numGroundTiles 7
 // numvertices is 16206 for a 5 degree increment for sphere
 #define numSphereVertices 16206
 
@@ -109,8 +110,13 @@ Vec4 ground_colors[numGoundVertices] =
     {0, 0.5, 0, 1.0},
 };
 
-Mat4 ground_transformation[6] =
+Mat4 ground_transformation[numGroundTiles] =
 {
+    {{1.0, 0.0, 0.0, 0.0},
+    {0.0, 1.0, 0.0, 0.0},
+    {0.0, 0.0, 1.0, 0.0},
+    {0.0, 0.0, 0.0, 1.0}},
+    
     {{1.0, 0.0, 0.0, 0.0},
     {0.0, 1.0, 0.0, 0.0},
     {0.0, 0.0, 1.0, 0.0},
@@ -214,7 +220,7 @@ void init(void)
     // Translate ground
     Mat4 ground_translation;
     
-    for(int i = 0; i < 5; i++)
+    for(int i = 0; i < numGroundTiles; i++)
     {
        ground_translation = *translate(x, y, z, &ground_translation);
         
@@ -284,7 +290,7 @@ void display(void)
     glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &model_view_matrix);
     
     // Load ground
-    for(int i = 0; i < 6; i++)
+    for(int i = 0; i < numGroundTiles; i++)
     {
         glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ground_transformation[i]);
         glDrawArrays(GL_TRIANGLES, 0 , numGoundVertices);
