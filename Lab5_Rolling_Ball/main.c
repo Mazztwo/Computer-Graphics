@@ -106,19 +106,44 @@ Vec4 ground_colors[numGoundVertices] =
     
     {0, 0.5, 0, 1.0},
     {0, 0.5, 0, 1.0},
-    {0, 0.5, 0, 1.0}
+    {0, 0.5, 0, 1.0},
 };
 
-Mat4 ground_transformation =
+Mat4 ground_transformation[6] =
 {
-    {1.0, 0.0, 0.0, 0.0},
+    {{1.0, 0.0, 0.0, 0.0},
     {0.0, 1.0, 0.0, 0.0},
     {0.0, 0.0, 1.0, 0.0},
-    {0.0, 0.0, 0.0, 1.0}
+    {0.0, 0.0, 0.0, 1.0}},
+    
+    {{1.0, 0.0, 0.0, 0.0},
+    {0.0, 1.0, 0.0, 0.0},
+    {0.0, 0.0, 1.0, 0.0},
+    {0.0, 0.0, 0.0, 1.0}},
+    
+    {{1.0, 0.0, 0.0, 0.0},
+    {0.0, 1.0, 0.0, 0.0},
+    {0.0, 0.0, 1.0, 0.0},
+    {0.0, 0.0, 0.0, 1.0}},
+    
+    {{1.0, 0.0, 0.0, 0.0},
+    {0.0, 1.0, 0.0, 0.0},
+    {0.0, 0.0, 1.0, 0.0},
+    {0.0, 0.0, 0.0, 1.0}},
+    
+    {{1.0, 0.0, 0.0, 0.0},
+    {0.0, 1.0, 0.0, 0.0},
+    {0.0, 0.0, 1.0, 0.0},
+    {0.0, 0.0, 0.0, 1.0}},
+    
+    {{1.0, 0.0, 0.0, 0.0},
+    {0.0, 1.0, 0.0, 0.0},
+    {0.0, 0.0, 1.0, 0.0},
+    {0.0, 0.0, 0.0, 1.0}}
 };
 
 // Used for ground placement under sphere
-float x = 0.0 ,y = 0.5, z = 0.0;
+float x = 0.0 ,y = 0.5, z = 0.5;
 
 
 void initSphere(float divisionDegrees)
@@ -163,6 +188,7 @@ void initSphere(float divisionDegrees)
 }
 
 
+
 void init(void)
 {
     // Initialize model_view matrix
@@ -183,15 +209,26 @@ void init(void)
     temp1 = *matMultiplication(&sphere_scaling, &sphere_transformation, &temp1);
     sphere_transformation = temp1;
     
+    
+    // Initialize ground transformations
     // Translate ground
-    Mat4 ground_translation = *translate(x, y, z, &ground_translation);
+    Mat4 ground_translation;
+    
+    for(int i = 0; i < 5; i++)
+    {
+       ground_translation = *translate(x, y, z, &ground_translation);
         
-    // Apply translation to ground
-    temp1 = *matMultiplication(&ground_translation, &ground_transformation, &temp1);
-    ground_transformation = temp1;
-   
+        // Apply translation to ground
+        temp1 = *matMultiplication(&ground_translation, &ground_transformation[i], &temp1);
+        ground_transformation[i] = temp1;
+        
+        z -= 2.0;
+    }
+        
+        
+        
     // Initialize size of total vertices and colors
-    size_t size_of_all_vertices = sizeof(sphere_vertices) + sizeof(ground_vertices);
+    size_t size_of_all_vertices = sizeof(sphere_vertices) + (sizeof(ground_vertices));
     size_t size_of_all_colors = sizeof(sphere_colors) + sizeof(ground_colors);
     
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
@@ -204,11 +241,12 @@ void init(void)
     glBufferData(GL_ARRAY_BUFFER, size_of_all_vertices + size_of_all_colors, NULL, GL_STATIC_DRAW);
     
     // Load ground & sphere vertices
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(ground_vertices), ground_vertices);
+    glBufferSubData(GL_ARRAY_BUFFER, 0 , sizeof(ground_vertices), ground_vertices);
     glBufferSubData(GL_ARRAY_BUFFER, sizeof(ground_vertices), sizeof(sphere_vertices), sphere_vertices);
     
     // Load ground & sphere colors
     glBufferSubData(GL_ARRAY_BUFFER, size_of_all_vertices, sizeof(ground_colors), ground_colors);
+    
     glBufferSubData(GL_ARRAY_BUFFER, size_of_all_vertices + sizeof(ground_colors), sizeof(sphere_colors), sphere_colors);
     
     // Send in position
@@ -216,7 +254,7 @@ void init(void)
     glEnableVertexAttribArray(vPosition);
     glVertexAttribPointer(vPosition, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
     
-    // Send in normal
+    // Send in colors
     GLuint vColor = glGetAttribLocation(program, "vColor");
     glEnableVertexAttribArray(vColor);
     glVertexAttribPointer(vColor, 4, GL_FLOAT, GL_FALSE, 0, (GLvoid *) size_of_all_colors);
@@ -232,6 +270,7 @@ void init(void)
     glDepthRange(1,0);
 }
 
+
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -245,9 +284,12 @@ void display(void)
     glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &model_view_matrix);
     
     // Load ground
-    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ground_transformation);
-    glDrawArrays(GL_TRIANGLES, 0 , numGoundVertices);
-
+    for(int i = 0; i < 6; i++)
+    {
+        glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ground_transformation[i]);
+        glDrawArrays(GL_TRIANGLES, 0 , numGoundVertices);
+    }
+    
     // Load Sphere information
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &sphere_transformation);
     glDrawArrays(GL_TRIANGLES, numGoundVertices, numSphereVertices);
@@ -320,6 +362,7 @@ void idle(void)
 
 
 
+
 int main(int argc, char **argv)
 {
     
@@ -329,7 +372,6 @@ int main(int argc, char **argv)
     glutInitWindowSize(windowSize*2, windowSize*2);
     glutInitWindowPosition(100,100);
     glutCreateWindow("Lab5 - Rolling Ball");
-    //glewInit();
     init();
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
