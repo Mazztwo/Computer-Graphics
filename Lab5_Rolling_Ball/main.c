@@ -151,6 +151,19 @@ Mat4 ground_transformation[numGroundTiles] =
 // Used for ground placement under sphere
 float x = 0.0 ,y = 0.5, z = 0.5;
 
+// Used for world transformation (moving ground tiles)
+float worldx = 0.0, worldy = 0.5, worldz = 0.5;
+
+
+Mat4 world_transformation =
+{
+    {1.0, 0.0, 0.0, 0.0},
+    {0.0, 1.0, 0.0, 0.0},
+    {0.0, 0.0, 1.0, 0.0},
+    {0.0, 0.0, 0.0, 1.0}
+};
+
+
 
 void initSphere(float divisionDegrees)
 {
@@ -195,6 +208,7 @@ void initSphere(float divisionDegrees)
 
 
 
+
 void init(void)
 {
     // Initialize model_view matrix
@@ -230,11 +244,9 @@ void init(void)
         
         z -= 2.0;
     }
-        
-        
-        
+    
     // Initialize size of total vertices and colors
-    size_t size_of_all_vertices = sizeof(sphere_vertices) + (sizeof(ground_vertices));
+    size_t size_of_all_vertices = sizeof(sphere_vertices) + sizeof(ground_vertices);
     size_t size_of_all_colors = sizeof(sphere_colors) + sizeof(ground_colors);
     
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
@@ -277,6 +289,7 @@ void init(void)
 }
 
 
+
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -288,6 +301,7 @@ void display(void)
     
     // Load Model view
     glUniformMatrix4fv(model_view_matrix_location, 1, GL_FALSE, (GLfloat *) &model_view_matrix);
+    
     
     // Load ground
     for(int i = 0; i < numGroundTiles; i++)
@@ -350,6 +364,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     
 }
 
+
 void idle(void)
 {
     
@@ -360,11 +375,29 @@ void idle(void)
     // Apply rotation matrix to transofmation
     temp = *matMultiplication(&sphere_rotation, &sphere_transformation, &temp);
     sphere_transformation = temp;
+    
+    Mat4 temp2;
+    
+    for(int i = 0; i < numGroundTiles; i++)
+    {
+        //Reset ground transformation...?
+        if(ground_transformation[i].col4.z > 2.5)
+        {
+            ground_transformation[i].col4.z = -11.5;
+        }
+        
+        temp2 = ground_transformation[i];
+        temp2.col4.z += 0.05;
+        
+        ground_transformation[i] = temp2;
+    }
+
             
     glutPostRedisplay();
     
     
 }
+
 
 
 
