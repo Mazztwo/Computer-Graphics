@@ -45,7 +45,7 @@ Vec4 normals[num_vertices];
 ///////////// Lookat and frustum variables/////////////////////////////////////////
 float eyex = 0.0, eyey = 1.5, eyez = 1.2;
 float atx = 0.0, aty = 0.0, atz = 0.0;
-float left = -0.5, right = 0.5, bottom = -0.5, top = 0.5, near = -0.5, far = -100.0;
+float left = -0.5, right = 0.5, bottom = -0.5, top = 0.5, near = -.5, far = -100.0;
 ///////////////////////////////////////////////////////////////////////////////////
 
 float DegreesToRadians = M_PI / 180.0;;
@@ -76,6 +76,8 @@ GLuint shininess_location, attenuation_constant_location, attenuation_linear_loc
 Vec4 AmbientProduct, DiffuseProduct, SpecularProduct;
 float shininess;
 float attenuation_constant = 0.2, attenuation_linear = 1.0, attenuation_quadratic = 1.0;
+
+float phi = 50, theta = 90, radius = 1.3;
 
 // Lighting model attributes
 Vec4 light_ambient = {0.2, 0.2, 0.2, 1.0};
@@ -329,6 +331,12 @@ void initGround()
 
 void init(void)
 {
+    
+    eyex = radius*sin(phi*(M_PI/180.0))*cos(theta*(M_PI/180.0));
+    eyey = radius*cos(phi*(M_PI/180.0));
+    eyez = radius*sin(phi*(M_PI/180.0))*sin(theta*(M_PI/180.0));
+                            
+    
     // Initialize model_view matrix
     Mat4 temp1 = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
     model_view_matrix = temp1;
@@ -338,6 +346,9 @@ void init(void)
     projection_matrix = temp1;
 
 
+
+    
+    
     // Initialize spheress
     // x,y,z coordinates sphere centers
     float x = 0, y = 0.1 , z = 0;
@@ -552,30 +563,29 @@ void keyboard(unsigned char key, int mousex, int mousey)
         exit(0);
     }
     // Controls for eye
-    else if(key == 'l')
+    else if(key == 'w')
     {
-        eyex -= 0.2;
+        phi -= 5.0;
     }
-    else if(key == 'L')
+    else if(key == 's')
     {
-        eyex += 0.2;
+        phi += 5.0;
     }
-    else if(key == 'o')
+    else if(key == 'a')
     {
-        eyey -= 0.2;
+        theta += 5.0;
     }
-    else if(key == 'O')
+    else if(key == 'd')
     {
-        eyey += 0.2;
+        theta -= 5.0;
     }
-    else if(key == 'p')
+    else if(key == 'r')
     {
-        eyez -= 0.2;
-        
+        radius -= 0.1;
     }
-    else if(key == 'P')
+    else if(key == 'f')
     {
-        eyez += 0.2;
+        radius += 0.1;
     }
     // Controls for light position
     else if(key == 'x')
@@ -614,8 +624,12 @@ void keyboard(unsigned char key, int mousex, int mousey)
             enableIdle = 1;
         }
     }
-
+    
     // Recalculate model_view matrix
+    eyex = radius*sin(phi*(M_PI/180.0))*cos(theta*(M_PI/180.0));
+    eyey = radius*cos(phi*(M_PI/180.0));
+    eyez = radius*sin(phi*(M_PI/180.0))*sin(theta*(M_PI/180.0));
+    
     Mat4 temp1 = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
     model_view_matrix = temp1;
     
