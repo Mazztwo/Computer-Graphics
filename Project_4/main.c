@@ -80,7 +80,7 @@ float phi = 50, theta = 90, radius = 2.0;
 Vec4 light_ambient = {0.2, 0.2, 0.2, 1.0};
 Vec4 light_diffuse = {1.0, 1.0, 1.0, 1.0};
 Vec4 light_specular = {1.0, 1.0, 1.0, 1.0};
-Vec4 LightPosition = {0, 0.5 , 0, 1.0};
+Vec4 LightPosition = {0, 0.8 , 0, 1.0};
 
 // Light ball sphere, not actual light
 Vec4 Light_Color = {1.0, 1.0, 1.0, 1.0};
@@ -297,7 +297,7 @@ void init(void)
     
     // Initialize spheress
     // x,y,z coordinates sphere centers
-    float x = 0, y = 0.1 , z = 0;
+    float x = -.4, y = 0.2 , z = 0;
     Mat4 scaling_matrix;
     Mat4 translation_matrix;
     int i;
@@ -368,7 +368,7 @@ void init(void)
     glEnable(GL_DEPTH_TEST);
 
     
-    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClearColor(0.4, 0.4, 0.4, 1.0);
     glDepthRange(1,0);
 }
 
