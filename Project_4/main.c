@@ -577,7 +577,7 @@ void mouse(int button, int state, int x, int y)
         originVector.z = 0.0; //sqrt((windowSize*windowSize)-((x-windowSize)*(x-windowSize)));
         originVector.w = 0.0;
 
-        printf("CLICK POINT: x: %f, y: %f, z: %f\n",originVector.x, originVector.y, originVector.z);
+        //printf("CLICK POINT: x: %f, y: %f, z: %f\n",originVector.x, originVector.y, originVector.z);
     }
     
     glutPostRedisplay();
@@ -589,6 +589,21 @@ void mouse(int button, int state, int x, int y)
 void motion(int x, int y)
 {
     
+    // Capture moving x,y
+    motionVector.x = x-windowSize;
+    motionVector.y = windowSize-y;
+    motionVector.z = 0.0; //sqrt((256*256)-((x-256)*(x-256)));
+    motionVector.w = 0.0;
+    
+    if(motionVector.x > windowSize ||
+       motionVector.y > windowSize ||
+       motionVector.x < -windowSize ||
+       motionVector.y < -windowSize
+       ){}
+    else
+    {
+        printf("MOTION POINT: x: %f, y: %f, z: %f\n",motionVector.x, motionVector.y, motionVector.z);
+    }
 }
 
 void idle(void)
