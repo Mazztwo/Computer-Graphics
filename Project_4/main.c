@@ -31,8 +31,8 @@
 #define BUFFER_OFFSET( offset )   ((GLvoid*) (offset))
 
 #define windowSize 375
-#define num_spheres 6
-#define num_shadows num_spheres-1
+#define num_spheres 5
+#define num_shadows num_spheres
 #define groundVertices 6
 #define sphereVertices 16206
 ///////// num_vertices is 16206 for a 5 degree increment
@@ -43,7 +43,7 @@ Vec4 vertices[num_vertices];
 Vec4 normals[num_vertices];
 
 ///////////// Lookat and frustum variables/////////////////////////////////////////
-float eyex = 0.0, eyey = 1.5, eyez = 1.2;
+float eyex = 0.0, eyey = 0.0, eyez = 0.0;
 float atx = 0.0, aty = 0.0, atz = 0.0;
 float left = -0.5, right = 0.5, bottom = -0.5, top = 0.5, near = -.5, far = -100.0;
 ///////////////////////////////////////////////////////////////////////////////////
@@ -63,9 +63,6 @@ Mat4 model_view_rotation =
 
 int enableIdle = 0;
 
-// degrees for rotation of each sphere
-float degrees[5] = {1,1.2,1.4,1.6,1.8};
-
 // vertices[] and normals[] index
 int v_index = 0;
 
@@ -77,7 +74,7 @@ Vec4 AmbientProduct, DiffuseProduct, SpecularProduct;
 float shininess;
 float attenuation_constant = 0.2, attenuation_linear = 1.0, attenuation_quadratic = 1.0;
 
-float phi = 50, theta = 90, radius = 1.3;
+float phi = 50, theta = 90, radius = 2.0;
 
 // Lighting model attributes
 Vec4 light_ambient = {0.2, 0.2, 0.2, 1.0};
@@ -107,7 +104,7 @@ Mat4 projection_matrix =
     
 };
 
-// Transformation matricies for each sphere + light ball
+// Transformation matricies for each sphere
 Mat4 transformation_matricies[num_spheres] =
 {
     {{1.0, 0.0, 0.0, 0.0},
@@ -130,12 +127,6 @@ Mat4 transformation_matricies[num_spheres] =
         {0.0, 0.0, 1.0, 0.0},
         {0.0, 0.0, 0.0, 1.0}},
     
-    {{1.0, 0.0, 0.0, 0.0},
-        {0.0, 1.0, 0.0, 0.0},
-        {0.0, 0.0, 1.0, 0.0},
-        {0.0, 0.0, 0.0, 1.0}},
-    
-    // Light ball
     {{1.0, 0.0, 0.0, 0.0},
         {0.0, 1.0, 0.0, 0.0},
         {0.0, 0.0, 1.0, 0.0},
@@ -193,7 +184,7 @@ Mat4 rotation_matrices[num_spheres] =
 };
 
 
-// Color for each of the 5 spheres + light ball
+// Color for each of the 5 spheres
 Vec4 sphere_colors[num_spheres] =
 {
     {1,1,0,1},          // Yellow
@@ -201,54 +192,21 @@ Vec4 sphere_colors[num_spheres] =
     {0,1,0,1},          // Green
     {0,0,1,1},          // Blue
     {1,.5,0,1},         // Orange
-    
-    // Light ball
-    {1,1,1,1}           // White
 };
 
 
 // materials
 // Ambient, Diffuse, Specular
-material sphere_materials[num_spheres] =
-{
-    // Spheres
-    {{1.0, 0.0, 0.0, 1.0}, {1.0, 0.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Red
-    {{0.0, 1.0, 0.0, 1.0}, {0.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Green
-    {{0.0, 0.0, 1.0, 1.0}, {0.0, 0.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Blue
-    {{1.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Yellow
-    {{1.0, 0.5, 0.0, 1.0}, {1.0, 0.5, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Orange
-    
-    // Light ball
-    {{1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10}   // White
-    
-};
 
 // Ground
 material ground_material = {{0.0, 0.7, 0.0, 1.0}, {0.0, 0.7, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10};
 
-
-/*
 // Fancy materials!
-material sphere_materials[num_spheres] =
+material sphere_materials =
 {
     // Brass
-    {{0.329412, 0.223529, 0.027451, 1.0}, {0.780392, 0.568627, 0.113725, 1.0}, {0.992157, 0.941176, 0.807843, 1.0}, 27.8974},
-    // Polished Bronze
-    {{0.25, 0.148, 0.06475, 1.0}, {0.4, 0.2368, 0.1036, 1.0}, {0.774597, 0.458561, 0.200621, 1.0}, 76.8},
-    // Polished Gold
-    {{0.24725, 0.2245, 0.0645, 1.0}, {0.34615, 0.3143, 0.0903, 1.0}, {0.797357, 0.723991, 0.208006, 1.0}, 83.2},
-    // Polished Silver
-    {{0.23125, 0.23125, 0.23125, 1.0}, {0.2775, 0.2775, 0.2775, 1.0}, {0.773911, 0.773911, 0.773911, 1.0}, 89.6},
-    // Ruby
-    {{0.1745, 0.01175, 0.01175, 0.55}, {0.61424, 0.04136, 0.04136, 0.55}, {0.727811, 0.626959, 0.626959, 0.55}, 76.8},
-    
-    // Light ball
-    {{1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10}   // White
-    
+    {0.329412, 0.223529, 0.027451, 1.0}, {0.780392, 0.568627, 0.113725, 1.0}, {0.992157, 0.941176, 0.807843, 1.0}, 27.8974
 };
-// Ground
-material ground_material = {{0.0, 0.7, 0.0, 1.0}, {0.0, 0.7, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10};
-*/
 
 
 
@@ -307,15 +265,6 @@ void initGround()
 {
     for(int i = 0; i < groundVertices; i++)
     {
-        /* OLD BEFORE INTRODUCTION OF NORAMLS
-        vertices[v_index] = ground_vertices[i];
-        normals[v_index] = ground_color;
-    
-        v_index++;
-        */
-        
-        //vertices[v_index] = ground_vertices[i];
-        //normals[v_index] = ground_color;
         
         vecArrayAdd(vertices, v_index, ground_vertices[i].x, ground_vertices[i].y, ground_vertices[i].z, 1);
         vecArrayAdd(normals, v_index, ground_vertices[i].x, ground_vertices[i].y, ground_vertices[i].z, 0);
@@ -344,9 +293,6 @@ void init(void)
     // Initialize frustum
     temp1 = frustum(left, right, bottom, top, near, far);
     projection_matrix = temp1;
-
-
-
     
     
     // Initialize spheress
@@ -373,17 +319,6 @@ void init(void)
         // Move center of next sphere
         x += 0.2;
     }
-    
-    // Init tiny light ball above
-    initSphere(5.0);
-    
-    scaling_matrix = *scaleMatrix(.02, &scaling_matrix);
-    translation_matrix = *translate(LightPosition.x,LightPosition.y,LightPosition.z, &translation_matrix);
-    
-    // i = current index after other spheres have been initialized
-    // Apply scaling, then translation
-    temp1 = *matMultiplication(&translation_matrix, &scaling_matrix, &temp1);
-    transformation_matricies[i] = temp1;
     
 
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
@@ -494,53 +429,35 @@ void display(void)
     /////////////////////////////////////////////////////////////////
     for(int i = 0; i < num_spheres; i++)
     {
-        // Light ball
-        if(i == 5)
-        {
-            glUniform4fv(AmbientProduct_location, 1, (GLfloat *) &Light_Color);
-            glUniform4fv(DiffuseProduct_location, 1, (GLfloat *) &Light_Color);
-            glUniform4fv(SpecularProduct_location, 1, (GLfloat *) &Light_Color);
-            glUniform1fv(shininess_location, 1, (GLfloat *) &Light_Color);
+        glUniform1i(isShadow_location, 0);
+        // Ambient product (array of vectors)
+        temp = *product(sphere_materials.reflect_ambient, light_ambient, &temp);
+        AmbientProduct = temp;
+        glUniform4fv(AmbientProduct_location, 1, (GLfloat *) &AmbientProduct);
             
+        // Diffuse product (array of vectors)
+        temp = *product(sphere_materials.reflect_diffuse, light_diffuse, &temp);
+        DiffuseProduct = temp;
+        glUniform4fv(DiffuseProduct_location, 1, (GLfloat *) &DiffuseProduct);
             
-            glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
-            glUniform1i(isShadow_location, 0);
-            glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
-        }
-        // Colored spheres
-        else
-        {
-            glUniform1i(isShadow_location, 0);
-            // Ambient product (array of vectors)
-            temp = *product(sphere_materials[i].reflect_ambient, light_ambient, &temp);
-            AmbientProduct = temp;
-            glUniform4fv(AmbientProduct_location, 1, (GLfloat *) &AmbientProduct);
+        // Specular product (array of vectors)
+        temp = *product(sphere_materials.reflect_specular, light_specular, &temp);
+        SpecularProduct = temp;
+        glUniform4fv(SpecularProduct_location, 1, (GLfloat *) &SpecularProduct);
+    
+        // Shininess (array of floats, just sent 1 here)
+        glUniform1f(shininess_location, sphere_materials.shininess);
             
-            // Diffuse product (array of vectors)
-            temp = *product(sphere_materials[i].reflect_diffuse, light_diffuse, &temp);
-            DiffuseProduct = temp;
-            glUniform4fv(DiffuseProduct_location, 1, (GLfloat *) &DiffuseProduct);
+        // Draw sphere after sending in all light info.
+        // Else will use whatever is in memory
+        glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
+        glUniform1i(isShadow_location, 0);
+        glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
+        
             
-            // Specular product (array of vectors)
-            temp = *product(sphere_materials[i].reflect_specular, light_specular, &temp);
-            SpecularProduct = temp;
-            glUniform4fv(SpecularProduct_location, 1, (GLfloat *) &SpecularProduct);
-            
-            // Shininess (array of floats, just sent 1 here)
-            glUniform1f(shininess_location, sphere_materials[i].shininess);
-            
-            // Draw sphere after sending in all light info.
-            // Else will use whatever is in memory
-            glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
-            glUniform1i(isShadow_location, 0);
-            glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
-            
-            
-            // Send in shadow info
-            glUniform1i(isShadow_location, 1);
-            glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
-            
-        }
+        // Send in shadow info
+        glUniform1i(isShadow_location, 1);
+        glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
     }
 
     
@@ -616,14 +533,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     // Starts rotation
     else if (key == ' ')
     {
-        if(enableIdle)
-        {
-            enableIdle = 0;
-        }
-        else
-        {
-            enableIdle = 1;
-        }
+
     }
     
     // Recalculate model_view matrix
@@ -634,17 +544,8 @@ void keyboard(unsigned char key, int mousex, int mousey)
     Mat4 temp1 = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
     model_view_matrix = temp1;
     
-    
-    // Recalculate light ball translation
-    Mat4 scaling_matrix = *scaleMatrix(.02, &scaling_matrix);
-    Mat4 translation_matrix = *translate(LightPosition.x,LightPosition.y,LightPosition.z, &translation_matrix);
-    
-    // Apply scaling, then translation
-    temp1 = *matMultiplication(&translation_matrix, &scaling_matrix, &temp1);
-    transformation_matricies[5] = temp1;
-    
-    
-    
+
+
     glutPostRedisplay();
     
 }
@@ -655,26 +556,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
 
 void idle(void)
 {
-    int i = 0;
-    Mat4 temp;
-    
-    if(enableIdle)
-    {
-        // Start at 1 and go to num_spheres -1 to ignore middle sphere and light ball
-        for(i = 1; i < num_spheres-1; i++)
-        {
-            // Generate rotation matrix for each sphere
-            temp = *matRotateAboutY(degrees[i], &temp);
-            rotation_matrices[i] = temp;
-            
-            // Apply rotation matrix to transofmation
-            temp = *matMultiplication(&rotation_matrices[i], &transformation_matricies[i], &temp);
-            transformation_matricies[i] = temp;
-            
-            glutPostRedisplay();
-        }
-        
-    }
+ 
     glutPostRedisplay();
 }
 
@@ -689,7 +571,7 @@ int main(int argc, char **argv)
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
     glutInitWindowSize(windowSize*2, windowSize*2);
     glutInitWindowPosition(100,100);
-    glutCreateWindow("Project 3 - Newton's Cradle");
+    glutCreateWindow("Project 4 - Newton's Cradle");
     //glewInit();
     init();
     glutDisplayFunc(display);
