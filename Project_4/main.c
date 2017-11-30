@@ -505,44 +505,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         theta -= 5.0;
     }
-    else if(key == 'r')
-    {
-        radius -= 0.1;
-    }
-    else if(key == 'f')
-    {
-        radius += 0.1;
-    }
-    // Controls for light position
-    else if(key == 'x')
-    {
-        LightPosition.x -= 0.05;
-    }
-    else if(key == 'X')
-    {
-        LightPosition.x += 0.05;
-    }
-    else if(key == 'y')
-    {
-        LightPosition.y -= 0.05;
-    }
-    else if(key == 'Y')
-    {
-        LightPosition.y += 0.05;
-    }
-    else if(key == 'z')
-    {
-        LightPosition.z -= 0.05;
-    }
-    else if(key == 'Z')
-    {
-        LightPosition.z += 0.05;
-    }
-    // Starts rotation
-    else if (key == ' ')
-    {
-
-    }
+    
     
     // Recalculate model_view matrix
     eyex = radius*sin(phi*(M_PI/180.0))*cos(theta*(M_PI/180.0));
@@ -602,9 +565,36 @@ void motion(int x, int y)
        ){}
     else
     {
-        printf("MOTION POINT: x: %f, y: %f, z: %f\n",motionVector.x, motionVector.y, motionVector.z);
+        // If touching ball, move it in an arc
+        // Right most ball
+        if( (motionVector.x > 60 && motionVector.x < 90) && (motionVector.y > -20 && motionVector.y < 15))
+        {
+            printf("ON BALL!\n");
+        }
+        else
+        {
+            printf("NOT ON BALL!\n");
+        }
+        
+        
+        //printf("MOTION POINT: x: %f, y: %f, z: %f\n",motionVector.x, motionVector.y, motionVector.z);
     }
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void idle(void)
 {
