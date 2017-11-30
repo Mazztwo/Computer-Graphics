@@ -60,6 +60,8 @@ Mat4 model_view_rotation =
     {0.0, 0.0, 0.0, 1.0}
 };
 
+Vec4 originVector = {0.0,0.0,0.0,0.0};
+
 
 int enableIdle = 0;
 
@@ -152,6 +154,8 @@ Vec4 ground_vertices[groundVertices] =
     { 1.0, -0.2, -0.6, 1.0},
     {-1.0, -0.2,  0.6, 1.0},
     { 1.0, -0.2,  0.6, 1.0}
+    
+    
 };
 
 // Rotation matrices for each color sphere
@@ -551,8 +555,19 @@ void keyboard(unsigned char key, int mousex, int mousey)
 }
 
 
+// Listner for mouse button events
+void mouse(int button, int state, int x, int y)
+{
+    
+}
 
 
+
+// Listner for mouse motion
+void motion(int x, int y)
+{
+    
+}
 
 void idle(void)
 {
@@ -576,6 +591,8 @@ int main(int argc, char **argv)
     init();
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
+    glutMouseFunc(mouse);
+    glutMotionFunc(motion);
     glutIdleFunc(idle);
     glutMainLoop();
     
