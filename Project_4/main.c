@@ -60,8 +60,11 @@ Mat4 model_view_rotation =
     {0.0, 0.0, 0.0, 1.0}
 };
 
+// Vector that points from mouseclick to origin
 Vec4 originVector = {0.0,0.0,0.0,0.0};
 
+// Direction of motion
+Vec4 motionVector = {0.0,0.0,0.0,0.0};
 
 int enableIdle = 0;
 
@@ -147,13 +150,13 @@ Mat4 ground_transformation =
 // ground vertices
 Vec4 ground_vertices[groundVertices] =
 {
-    {-1.0, -0.2, -0.6, 1.0},
-    {-1.0, -0.2,  0.6, 1.0},
-    { 1.0, -0.2, -0.6, 1.0},
+    {-1.0, -0.4, -0.6, 1.0},
+    {-1.0, -0.4,  0.6, 1.0},
+    { 1.0, -0.4, -0.6, 1.0},
     
-    { 1.0, -0.2, -0.6, 1.0},
-    {-1.0, -0.2,  0.6, 1.0},
-    { 1.0, -0.2,  0.6, 1.0}
+    { 1.0, -0.4, -0.6, 1.0},
+    {-1.0, -0.4,  0.6, 1.0},
+    { 1.0, -0.4,  0.6, 1.0}
     
     
 };
@@ -282,6 +285,7 @@ void initGround()
 
 
 
+
 void init(void)
 {
     
@@ -301,7 +305,7 @@ void init(void)
     
     // Initialize spheress
     // x,y,z coordinates sphere centers
-    float x = -.4, y = 0.2 , z = 0;
+    float x = -.4, y = 0.0 , z = 0;
     Mat4 scaling_matrix;
     Mat4 translation_matrix;
     int i;
@@ -558,7 +562,25 @@ void keyboard(unsigned char key, int mousex, int mousey)
 // Listner for mouse button events
 void mouse(int button, int state, int x, int y)
 {
+    // If button is pressed
+    // button = GLUT LEFT BUTTON
+    // state = GLUT_UP or GLUT_DOWN
+    // The top-left corner of the screen is at (0, 0)
+    // x y represent pointer position on screen
+    if(button == GLUT_LEFT_BUTTON)
+    {
+        enableIdle = 0;
+        // Get initial click point to use for
+        // calculation of axis of rotation
+        originVector.x = x-windowSize;
+        originVector.y = windowSize-y;
+        originVector.z = 0.0; //sqrt((windowSize*windowSize)-((x-windowSize)*(x-windowSize)));
+        originVector.w = 0.0;
+
+        printf("CLICK POINT: x: %f, y: %f, z: %f\n",originVector.x, originVector.y, originVector.z);
+    }
     
+    glutPostRedisplay();
 }
 
 
