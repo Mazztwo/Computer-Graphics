@@ -145,13 +145,13 @@ Mat4 ground_transformation =
 // ground vertices
 Vec4 ground_vertices[groundVertices] =
 {
-    {-2.0, 0.0, -2.0, 1.0},
-    {-2.0, 0.0,  2.0, 1.0},
-    { 2.0, 0.0, -2.0, 1.0},
+    {-1.0, -0.2, -0.6, 1.0},
+    {-1.0, -0.2,  0.6, 1.0},
+    { 1.0, -0.2, -0.6, 1.0},
     
-    { 2.0, 0.0, -2.0, 1.0},
-    {-2.0, 0.0,  2.0, 1.0},
-    { 2.0, 0.0,  2.0, 1.0}
+    { 1.0, -0.2, -0.6, 1.0},
+    {-1.0, -0.2,  0.6, 1.0},
+    { 1.0, -0.2,  0.6, 1.0}
 };
 
 // Rotation matrices for each color sphere
@@ -199,7 +199,7 @@ Vec4 sphere_colors[num_spheres] =
 // Ambient, Diffuse, Specular
 
 // Ground
-material ground_material = {{0.0, 0.7, 0.0, 1.0}, {0.0, 0.7, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10};
+material ground_material = {{0.773911, 0.773911, 0.773911, 1.0}, {0.773911, 0.773911, 0.773911, 1.0}, {0.773911, 0.773911, 0.773911, 1.0}, 89.6};
 
 // Fancy materials!
 material sphere_materials =
