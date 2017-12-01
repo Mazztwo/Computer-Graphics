@@ -83,7 +83,7 @@ float attenuation_constant = 0.2, attenuation_linear = 1.0, attenuation_quadrati
 float phi = 50, theta = 90, radius = 2.0;
 
 // Ball movemement variables
-float stringLength = 2.0;
+float stringLength = 2.0, phiString = 0.0, thetaString = 90;
 
 
 // Lighting model attributes
@@ -142,6 +142,19 @@ Mat4 transformation_matricies[num_spheres] =
         {0.0, 0.0, 1.0, 0.0},
         {0.0, 0.0, 0.0, 1.0}},
 };
+
+// Keeps track of the origins of each of the spheres
+Vec4 curr_sphere_centers[num_spheres] =
+{
+    {0, 0, 0, 1.0},
+    {0, 0, 0, 1.0},
+    {0, 0, 0, 1.0},
+    {0, 0, 0, 1.0},
+    {0, 0, 0, 1.0}
+
+};
+
+
 
 // ctm for ground
 Mat4 ground_transformation =
@@ -543,9 +556,10 @@ void motion(int x, int y)
             // Making ball move in arc is not rotation matrix
             // Move ball along parametric arc by theta degrees.
             
+            // x = r cos theta
+            // y = r sin theta
             
-            
-            Mat4 tempTranslate =
+            Mat4 tempTranslate;
             
         }
         else
