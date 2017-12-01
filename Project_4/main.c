@@ -79,7 +79,12 @@ Vec4 AmbientProduct, DiffuseProduct, SpecularProduct;
 float shininess;
 float attenuation_constant = 0.2, attenuation_linear = 1.0, attenuation_quadratic = 1.0;
 
+// Camera control variables
 float phi = 50, theta = 90, radius = 2.0;
+
+// Ball movemement variables
+float stringLength = 2.0;
+
 
 // Lighting model attributes
 Vec4 light_ambient = {0.2, 0.2, 0.2, 1.0};
@@ -162,17 +167,6 @@ Vec4 ground_vertices[groundVertices] =
 };
 
 
-
-
-// Color for each of the 5 spheres
-Vec4 sphere_colors[num_spheres] =
-{
-    {1,1,0,1},          // Yellow
-    {1,0,0,1},          // Red
-    {0,1,0,1},          // Green
-    {0,0,1,1},          // Blue
-    {1,.5,0,1},         // Orange
-};
 
 
 // materials
@@ -550,6 +544,8 @@ void motion(int x, int y)
             // Move ball along parametric arc by theta degrees.
             
             
+            
+            Mat4 tempTranslate =
             
         }
         else
