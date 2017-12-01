@@ -161,34 +161,7 @@ Vec4 ground_vertices[groundVertices] =
     
 };
 
-// Rotation matrices for each color sphere
-Mat4 rotation_matrices[num_spheres] =
-{
-    {{1,0,0,0},
-        {0,1,0,0},
-        {0,0,1,0},
-        {0,0,0,1}},
-    
-    {{1,0,0,0},
-        {0,1,0,0},
-        {0,0,1,0},
-        {0,0,0,1}},
-    
-    {{1,0,0,0},
-        {0,1,0,0},
-        {0,0,1,0},
-        {0,0,0,1}},
-    
-    {{1,0,0,0},
-        {0,1,0,0},
-        {0,0,1,0},
-        {0,0,0,1}},
-    
-    {{1,0,0,0},
-        {0,1,0,0},
-        {0,0,1,0},
-        {0,0,0,1}},
-};
+
 
 
 // Color for each of the 5 spheres
@@ -214,6 +187,7 @@ material sphere_materials =
     // Brass
     {0.329412, 0.223529, 0.027451, 1.0}, {0.780392, 0.568627, 0.113725, 1.0}, {0.992157, 0.941176, 0.807843, 1.0}, 27.8974
 };
+
 
 
 
@@ -379,6 +353,7 @@ void init(void)
     glClearColor(0.4, 0.4, 0.4, 1.0);
     glDepthRange(1,0);
 }
+
 
 
 
@@ -570,6 +545,12 @@ void motion(int x, int y)
         if( (motionVector.x > 60 && motionVector.x < 90) && (motionVector.y > -20 && motionVector.y < 15))
         {
             printf("ON BALL!\n");
+            
+            // Making ball move in arc is not rotation matrix
+            // Move ball along parametric arc by theta degrees.
+            
+            
+            
         }
         else
         {
