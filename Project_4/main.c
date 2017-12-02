@@ -475,15 +475,22 @@ void keyboard(unsigned char key, int mousex, int mousey)
     }
     else if(key == 'B')
     {
-        
+        sphere_thetas[4] += 1.0;
     }
     else if(key == 'b')
     {
-        
+        sphere_thetas[4] -= 1.0;
     }
         
  
- 
+    float newX = cosf(sphere_thetas[4]);
+    float newY = sinf(sphere_thetas[4]);
+    
+    Mat4 translation = *translate(newX, newY, 0.0, &translation);
+    Mat4 temp = *matMultiplication(&translation, &transformation_matricies[4], &temp);
+    transformation_matricies[4] = temp;
+    
+    
     
     
     // Recalculate model_view matrix
