@@ -81,7 +81,7 @@ float stringLength = 2.0, phiString = 0.0, thetaString = 90;
 Vec4 light_ambient = {0.2, 0.2, 0.2, 1.0};
 Vec4 light_diffuse = {1.0, 1.0, 1.0, 1.0};
 Vec4 light_specular = {1.0, 1.0, 1.0, 1.0};
-Vec4 LightPosition = {0, 0.8 , 0, 1.0};
+Vec4 LightPosition = {0, 0.8 , 0.2, 1.0};
 
 // Light ball sphere, not actual light
 Vec4 Light_Color = {1.0, 1.0, 1.0, 1.0};
@@ -293,7 +293,7 @@ void init(void)
         initSphere(5.0);
         
         // Update curr sphere centers
-        vecArrayAdd(curr_sphere_centers, i, x/2.0, y, z, 1);
+        vecArrayAdd(curr_sphere_centers, i, x/2.0, y, z, 0);
         
         // Generate scaling matrix
         scaling_matrix = *scaleMatrix(0.1, &scaling_matrix);
@@ -561,23 +561,25 @@ void motion(int x, int y)
     if( (color[0] > color[1]) && (color[0] > color[2]))
     {
         
-        Vec4 curr = *vec4create(curr_sphere_centers[0].x,
+        Vec4 old = *vec4create(curr_sphere_centers[0].x,
                               curr_sphere_centers[0].y,
                               0.0,
-                              0.0,
-                              &curr);
+                              1.0,
+                              &old);
         
         Vec4 new = *vec4create(x, y, 0.0, 1.0, &new);
         
-        Vec4 direction = *vec4subtraction(&new, &curr, &direction);
+        Vec4 direction = *vec4subtraction(&new, &old, &direction);
+        Vec4 normalizedDirection = *scalarMultVector((1.0/vecMagnitude(&direction)), &direction, &normalizedDirection);
         
-      
-        Mat4 translation = *translate(curr.x + direction.x, curr.y + direction.y, 0.0, &translation);
+        direction = *vec4addition(&normalizedDirection, &old, &direction);
+    
+        Mat4 translation = *translate(old.x + direction.x, old.y + direction.y, 0.0, &translation);
         Mat4 temp = *matMultiplication(&translation, &transformation_matricies[0], &temp);
         transformation_matricies[0] = temp;
       
-        curr_sphere_centers[0].x = curr.x + direction.x;
-        curr_sphere_centers[0].y = curr.y + direction.y;
+        curr_sphere_centers[0].x = old.x + direction.x;
+        curr_sphere_centers[0].y = old.y + direction.y;
         
         
         
@@ -586,6 +588,7 @@ void motion(int x, int y)
     }
     
     
+    glutPostRedisplay();
 }
 
 
