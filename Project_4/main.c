@@ -529,7 +529,7 @@ void motion(int x, int y)
 
     glReadPixels(x, 750 - y, 1,1,GL_RGB, GL_UNSIGNED_BYTE, &color);
     
-    printf("Color: [%d %d %d]\n", color[0], color[1], color[2]);
+    //printf("Color: [%d %d %d]\n", color[0], color[1], color[2]);
     
     
     // R: first number is biggest
@@ -538,6 +538,42 @@ void motion(int x, int y)
     // Y: first two numbers are equal
     // SkyBlue: last two numbers are equal
     // Solid colors: All three numbers are the same
+    
+    if( (color[0] > color[1]) && (color[0] > color[2]))
+    {
+        
+        // Translate sphere center to be where mouse is...?
+        // Generate translation matrix to be at curr mouse position
+        GLint viewport[4]; //var to hold the viewport info
+        GLdouble modelview[16]; //var to hold the modelview info
+        GLdouble projection[16]; //var to hold the projection matrix info
+        GLfloat winX, winY, winZ; //variables to hold screen x,y,z coordinates
+        GLdouble worldX, worldY, worldZ; //variables to hold world x,y,z coordinates
+        
+        glGetDoublev( GL_MODELVIEW_MATRIX, modelview ); //get the modelview info
+        glGetDoublev( GL_PROJECTION_MATRIX, projection ); //get the projection matrix info
+        glGetIntegerv( GL_VIEWPORT, viewport ); //get the viewport info
+        
+        winX = (float)x;
+        winY = (float)viewport[3] - (float)y;
+        winZ = 0;
+        
+        //get the world coordinates from the screen coordinates
+        gluUnProject( winX, winY, winZ, modelview, projection, viewport, &worldX, &worldY, &worldZ);
+        
+        printf("x: %f, y: %f, z: %z\n", worldX, worldY, worldZ);
+        
+
+        // Have to translate x,y,z to world space...
+        Mat4 translation = *translate(worldX, worldY, 0.0, &translation);
+        
+        // Apply translation..
+        Mat4 temp = *matMultiplication(&translation, &transformation_matricies[0], &temp);
+        //transformation_matricies[0] = temp;
+        
+        
+    }
+    
     
 }
 
