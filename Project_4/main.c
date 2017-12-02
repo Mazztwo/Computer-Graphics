@@ -60,13 +60,9 @@ Mat4 model_view_rotation =
     {0.0, 0.0, 0.0, 1.0}
 };
 
-// Vector that points from mouseclick to origin
-Vec4 originVector = {0.0,0.0,0.0,0.0};
-
-// Direction of motion
-Vec4 motionVector = {0.0,0.0,0.0,0.0};
-
 int enableIdle = 0;
+
+int motionRight = 0, motionLeft = 0;
 
 // vertices[] and normals[] index
 int v_index = 0;
@@ -189,11 +185,17 @@ Vec4 ground_vertices[groundVertices] =
 material ground_material = {{0.773911, 0.773911, 0.773911, 1.0}, {0.773911, 0.773911, 0.773911, 1.0}, {0.773911, 0.773911, 0.773911, 1.0}, 89.6};
 
 // Fancy materials!
-material sphere_materials =
+material sphere_materials[num_spheres] =
 {
-    // Brass
-    {0.329412, 0.223529, 0.027451, 1.0}, {0.780392, 0.568627, 0.113725, 1.0}, {0.992157, 0.941176, 0.807843, 1.0}, 27.8974
+    // Spheres
+    {{1.0, 0.0, 0.0, 1.0}, {1.0, 0.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Red
+    {{0.0, 1.0, 0.0, 1.0}, {0.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Green
+    {{0.0, 0.0, 1.0, 1.0}, {0.0, 0.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Blue
+    {{1.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 0.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Yellow
+    {{0.0, 1.0, 1.0, 1.0}, {0.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Sky Blue
+    
 };
+
 
 
 
@@ -294,6 +296,9 @@ void init(void)
     for(i = 0; i < 5; i++)
     {
         initSphere(5.0);
+        
+        // Update curr sphere centers
+        vecArrayAdd(curr_sphere_centers, i, x, y, z, 1);
         
         // Generate scaling matrix
         scaling_matrix = *scaleMatrix(0.1, &scaling_matrix);
@@ -421,22 +426,22 @@ void display(void)
     {
         glUniform1i(isShadow_location, 0);
         // Ambient product (array of vectors)
-        temp = *product(sphere_materials.reflect_ambient, light_ambient, &temp);
+        temp = *product(sphere_materials[i].reflect_ambient, light_ambient, &temp);
         AmbientProduct = temp;
         glUniform4fv(AmbientProduct_location, 1, (GLfloat *) &AmbientProduct);
             
         // Diffuse product (array of vectors)
-        temp = *product(sphere_materials.reflect_diffuse, light_diffuse, &temp);
+        temp = *product(sphere_materials[i].reflect_diffuse, light_diffuse, &temp);
         DiffuseProduct = temp;
         glUniform4fv(DiffuseProduct_location, 1, (GLfloat *) &DiffuseProduct);
             
         // Specular product (array of vectors)
-        temp = *product(sphere_materials.reflect_specular, light_specular, &temp);
+        temp = *product(sphere_materials[i].reflect_specular, light_specular, &temp);
         SpecularProduct = temp;
         glUniform4fv(SpecularProduct_location, 1, (GLfloat *) &SpecularProduct);
     
         // Shininess (array of floats, just sent 1 here)
-        glUniform1f(shininess_location, sphere_materials.shininess);
+        glUniform1f(shininess_location, sphere_materials[i].shininess);
             
         // Draw sphere after sending in all light info.
         // Else will use whatever is in memory
@@ -507,22 +512,9 @@ void keyboard(unsigned char key, int mousex, int mousey)
 // Listner for mouse button events
 void mouse(int button, int state, int x, int y)
 {
-    // If button is pressed
-    // button = GLUT LEFT BUTTON
-    // state = GLUT_UP or GLUT_DOWN
-    // The top-left corner of the screen is at (0, 0)
-    // x y represent pointer position on screen
     if(button == GLUT_LEFT_BUTTON)
     {
-        enableIdle = 0;
-        // Get initial click point to use for
-        // calculation of axis of rotation
-        originVector.x = x-windowSize;
-        originVector.y = windowSize-y;
-        originVector.z = 0.0; //sqrt((windowSize*windowSize)-((x-windowSize)*(x-windowSize)));
-        originVector.w = 0.0;
-
-        //printf("CLICK POINT: x: %f, y: %f, z: %f\n",originVector.x, originVector.y, originVector.z);
+   
     }
     
     glutPostRedisplay();
@@ -533,49 +525,21 @@ void mouse(int button, int state, int x, int y)
 // Listner for mouse motion
 void motion(int x, int y)
 {
+    unsigned char color[3];
+
+    glReadPixels(x, 750 - y, 1,1,GL_RGB, GL_UNSIGNED_BYTE, &color);
     
-    // Capture moving x,y
-    motionVector.x = x-windowSize;
-    motionVector.y = windowSize-y;
-    motionVector.z = 0.0; //sqrt((256*256)-((x-256)*(x-256)));
-    motionVector.w = 0.0;
+    printf("Color: [%d %d %d]\n", color[0], color[1], color[2]);
     
-    if(motionVector.x > windowSize ||
-       motionVector.y > windowSize ||
-       motionVector.x < -windowSize ||
-       motionVector.y < -windowSize
-       ){}
-    else
-    {
-        // If touching ball, move it in an arc
-        // Right most ball
-        if( (motionVector.x > 60 && motionVector.x < 90) && (motionVector.y > -20 && motionVector.y < 15))
-        {
-            printf("ON BALL!\n");
-            
-            // Making ball move in arc is not rotation matrix
-            // Move ball along parametric arc by theta degrees.
-            
-            // x = r cos theta
-            // y = r sin theta
-            
-            Mat4 tempTranslate;
-            
-        }
-        else
-        {
-            printf("NOT ON BALL!\n");
-        }
-        
-        
-        //printf("MOTION POINT: x: %f, y: %f, z: %f\n",motionVector.x, motionVector.y, motionVector.z);
-    }
+    
+    // R: first number is biggest
+    // G: second number is biggest
+    // B: third number is biggest
+    // Y: first two numbers are equal
+    // SkyBlue: last two numbers are equal
+    // Solid colors: All three numbers are the same
     
 }
-
-
-
-
 
 
 
