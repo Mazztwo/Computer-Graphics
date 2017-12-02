@@ -48,22 +48,20 @@ float atx = 0.0, aty = 0.0, atz = 0.0;
 float left = -0.5, right = 0.5, bottom = -0.5, top = 0.5, near = -.5, far = -100.0;
 ///////////////////////////////////////////////////////////////////////////////////
 
-float DegreesToRadians = M_PI / 180.0;;
-
+float DegreesToRadians = M_PI / 180.0;
+float RadiansToDegrees = 180.0 / M_PI;
 
 float degrees_x, degrees_y, radius;
 
-
-
 int enableIdle = 0;
 
-int motionRight = 0, motionLeft = 0;
 
 // vertices[] and normals[] index
 int v_index = 0;
 
 GLuint projection_matrix_location, model_view_matrix_location, ctm_location;
 GLuint AmbientProduct_location, DiffuseProduct_location, SpecularProduct_location, LightPosition_location;
+
 GLuint shininess_location, attenuation_constant_location, attenuation_linear_location, attenuation_quadratic_location, isShadow_location;
 
 Vec4 AmbientProduct, DiffuseProduct, SpecularProduct;
@@ -73,10 +71,6 @@ float attenuation_constant = 0.2, attenuation_linear = 1.0, attenuation_quadrati
 // Camera control variables
 float phi = 50, theta = 90, radius = 2.0;
 
-// Ball movemement variables
-float stringLength = 2.0, phiString = 0.0, thetaString = 90;
-
-
 // Lighting model attributes
 Vec4 light_ambient = {0.2, 0.2, 0.2, 1.0};
 Vec4 light_diffuse = {1.0, 1.0, 1.0, 1.0};
@@ -85,6 +79,7 @@ Vec4 LightPosition = {0, 0.8 , 0.2, 1.0};
 
 // Light ball sphere, not actual light
 Vec4 Light_Color = {1.0, 1.0, 1.0, 1.0};
+
 
 
 Mat4 model_view_matrix =
@@ -134,19 +129,6 @@ Mat4 transformation_matricies[num_spheres] =
         {0.0, 0.0, 0.0, 1.0}},
 };
 
-// Keeps track of the origins of each of the spheres
-Vec4 curr_sphere_centers[num_spheres] =
-{
-    {0, 0, 0, 1.0},
-    {0, 0, 0, 1.0},
-    {0, 0, 0, 1.0},
-    {0, 0, 0, 1.0},
-    {0, 0, 0, 1.0}
-
-};
-
-
-
 // ctm for ground
 Mat4 ground_transformation =
 {
@@ -195,6 +177,9 @@ material sphere_materials[num_spheres] =
 
 
 
+
+
+float sphere_thetas[num_spheres] = {270,270,270,270,270};
 
 
 
@@ -287,13 +272,13 @@ void init(void)
     Mat4 scaling_matrix;
     Mat4 translation_matrix;
     int i;
+    
+    
+
 
     for(i = 0; i < 5; i++)
     {
         initSphere(5.0);
-        
-        // Update curr sphere centers
-        vecArrayAdd(curr_sphere_centers, i, x/2.0, y, z, 0);
         
         // Generate scaling matrix
         scaling_matrix = *scaleMatrix(0.1, &scaling_matrix);
@@ -360,6 +345,7 @@ void init(void)
     glClearColor(0.4, 0.4, 0.4, 1.0);
     glDepthRange(1,0);
 }
+
 
 
 
@@ -487,6 +473,17 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         theta -= 5.0;
     }
+    else if(key == 'B')
+    {
+        
+    }
+    else if(key == 'b')
+    {
+        
+    }
+        
+ 
+ 
     
     
     // Recalculate model_view matrix
@@ -560,7 +557,7 @@ void motion(int x, int y)
     // Red ball
     if( (color[0] > color[1]) && (color[0] > color[2]))
     {
-        
+        /*
         Vec4 old = *vec4create(curr_sphere_centers[0].x,
                               curr_sphere_centers[0].y,
                               0.0,
@@ -580,7 +577,7 @@ void motion(int x, int y)
       
         curr_sphere_centers[0].x = old.x + direction.x;
         curr_sphere_centers[0].y = old.y + direction.y;
-        
+        */
         
         
         
@@ -630,3 +627,4 @@ int main(int argc, char **argv)
     
     return 0;
 }
+
