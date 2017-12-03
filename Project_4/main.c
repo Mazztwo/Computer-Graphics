@@ -141,15 +141,13 @@ Mat4 ground_transformation =
 // ground vertices
 Vec4 ground_vertices[groundVertices] =
 {
-    {-1.2, -1.4, -0.6, 1.0},
-    {-1.2, -1.4,  0.6, 1.0},
-    { 1.2, -1.4, -0.6, 1.0},
+    {-2, -1.5, -.7, 1.0},
+    {-2, -1.5,  .7, 1.0},
+    { 2, -1.5, -.7, 1.0},
     
-    { 1.2, -1.4, -0.6, 1.0},
-    {-1.2, -1.4,  0.6, 1.0},
-    { 1.2, -1.4,  0.6, 1.0}
-    
-    
+    { 2, -1.5, -.7, 1.0},
+    {-2, -1.5,  .7, 1.0},
+    { 2, -1.5,  .7, 1.0}
 };
 
 
@@ -270,7 +268,7 @@ void init(void)
     
     // Initialize spheress
     // x,y,z coordinates sphere centers
-    float x = -0.6, y = -0.8 , z = 0;
+    float x = -1, y = -1 , z = 0;
     Mat4 scaling_matrix;
     Mat4 translation_matrix;
     int i;
@@ -281,7 +279,7 @@ void init(void)
         initSphere(5.0);
         
         // Generate scaling matrix
-        scaling_matrix = *scaleMatrix(0.15, &scaling_matrix);
+        scaling_matrix = *scaleMatrix(.25, &scaling_matrix);
         
         // Generate Translation matrix1
         translation_matrix = *translate(x, y, z, &translation_matrix);
@@ -291,7 +289,7 @@ void init(void)
         transformation_matricies[i] = temp1;
     
         // Move center of next sphere
-        x += 0.3;
+        x += .5;
     }
     
 
@@ -483,9 +481,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
         sphere_degrees[4] -= 1.0;
     }
     
-    printf("Sphere 4 degrees: %f\n", sphere_degrees[4]);
-    
-    
+  
     
     
     // Recalculate model_view matrix
