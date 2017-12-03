@@ -474,11 +474,17 @@ void keyboard(unsigned char key, int mousex, int mousey)
     }
     else if(key == 'B')
     {
+        
         sphere_degrees[4] += 5.0;
+        
+        
     }
     else if(key == 'b')
-    {
-        sphere_degrees[4] -= 5.0;
+    {       
+        if( !(sphere_degrees[4] < 275 ))
+        {
+            sphere_degrees[4] -= 5.0;
+        }
     }
     
     float newX = cosf(DegreesToRadians*sphere_degrees[4]) + 1;
