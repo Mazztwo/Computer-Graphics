@@ -180,7 +180,7 @@ material sphere_materials[num_spheres] =
 float sphere_offsets[num_spheres] = {-1,-.5,0,.5,1};
 float sphere_degrees[num_spheres] = {270,270,270,270,270};
 int ball_up[num_spheres] = {0,0,0,0,0};
-
+float GRAVITY = -9.80665;
 
 
 
@@ -497,6 +497,9 @@ void keyboard(unsigned char key, int mousex, int mousey)
         sphere_degrees[3] += 5.0;
         ball_up[3] = 1;
         
+        sphere_degrees[4] += 5.0;
+        ball_up[4] = 1;
+        
     }
     else if(key == 'v')
     {
@@ -551,6 +554,8 @@ void keyboard(unsigned char key, int mousex, int mousey)
     else if(key == 'x')
     {
         sphere_degrees[1] -= 5.0;
+        ball_up[1] = 1;
+        sphere_degrees[0] -= 5.0;
         ball_up[1] = 1;
     }
     else if(key == 'Z')
@@ -721,8 +726,32 @@ void idle(void)
 {
     if(enableIdle)
     {
+      if(ball_up[4])
+      {
+          
         
-    
+      }
+        
+        
+        
+        
+        
+        
+        
+    /*
+     // Recalculate new sphere positions
+     for(int i = 0; i < num_spheres; i++)
+     {
+     
+     float newX = cosf(DegreesToRadians*sphere_degrees[i]) + sphere_offsets[i];
+     float newY = sinf(DegreesToRadians*sphere_degrees[i]);
+     
+     Mat4 translation = *translate(newX, newY, 0.0, &translation);
+     Mat4 scale = *scaleMatrix(.25, &scale);
+     Mat4 temp = *matMultiplication(&translation, &scale, &temp);
+     transformation_matricies[i] = temp;
+     }
+     */
         
     
     
