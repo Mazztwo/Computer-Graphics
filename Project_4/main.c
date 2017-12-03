@@ -141,13 +141,13 @@ Mat4 ground_transformation =
 // ground vertices
 Vec4 ground_vertices[groundVertices] =
 {
-    {-1.0, -1.4, -0.6, 1.0},
-    {-1.0, -1.4,  0.6, 1.0},
-    { 1.0, -1.4, -0.6, 1.0},
+    {-1.2, -1.4, -0.6, 1.0},
+    {-1.2, -1.4,  0.6, 1.0},
+    { 1.2, -1.4, -0.6, 1.0},
     
-    { 1.0, -1.4, -0.6, 1.0},
-    {-1.0, -1.4,  0.6, 1.0},
-    { 1.0, -1.4,  0.6, 1.0}
+    { 1.2, -1.4, -0.6, 1.0},
+    {-1.2, -1.4,  0.6, 1.0},
+    { 1.2, -1.4,  0.6, 1.0}
     
     
 };
@@ -172,6 +172,16 @@ material sphere_materials[num_spheres] =
     {{0.0, 1.0, 1.0, 1.0}, {0.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Sky Blue
     
 };
+
+
+
+
+
+
+
+float sphere_offsets[num_spheres] = {-.32,-.16,0,.16,.32};
+float sphere_degrees[num_spheres] = {270,270,270,270,270};
+
 
 
 
@@ -260,20 +270,18 @@ void init(void)
     
     // Initialize spheress
     // x,y,z coordinates sphere centers
-    float x = -.4, y = -1 , z = 0;
+    float x = -0.6, y = -0.8 , z = 0;
     Mat4 scaling_matrix;
     Mat4 translation_matrix;
     int i;
     
     
-
-
     for(i = 0; i < 5; i++)
     {
         initSphere(5.0);
         
         // Generate scaling matrix
-        scaling_matrix = *scaleMatrix(0.1, &scaling_matrix);
+        scaling_matrix = *scaleMatrix(0.15, &scaling_matrix);
         
         // Generate Translation matrix1
         translation_matrix = *translate(x, y, z, &translation_matrix);
@@ -281,9 +289,9 @@ void init(void)
         // Apply scaling, then translation
         temp1 = *matMultiplication(&translation_matrix, &scaling_matrix, &temp1);
         transformation_matricies[i] = temp1;
-        
+    
         // Move center of next sphere
-        x += 0.2;
+        x += 0.3;
     }
     
 
@@ -466,6 +474,17 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         theta -= 5.0;
     }
+    else if(key == 'B')
+    {
+        sphere_degrees[4] += 1.0;
+    }
+    else if(key == 'b')
+    {
+        sphere_degrees[4] -= 1.0;
+    }
+    
+    printf("Sphere 4 degrees: %f\n", sphere_degrees[4]);
+    
     
     
     
@@ -494,6 +513,8 @@ void mouse(int button, int state, int x, int y)
     
     glutPostRedisplay();
 }
+
+
 
 
 
