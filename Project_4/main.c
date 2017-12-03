@@ -184,6 +184,14 @@ int ball_up[num_spheres] = {0,0,0,0,0};
 float GRAVITY = -9.80665, velocity = 0.0;
 int oldTime, currTime;
 
+Vec4 curr_sphere_centers[num_spheres] =
+{
+    {-1,-1,0,1},
+    {-.5,-1,0,1},
+    {0,-1,0,1},
+    {.5,-1,0,1},
+    {1,-1,0,1},
+};
 
 
 
@@ -606,6 +614,9 @@ void keyboard(unsigned char key, int mousex, int mousey)
         Mat4 scale = *scaleMatrix(.25, &scale);
         Mat4 temp = *matMultiplication(&translation, &scale, &temp);
         transformation_matricies[i] = temp;
+        
+        // Update current sphere centers
+        vecArrayAdd(curr_sphere_centers, i, newX, newY, 0.0, 1.0);
     }
     
     
@@ -737,6 +748,7 @@ void idle(void)
               oldTime = currTime;
           
               velocity += deltaTime * GRAVITY;
+              
           }
           
           
