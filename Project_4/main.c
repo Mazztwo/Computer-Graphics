@@ -351,6 +351,7 @@ void init(void)
 
 
 
+
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -530,6 +531,22 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
        sphere_degrees[0] -= 5.0;
     }
+    // Start swinging animation
+    else if(key == ' ')
+    {
+        if(enableIdle)
+        {
+            enableIdle = 0;
+        }
+        else
+        {
+            enableIdle = 1;
+        }
+    }
+    
+    
+    
+    
     
     // Recalculate new sphere positions
     for(int i = 0; i < num_spheres; i++)
@@ -659,8 +676,20 @@ void motion(int x, int y)
 
 
 
+
 void idle(void)
 {
+    if(enableIdle)
+    {
+        
+    
+    
+    
+    
+    }
+    
+    
+    
  
     glutPostRedisplay();
 }
