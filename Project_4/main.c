@@ -180,8 +180,9 @@ material sphere_materials[num_spheres] =
 float sphere_offsets[num_spheres] = {-1,-.5,0,.5,1};
 float sphere_degrees[num_spheres] = {270,270,270,270,270};
 int ball_up[num_spheres] = {0,0,0,0,0};
-float GRAVITY = -9.80665;
 
+float GRAVITY = -9.80665, velocity = 0.0;
+int oldTime, currTime;
 
 
 
@@ -586,6 +587,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
         else
         {
             enableIdle = 1;
+            oldTime = glutGet(GLUT_ELAPSED_TIME);
         }
     }
     
@@ -728,11 +730,28 @@ void idle(void)
     {
       if(ball_up[4])
       {
+          if(sphere_degrees[4] > 270)
+          {
+              currTime = glutGet(GLUT_ELAPSED_TIME);
+              int deltaTime = currTime - oldTime;
+              oldTime = currTime;
+          
+              velocity += deltaTime * GRAVITY;
+          }
+          
+          
+          
           
         
+          
       }
         
-        
+     /*
+      time += timestep;
+      velocity += timestep * acceleration;
+      position += timestep * (velocity + timestep * gravity / 2);
+     
+      */
         
         
         
