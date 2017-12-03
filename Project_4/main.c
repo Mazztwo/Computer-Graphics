@@ -69,13 +69,13 @@ float shininess;
 float attenuation_constant = 0.2, attenuation_linear = 1.0, attenuation_quadratic = 1.0;
 
 // Camera control variables
-float phi = 50, theta = 90, radius = 2.0;
+float phi = 70, theta = 90, radius = 2.0;
 
 // Lighting model attributes
 Vec4 light_ambient = {0.2, 0.2, 0.2, 1.0};
 Vec4 light_diffuse = {1.0, 1.0, 1.0, 1.0};
 Vec4 light_specular = {1.0, 1.0, 1.0, 1.0};
-Vec4 LightPosition = {0, 0.8 , 0.2, 1.0};
+Vec4 LightPosition = {0, 0 , 0, 1.0};
 
 // Light ball sphere, not actual light
 Vec4 Light_Color = {1.0, 1.0, 1.0, 1.0};
@@ -141,13 +141,13 @@ Mat4 ground_transformation =
 // ground vertices
 Vec4 ground_vertices[groundVertices] =
 {
-    {-1.0, -0.4, -0.6, 1.0},
-    {-1.0, -0.4,  0.6, 1.0},
-    { 1.0, -0.4, -0.6, 1.0},
+    {-1.0, -1.4, -0.6, 1.0},
+    {-1.0, -1.4,  0.6, 1.0},
+    { 1.0, -1.4, -0.6, 1.0},
     
-    { 1.0, -0.4, -0.6, 1.0},
-    {-1.0, -0.4,  0.6, 1.0},
-    { 1.0, -0.4,  0.6, 1.0}
+    { 1.0, -1.4, -0.6, 1.0},
+    {-1.0, -1.4,  0.6, 1.0},
+    { 1.0, -1.4,  0.6, 1.0}
     
     
 };
@@ -172,14 +172,6 @@ material sphere_materials[num_spheres] =
     {{0.0, 1.0, 1.0, 1.0}, {0.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, 10},  // Sky Blue
     
 };
-
-
-
-
-
-
-
-float sphere_thetas[num_spheres] = {270,270,270,270,270};
 
 
 
@@ -268,7 +260,7 @@ void init(void)
     
     // Initialize spheress
     // x,y,z coordinates sphere centers
-    float x = -.4, y = 0.0 , z = 0;
+    float x = -.4, y = -1 , z = 0;
     Mat4 scaling_matrix;
     Mat4 translation_matrix;
     int i;
@@ -449,6 +441,7 @@ void display(void)
 
 
 
+
 void keyboard(unsigned char key, int mousex, int mousey)
 {
     // Quit program
@@ -473,23 +466,6 @@ void keyboard(unsigned char key, int mousex, int mousey)
     {
         theta -= 5.0;
     }
-    else if(key == 'B')
-    {
-        sphere_thetas[4] += 1.0;
-    }
-    else if(key == 'b')
-    {
-        sphere_thetas[4] -= 1.0;
-    }
-        
- 
-    float newX = cosf(sphere_thetas[4]);
-    float newY = sinf(sphere_thetas[4]);
-    
-    Mat4 translation = *translate(newX, newY, 0.0, &translation);
-    Mat4 temp = *matMultiplication(&translation, &transformation_matricies[4], &temp);
-    transformation_matricies[4] = temp;
-    
     
     
     
