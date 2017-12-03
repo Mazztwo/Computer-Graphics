@@ -181,8 +181,20 @@ float sphere_offsets[num_spheres] = {-1,-.5,0,.5,1};
 float sphere_degrees[num_spheres] = {270,270,270,270,270};
 int ball_up[num_spheres] = {0,0,0,0,0};
 
-float GRAVITY = -9.80665, velocity = 0.0;
+float GRAVITY = 9.80665, velocity = 0.0;
 int oldTime, currTime;
+
+
+
+Vec4 resting_sphere_centers[num_spheres] =
+{
+    {-1,-1,0,1},
+    {-.5,-1,0,1},
+    {0,-1,0,1},
+    {.5,-1,0,1},
+    {1,-1,0,1},
+};
+
 
 Vec4 curr_sphere_centers[num_spheres] =
 {
@@ -749,10 +761,38 @@ void idle(void)
           
               velocity += deltaTime * GRAVITY;
               
+              sphere_degrees[4] -= 3.0;
+              
+              
+              float newX = cosf(DegreesToRadians*sphere_degrees[4]) + sphere_offsets[4];
+              float newY = sinf(DegreesToRadians*sphere_degrees[4]);
+              
+              Mat4 translation = *translate(newX, newY, 0.0, &translation);
+              Mat4 scale = *scaleMatrix(.25, &scale);
+              Mat4 temp = *matMultiplication(&translation, &scale, &temp);
+              transformation_matricies[4] = temp;
+              
+              // Update current sphere centers
+              vecArrayAdd(curr_sphere_centers, 4, newX, newY, 0.0, 1.0);
+    
           }
           
+          // curr_sphere_centers
+          // resting_sphere_centers
           
-          
+          /*
+           if(alpha <= 1.0)
+           {
+           Vec4 scaledV = *scalarMultVector(alpha, &v1, &scaledV);
+           currEye = *vec4addition(&p1, &scaledV, &currEye);
+           
+           Mat4 tempMatrix = look_at(currEye.x, currEye.y, currEye.z, atx, aty, atz, 0.0, 1.0, 0.0);
+           model_view_matrix = tempMatrix;
+           
+           alpha += 0.02;
+           }
+           */
+           
           
         
           
@@ -764,11 +804,7 @@ void idle(void)
       position += timestep * (velocity + timestep * gravity / 2);
      
       */
-        
-        
-        
-        
-        
+
     /*
      // Recalculate new sphere positions
      for(int i = 0; i < num_spheres; i++)

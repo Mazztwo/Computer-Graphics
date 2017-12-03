@@ -56,8 +56,8 @@
 				CAF3ABF81FD0850E00B561CC /* funct.h */,
 				CAF3ABFC1FD0850F00B561CC /* initShader.c */,
 				CAF3ABFA1FD0850F00B561CC /* initShader.h */,
-				CAB329151FD084B700CC89F8 /* Products */,
 				CA3667F61FD085D000B5F268 /* fshader.glsl */,
+				CAB329151FD084B700CC89F8 /* Products */,
 				CA3667F51FD085D000B5F268 /* vshader.glsl */,
 			);
 			sourceTree = "<group>";
