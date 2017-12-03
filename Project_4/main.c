@@ -69,7 +69,7 @@ float shininess;
 float attenuation_constant = 0.2, attenuation_linear = 1.0, attenuation_quadratic = 1.0;
 
 // Camera control variables
-float phi = 70, theta = 90, radius = 2.0;
+float phi = 70, theta = 90, radius = 3.0;
 
 // Lighting model attributes
 Vec4 light_ambient = {0.2, 0.2, 0.2, 1.0};
@@ -177,7 +177,7 @@ material sphere_materials[num_spheres] =
 
 
 
-float sphere_offsets[num_spheres] = {-.32,-.16,0,.16,.32};
+float sphere_offsets[num_spheres] = {-1,-.5,0,.5,1};
 float sphere_degrees[num_spheres] = {270,270,270,270,270};
 
 
@@ -474,13 +474,20 @@ void keyboard(unsigned char key, int mousex, int mousey)
     }
     else if(key == 'B')
     {
-        sphere_degrees[4] += 1.0;
+        sphere_degrees[4] += 5.0;
     }
     else if(key == 'b')
     {
-        sphere_degrees[4] -= 1.0;
+        sphere_degrees[4] -= 5.0;
     }
     
+    float newX = cosf(DegreesToRadians*sphere_degrees[4]) + 1;
+    float newY = sinf(DegreesToRadians*sphere_degrees[4]);
+    
+    Mat4 translation = *translate(newX, newY, 0.0, &translation);
+    Mat4 scale = *scaleMatrix(.25, &scale);
+    Mat4 temp = *matMultiplication(&translation, &scale, &temp);
+    transformation_matricies[4] = temp;
   
     
     
