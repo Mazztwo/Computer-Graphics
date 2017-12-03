@@ -474,27 +474,75 @@ void keyboard(unsigned char key, int mousex, int mousey)
     }
     else if(key == 'B')
     {
-        
         sphere_degrees[4] += 5.0;
-        
         
     }
     else if(key == 'b')
-    {       
+    {
         if( !(sphere_degrees[4] < 275 ))
         {
             sphere_degrees[4] -= 5.0;
         }
     }
+    else if(key == 'V')
+    {
+        sphere_degrees[3] += 5.0;
+        
+    }
+    else if(key == 'v')
+    {
+        if( !(sphere_degrees[3] < 275 ))
+        {
+            sphere_degrees[3] -= 5.0;
+        }
+    }
+    else if(key == 'C')
+    {
+        sphere_degrees[2] += 5.0;
+        
+    }
+    else if(key == 'c')
+    {
+        sphere_degrees[2] -= 5.0;
     
-    float newX = cosf(DegreesToRadians*sphere_degrees[4]) + 1;
-    float newY = sinf(DegreesToRadians*sphere_degrees[4]);
+    }
+    else if(key == 'X')
+    {
+        if( !(sphere_degrees[1] > 265 ))
+        {
+            sphere_degrees[1] += 5.0;
+        }
+        
+    }
+    else if(key == 'x')
+    {
+        sphere_degrees[1] -= 5.0;
+    }
+    else if(key == 'Z')
+    {
+        if( !(sphere_degrees[0] > 265 ))
+        {
+            sphere_degrees[0] += 5.0;
+        }
+        
+    }
+    else if(key == 'z')
+    {
+       sphere_degrees[0] -= 5.0;
+    }
     
-    Mat4 translation = *translate(newX, newY, 0.0, &translation);
-    Mat4 scale = *scaleMatrix(.25, &scale);
-    Mat4 temp = *matMultiplication(&translation, &scale, &temp);
-    transformation_matricies[4] = temp;
-  
+    // Recalculate new sphere positions
+    for(int i = 0; i < num_spheres; i++)
+    {
+        
+        float newX = cosf(DegreesToRadians*sphere_degrees[i]) + sphere_offsets[i];
+        float newY = sinf(DegreesToRadians*sphere_degrees[i]);
+        
+        Mat4 translation = *translate(newX, newY, 0.0, &translation);
+        Mat4 scale = *scaleMatrix(.25, &scale);
+        Mat4 temp = *matMultiplication(&translation, &scale, &temp);
+        transformation_matricies[i] = temp;
+    }
     
     
     // Recalculate model_view matrix
