@@ -179,7 +179,7 @@ material sphere_materials[num_spheres] =
 
 float sphere_offsets[num_spheres] = {-1,-.5,0,.5,1};
 float sphere_degrees[num_spheres] = {270,270,270,270,270};
-
+int ball_up[num_spheres] = {0,0,0,0,0};
 
 
 
@@ -449,6 +449,7 @@ void display(void)
 
 
 
+
 void keyboard(unsigned char key, int mousex, int mousey)
 {
     // Quit program
@@ -476,6 +477,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     else if(key == 'B')
     {
         sphere_degrees[4] += 5.0;
+        ball_up[4] = 1;
         
     }
     else if(key == 'b')
@@ -483,11 +485,17 @@ void keyboard(unsigned char key, int mousex, int mousey)
         if( !(sphere_degrees[4] < 275 ))
         {
             sphere_degrees[4] -= 5.0;
+            ball_up[4] = 1;
+        }
+        else
+        {
+            ball_up[4] = 0;
         }
     }
     else if(key == 'V')
     {
         sphere_degrees[3] += 5.0;
+        ball_up[3] = 1;
         
     }
     else if(key == 'v')
@@ -495,16 +503,36 @@ void keyboard(unsigned char key, int mousex, int mousey)
         if( !(sphere_degrees[3] < 275 ))
         {
             sphere_degrees[3] -= 5.0;
+            ball_up[3] = 1;
+        }
+        else
+        {
+            ball_up[3] = 0;
         }
     }
     else if(key == 'C')
     {
         sphere_degrees[2] += 5.0;
-        
+        if(sphere_degrees[2] != 270)
+        {
+            ball_up[2] = 1;
+        }
+        else
+        {
+            ball_up[2] = 0;
+        }
     }
     else if(key == 'c')
     {
         sphere_degrees[2] -= 5.0;
+        if(sphere_degrees[2] != 270)
+        {
+            ball_up[2] = 1;
+        }
+        else
+        {
+            ball_up[2] = 0;
+        }
     
     }
     else if(key == 'X')
@@ -512,24 +540,36 @@ void keyboard(unsigned char key, int mousex, int mousey)
         if( !(sphere_degrees[1] > 265 ))
         {
             sphere_degrees[1] += 5.0;
+            ball_up[1] = 1;
+        }
+        else
+        {
+            ball_up[1] = 0;
         }
         
     }
     else if(key == 'x')
     {
         sphere_degrees[1] -= 5.0;
+        ball_up[1] = 1;
     }
     else if(key == 'Z')
     {
         if( !(sphere_degrees[0] > 265 ))
         {
             sphere_degrees[0] += 5.0;
+            ball_up[0] = 1;
+        }
+        else
+        {
+            ball_up[0] = 0;
         }
         
     }
     else if(key == 'z')
     {
        sphere_degrees[0] -= 5.0;
+        ball_up[0] = 1;
     }
     // Start swinging animation
     else if(key == ' ')
@@ -683,7 +723,7 @@ void idle(void)
     {
         
     
-    
+        
     
     
     }
