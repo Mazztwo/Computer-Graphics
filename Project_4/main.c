@@ -182,9 +182,9 @@ float sphere_degrees[num_spheres] = {270,270,270,270,270};
 int ball_up[num_spheres] = {0,0,0,0,0};
 
 float GRAVITY = 9.80665, velocity = 0.0, d1 = 0; d2 = 0;
-int oldTime, currTime;
-
-
+//int oldTime, currTime;
+//clock_t oldTime, currTime;
+float oldTime, currTime;
 
 Vec4 resting_sphere_centers[num_spheres] =
 {
@@ -608,7 +608,8 @@ void keyboard(unsigned char key, int mousex, int mousey)
         else
         {
             enableIdle = 1;
-            oldTime = glutGet(GLUT_ELAPSED_TIME);
+            //oldTime = glutGet(GLUT_ELAPSED_TIME);
+            oldTime = (float) clock() / CLOCKS_PER_SEC;
         }
     }
     
@@ -755,10 +756,11 @@ void idle(void)
     {
         if(ball_up[4])
         {
-            if(velocity >= 0)//sphere_degrees[4] > 270)
+            if(velocity >= 0)
             {
-                currTime = glutGet(GLUT_ELAPSED_TIME);
-                float deltaTime = (currTime - oldTime)/1000.0;
+                //currTime = glutGet(GLUT_ELAPSED_TIME);
+                currTime = (float) clock() / CLOCKS_PER_SEC;
+                float deltaTime = (currTime - oldTime)*20;///1000.0;
                 oldTime = currTime;
           
                 velocity += deltaTime * GRAVITY;
@@ -770,6 +772,8 @@ void idle(void)
                     sphere_degrees[4] = 270;
                     ball_up[4] = 0;
                     ball_up[0] = 1;
+                    
+                    printf("Velocity: %f\n",velocity);
                 }
               
                   float newX = cosf(DegreesToRadians*sphere_degrees[4]) + sphere_offsets[4];
@@ -783,30 +787,20 @@ void idle(void)
                   // Update current sphere centers
                   vecArrayAdd(curr_sphere_centers, 4, newX, newY, 0.0, 1.0);
             }
-            else
-            {
-                
-            }
-        
         }
         else if(ball_up[0])
         {
-            if(velocity > 0)
+            if(velocity >= 0)
             {
-                currTime = glutGet(GLUT_ELAPSED_TIME);
-                float deltaTime = (currTime - oldTime)/1000.0;
+                //currTime = glutGet(GLUT_ELAPSED_TIME);
+                currTime = (float) clock() / CLOCKS_PER_SEC;
+                float deltaTime = (currTime - oldTime) * 20;//1000.0;
                 oldTime = currTime;
                 
     
                 velocity -= deltaTime * GRAVITY;
                 
-                
                 sphere_degrees[0] -= velocity;
-                
-                if(sphere_degrees[0] < (270-d1))
-                {
-                    sphere_degrees[0] = (270-d1);
-                }
                 
                 float newX = cosf(DegreesToRadians*sphere_degrees[0]) + sphere_offsets[0];
                 float newY = sinf(DegreesToRadians*sphere_degrees[0]);
@@ -820,21 +814,20 @@ void idle(void)
                 vecArrayAdd(curr_sphere_centers, 0, newX, newY, 0.0, 1.0);
                 
             }
-            else
+            else // velocity is zero
             {
+                /*
                 currTime = glutGet(GLUT_ELAPSED_TIME);
                 float deltaTime = (currTime - oldTime)/1000.0;
                 oldTime = currTime;
                 
                 velocity += deltaTime * GRAVITY;
                 
+                printf("currTime: %f\n",currTime);
+                //printf("deltaTime: %f\n",deltaTime);
+                //printf("Velocity: %f\n",velocity);
+                
                 sphere_degrees[0] += velocity;
-                if(sphere_degrees[0] > 270)
-                {
-                    sphere_degrees[0] = 270;
-                    ball_up[0] = 0;
-                    ball_up[4] = 1;
-                }
                 
                 float newX = cosf(DegreesToRadians*sphere_degrees[0]) + sphere_offsets[0];
                 float newY = sinf(DegreesToRadians*sphere_degrees[0]);
@@ -846,6 +839,8 @@ void idle(void)
                 
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 0, newX, newY, 0.0, 1.0);
+                
+                */
             }
         }
     
