@@ -28,6 +28,8 @@
 		CA3667F51FD085D000B5F268 /* vshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = vshader.glsl; path = "../../../../../../Library/Developer/Xcode/DerivedData/Project_4-bdqcjzwdefmxrwcwxccewngbsfsm/Build/Products/Debug/vshader.glsl"; sourceTree = "<group>"; };
 		CA3667F61FD085D000B5F268 /* fshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = fshader.glsl; path = "../../../../../../Library/Developer/Xcode/DerivedData/Project_4-bdqcjzwdefmxrwcwxccewngbsfsm/Build/Products/Debug/fshader.glsl"; sourceTree = "<group>"; };
 		CA3667F71FD0ABC100B5F268 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		CA706EE91FD4CF11004097EA /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		CA706EEB1FD4CF1C004097EA /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		CAB329141FD084B700CC89F8 /* Project_4 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Project_4; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAF3ABF81FD0850E00B561CC /* funct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = funct.h; sourceTree = "<group>"; };
 		CAF3ABF91FD0850E00B561CC /* fshader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fshader.glsl; sourceTree = "<group>"; };
@@ -47,6 +49,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CA706EE81FD4CF11004097EA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CA706EEB1FD4CF1C004097EA /* OpenGL.framework */,
+				CA706EE91FD4CF11004097EA /* GLUT.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CAB3290B1FD084B700CC89F8 = {
 			isa = PBXGroup;
 			children = (
@@ -59,6 +70,7 @@
 				CA3667F61FD085D000B5F268 /* fshader.glsl */,
 				CAB329151FD084B700CC89F8 /* Products */,
 				CA3667F51FD085D000B5F268 /* vshader.glsl */,
+				CA706EE81FD4CF11004097EA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
