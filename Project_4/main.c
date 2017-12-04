@@ -181,7 +181,7 @@ float sphere_offsets[num_spheres] = {-1,-.5,0,.5,1};
 float sphere_degrees[num_spheres] = {270,270,270,270,270};
 int ball_up[num_spheres] = {0,0,0,0,0};
 
-float GRAVITY = 9.80665, velocity = 0.0;
+float GRAVITY = 9.80665, velocity = 0.0, d1 = 0; d2 = 0;
 int oldTime, currTime;
 
 
@@ -613,7 +613,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     }
     
     
-    
+    d1 = sphere_degrees[4] - 270;
     
     
     // Recalculate new sphere positions
@@ -763,7 +763,7 @@ void idle(void)
           
                 velocity += deltaTime * GRAVITY;
               
-                sphere_degrees[4] -= 1.0 * velocity;
+                sphere_degrees[4] -= velocity;
                 if(sphere_degrees[4] < 270) sphere_degrees[4] = 270;
               
               
@@ -778,9 +778,6 @@ void idle(void)
                   // Update current sphere centers
                   vecArrayAdd(curr_sphere_centers, 4, newX, newY, 0.0, 1.0);
                 
-                
-                
-                  printf("%f\n",sphere_degrees[4]);
     
             }
             else
@@ -793,14 +790,16 @@ void idle(void)
         }
         else if(ball_up[0])
         {
+            if(sphere_degrees[0] > (270-d1))
+            {
                 currTime = glutGet(GLUT_ELAPSED_TIME);
                 float deltaTime = (currTime - oldTime)/1000.0;
                 oldTime = currTime;
             
                 velocity -= deltaTime * GRAVITY;
             
-                sphere_degrees[0] += 1.0 * velocity;
-                if(sphere_degrees[0] > 270) sphere_degrees[0] = 270;
+                sphere_degrees[0] += velocity;
+                if(sphere_degrees[0] < (270-d1)) sphere_degrees[0] = (270-d1);
                 
                 
                 float newX = cosf(DegreesToRadians*sphere_degrees[0]) + sphere_offsets[0];
@@ -814,9 +813,14 @@ void idle(void)
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 0, newX, newY, 0.0, 1.0);
                 
+            }
+            else
+            {
+                enableIdle = 0;
+            }
                 
                 
-                printf("%f\n",sphere_degrees[0]);
+              
         }
     
     }
