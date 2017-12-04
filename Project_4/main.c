@@ -782,52 +782,14 @@ void idle(void)
               printf("%f\n",sphere_degrees[4]);
     
           }
-          
-          // curr_sphere_centers
-          // resting_sphere_centers
-          
-          /*
-           if(alpha <= 1.0)
-           {
-           Vec4 scaledV = *scalarMultVector(alpha, &v1, &scaledV);
-           currEye = *vec4addition(&p1, &scaledV, &currEye);
-           
-           Mat4 tempMatrix = look_at(currEye.x, currEye.y, currEye.z, atx, aty, atz, 0.0, 1.0, 0.0);
-           model_view_matrix = tempMatrix;
-           
-           alpha += 0.02;
-           }
-           */
-           
-          
-        
-          
+          else
+          {
+              
+              ball_up[4] = 0;
+              velocity = 0;
+              enableIdle = 0;
+          }
       }
-        
-     /*
-      time += timestep;
-      velocity += timestep * acceleration;
-      position += timestep * (velocity + timestep * gravity / 2);
-     
-      */
-
-    /*
-     // Recalculate new sphere positions
-     for(int i = 0; i < num_spheres; i++)
-     {
-     
-     float newX = cosf(DegreesToRadians*sphere_degrees[i]) + sphere_offsets[i];
-     float newY = sinf(DegreesToRadians*sphere_degrees[i]);
-     
-     Mat4 translation = *translate(newX, newY, 0.0, &translation);
-     Mat4 scale = *scaleMatrix(.25, &scale);
-     Mat4 temp = *matMultiplication(&translation, &scale, &temp);
-     transformation_matricies[i] = temp;
-     }
-     */
-        
-    
-    
     }
     
     
