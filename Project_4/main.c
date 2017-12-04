@@ -828,7 +828,7 @@ void idle(void)
                 
                 velocity += deltaTime * GRAVITY;
                 
-                sphere_degrees[0] = velocity;
+                sphere_degrees[0] += velocity;
                 
                 if(sphere_degrees[0] > 270)
                 {
