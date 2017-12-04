@@ -603,6 +603,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
         if(enableIdle)
         {
             enableIdle = 0;
+            velocity = 0;
         }
         else
         {
