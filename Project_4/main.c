@@ -756,12 +756,13 @@ void idle(void)
           if(sphere_degrees[4] > 270)
           {
               currTime = glutGet(GLUT_ELAPSED_TIME);
-              int deltaTime = currTime - oldTime;
+              float deltaTime = (currTime - oldTime)/1000.0;
               oldTime = currTime;
           
               velocity += deltaTime * GRAVITY;
               
-              sphere_degrees[4] -= 3.0;
+              sphere_degrees[4] -= 1.0 * velocity;
+              if(sphere_degrees[4] < 270) sphere_degrees[4] = 270;
               
               
               float newX = cosf(DegreesToRadians*sphere_degrees[4]) + sphere_offsets[4];
@@ -774,6 +775,10 @@ void idle(void)
               
               // Update current sphere centers
               vecArrayAdd(curr_sphere_centers, 4, newX, newY, 0.0, 1.0);
+              
+              
+              
+              printf("%f\n",sphere_degrees[4]);
     
           }
           
