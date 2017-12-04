@@ -592,7 +592,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     }
     else if(key == 'z')
     {
-       sphere_degrees[0] -= 5.0;
+        sphere_degrees[0] -= 5.0;
         ball_up[0] = 1;
     }
     // Start swinging animation
@@ -601,6 +601,12 @@ void keyboard(unsigned char key, int mousex, int mousey)
         if(enableIdle)
         {
             enableIdle = 0;
+            
+            for(int i = 0; i < num_spheres; i++)
+            {
+                ball_up[i] = 0;
+            }
+            
             velocity = 0;
         }
         else
@@ -889,7 +895,89 @@ void idle(void)
         }
         else if(ball_up[1] && ball_up[0])
         {
-            
+            if(velocity > 0)
+            {
+                currTime = (float) clock() / CLOCKS_PER_SEC;
+                float deltaTime = (currTime - oldTime) * 30;
+                oldTime = currTime;
+                
+                
+                velocity -= deltaTime * GRAVITY;
+                
+                sphere_degrees[1] -= velocity;
+                sphere_degrees[0] -= velocity;
+                
+                float newX = cosf(DegreesToRadians*sphere_degrees[1]) + sphere_offsets[1];
+                float newY = sinf(DegreesToRadians*sphere_degrees[1]);
+                
+                Mat4 translation = *translate(newX, newY, 0.0, &translation);
+                Mat4 scale = *scaleMatrix(.25, &scale);
+                Mat4 temp = *matMultiplication(&translation, &scale, &temp);
+                transformation_matricies[1] = temp;
+                
+                // Update current sphere centers
+                vecArrayAdd(curr_sphere_centers, 1, newX, newY, 0.0, 1.0);
+                
+                newX = cosf(DegreesToRadians*sphere_degrees[0]) + sphere_offsets[0];
+                newY = sinf(DegreesToRadians*sphere_degrees[0]);
+                
+                translation = *translate(newX, newY, 0.0, &translation);
+                scale = *scaleMatrix(.25, &scale);
+                temp = *matMultiplication(&translation, &scale, &temp);
+                transformation_matricies[0] = temp;
+                
+                // Update current sphere centers
+                vecArrayAdd(curr_sphere_centers, 0, newX, newY, 0.0, 1.0);
+                
+            }
+            else // velocity is zero or less
+            {
+                currTime = (float) clock() / CLOCKS_PER_SEC;
+                float deltaTime = (currTime - oldTime)*30;
+                oldTime = currTime;
+                
+                velocity -= deltaTime * GRAVITY;
+                
+                sphere_degrees[1] -= velocity;
+                sphere_degrees[0] -= velocity;
+                
+                if(sphere_degrees[1] > 270)
+                {
+                    sphere_degrees[1] = 270;
+                    sphere_degrees[0] = 270;
+                    sphere_degrees[3] = 270;
+                    sphere_degrees[4] = 270;
+                    ball_up[3] = 1;
+                    ball_up[4] = 1;
+                    ball_up[0] = 0;
+                    ball_up[1] = 0;
+                    
+                }
+                
+                
+                float newX = cosf(DegreesToRadians*sphere_degrees[1]) + sphere_offsets[1];
+                float newY = sinf(DegreesToRadians*sphere_degrees[1]);
+                
+                Mat4 translation = *translate(newX, newY, 0.0, &translation);
+                Mat4 scale = *scaleMatrix(.25, &scale);
+                Mat4 temp = *matMultiplication(&translation, &scale, &temp);
+                transformation_matricies[1] = temp;
+                
+                // Update current sphere centers
+                vecArrayAdd(curr_sphere_centers, 1, newX, newY, 0.0, 1.0);
+                
+                newX = cosf(DegreesToRadians*sphere_degrees[0]) + sphere_offsets[0];
+                newY = sinf(DegreesToRadians*sphere_degrees[0]);
+                
+                translation = *translate(newX, newY, 0.0, &translation);
+                scale = *scaleMatrix(.25, &scale);
+                temp = *matMultiplication(&translation, &scale, &temp);
+                transformation_matricies[0] = temp;
+                
+                // Update current sphere centers
+                vecArrayAdd(curr_sphere_centers, 0, newX, newY, 0.0, 1.0);
+                
+            }
         }
         else if(ball_up[0])
         {
