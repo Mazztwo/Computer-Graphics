@@ -829,7 +829,6 @@ void idle(void)
                 velocity += deltaTime * GRAVITY;
                 
                 sphere_degrees[0] += velocity;
-                
                 if(sphere_degrees[0] > 270)
                 {
                     sphere_degrees[0] = 270;
@@ -868,7 +867,6 @@ int main(int argc, char **argv)
     glutInitWindowSize(windowSize*2, windowSize*2);
     glutInitWindowPosition(100,100);
     glutCreateWindow("Project 4 - Newton's Cradle");
-    //glewInit();
     init();
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
