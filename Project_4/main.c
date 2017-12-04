@@ -760,9 +760,11 @@ void idle(void)
             {
                 //currTime = glutGet(GLUT_ELAPSED_TIME);
                 currTime = (float) clock() / CLOCKS_PER_SEC;
-                float deltaTime = (currTime - oldTime)*20;///1000.0;
+                float deltaTime = (currTime - oldTime)*25;///1000.0;
                 oldTime = currTime;
-          
+                
+                printf("currTime: %f\n",currTime);
+                
                 velocity += deltaTime * GRAVITY;
               
                 sphere_degrees[4] -= velocity;
@@ -794,7 +796,7 @@ void idle(void)
             {
                 //currTime = glutGet(GLUT_ELAPSED_TIME);
                 currTime = (float) clock() / CLOCKS_PER_SEC;
-                float deltaTime = (currTime - oldTime) * 20;//1000.0;
+                float deltaTime = (currTime - oldTime) * 25;//1000.0;
                 oldTime = currTime;
                 
     
@@ -816,9 +818,9 @@ void idle(void)
             }
             else // velocity is zero
             {
-                /*
-                currTime = glutGet(GLUT_ELAPSED_TIME);
-                float deltaTime = (currTime - oldTime)/1000.0;
+                //currTime = glutGet(GLUT_ELAPSED_TIME);
+                currTime = (float) clock() / CLOCKS_PER_SEC;
+                float deltaTime = (currTime - oldTime) * 25;//1000.0;
                 oldTime = currTime;
                 
                 velocity += deltaTime * GRAVITY;
@@ -828,6 +830,14 @@ void idle(void)
                 //printf("Velocity: %f\n",velocity);
                 
                 sphere_degrees[0] += velocity;
+                
+                if(sphere_degrees[0] > 270)
+                {
+                    sphere_degrees[0] = 270;
+                    ball_up[4] = 1;
+                    ball_up[0] = 0;
+                }
+                
                 
                 float newX = cosf(DegreesToRadians*sphere_degrees[0]) + sphere_offsets[0];
                 float newY = sinf(DegreesToRadians*sphere_degrees[0]);
@@ -840,7 +850,7 @@ void idle(void)
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 0, newX, newY, 0.0, 1.0);
                 
-                */
+                
             }
         }
     
