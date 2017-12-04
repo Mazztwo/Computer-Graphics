@@ -755,7 +755,7 @@ void idle(void)
     {
         if(ball_up[4])
         {
-            if(sphere_degrees[4] > 270)
+            if(velocity >= 0)//sphere_degrees[4] > 270)
             {
                 currTime = glutGet(GLUT_ELAPSED_TIME);
                 float deltaTime = (currTime - oldTime)/1000.0;
@@ -764,8 +764,13 @@ void idle(void)
                 velocity += deltaTime * GRAVITY;
               
                 sphere_degrees[4] -= velocity;
-                if(sphere_degrees[4] < 270) sphere_degrees[4] = 270;
-              
+                
+                if(sphere_degrees[4] < 270)
+                {
+                    sphere_degrees[4] = 270;
+                    ball_up[4] = 0;
+                    ball_up[0] = 1;
+                }
               
                   float newX = cosf(DegreesToRadians*sphere_degrees[4]) + sphere_offsets[4];
                   float newY = sinf(DegreesToRadians*sphere_degrees[4]);
@@ -777,16 +782,12 @@ void idle(void)
                 
                   // Update current sphere centers
                   vecArrayAdd(curr_sphere_centers, 4, newX, newY, 0.0, 1.0);
-                
-    
             }
             else
             {
                 
-                ball_up[4] = 0;
-                ball_up[0] = 1;
-
             }
+        
         }
         else if(ball_up[0])
         {
@@ -801,8 +802,11 @@ void idle(void)
                 
                 
                 sphere_degrees[0] -= velocity;
-                if(sphere_degrees[0] < (270-d1)) sphere_degrees[0] = (270-d1);
                 
+                if(sphere_degrees[0] < (270-d1))
+                {
+                    sphere_degrees[0] = (270-d1);
+                }
                 
                 float newX = cosf(DegreesToRadians*sphere_degrees[0]) + sphere_offsets[0];
                 float newY = sinf(DegreesToRadians*sphere_degrees[0]);
@@ -818,11 +822,32 @@ void idle(void)
             }
             else
             {
-                enableIdle = 0;
+                currTime = glutGet(GLUT_ELAPSED_TIME);
+                float deltaTime = (currTime - oldTime)/1000.0;
+                oldTime = currTime;
+                
+                velocity += deltaTime * GRAVITY;
+                
+                sphere_degrees[0] = velocity;
+                
+                if(sphere_degrees[0] > 270)
+                {
+                    sphere_degrees[0] = 270;
+                    ball_up[0] = 0;
+                    ball_up[4] = 1;
+                }
+                
+                float newX = cosf(DegreesToRadians*sphere_degrees[0]) + sphere_offsets[0];
+                float newY = sinf(DegreesToRadians*sphere_degrees[0]);
+                
+                Mat4 translation = *translate(newX, newY, 0.0, &translation);
+                Mat4 scale = *scaleMatrix(.25, &scale);
+                Mat4 temp = *matMultiplication(&translation, &scale, &temp);
+                transformation_matricies[0] = temp;
+                
+                // Update current sphere centers
+                vecArrayAdd(curr_sphere_centers, 0, newX, newY, 0.0, 1.0);
             }
-                
-                
-              
         }
     
     }
