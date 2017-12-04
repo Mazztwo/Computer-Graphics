@@ -181,9 +181,7 @@ float sphere_offsets[num_spheres] = {-1,-.5,0,.5,1};
 float sphere_degrees[num_spheres] = {270,270,270,270,270};
 int ball_up[num_spheres] = {0,0,0,0,0};
 
-float GRAVITY = 9.80665, velocity = 0.0, d1 = 0; d2 = 0;
-//int oldTime, currTime;
-//clock_t oldTime, currTime;
+float GRAVITY = 9.80665, velocity = 0.0;
 float oldTime, currTime;
 
 Vec4 resting_sphere_centers[num_spheres] =
@@ -613,8 +611,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
         }
     }
     
-    
-    d1 = sphere_degrees[4] - 270;
+
     
     
     // Recalculate new sphere positions
@@ -792,7 +789,7 @@ void idle(void)
         }
         else if(ball_up[0])
         {
-            if(velocity >= 0)
+            if(velocity > 0)
             {
                 //currTime = glutGet(GLUT_ELAPSED_TIME);
                 currTime = (float) clock() / CLOCKS_PER_SEC;
@@ -816,20 +813,17 @@ void idle(void)
                 vecArrayAdd(curr_sphere_centers, 0, newX, newY, 0.0, 1.0);
                 
             }
-            else // velocity is zero
+            else // velocity is zero or less
             {
-                //currTime = glutGet(GLUT_ELAPSED_TIME);
                 currTime = (float) clock() / CLOCKS_PER_SEC;
-                float deltaTime = (currTime - oldTime) * 25;//1000.0;
+                float deltaTime = (currTime - oldTime)*25;
                 oldTime = currTime;
                 
-                velocity += deltaTime * GRAVITY;
-                
                 printf("currTime: %f\n",currTime);
-                //printf("deltaTime: %f\n",deltaTime);
-                //printf("Velocity: %f\n",velocity);
                 
-                sphere_degrees[0] += velocity;
+                velocity -= deltaTime * GRAVITY;
+                
+                sphere_degrees[0] -= velocity;
                 
                 if(sphere_degrees[0] > 270)
                 {
@@ -849,6 +843,10 @@ void idle(void)
                 
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 0, newX, newY, 0.0, 1.0);
+                
+                
+        
+                
                 
                 
             }
