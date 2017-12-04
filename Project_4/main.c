@@ -751,7 +751,87 @@ void idle(void)
 {
     if(enableIdle)
     {
-        if(ball_up[4])
+        if(ball_up[3] && ball_up[4])
+        {
+            if(velocity >= 0)
+            {
+                currTime = (float) clock() / CLOCKS_PER_SEC;
+                float deltaTime = (currTime - oldTime)*30;
+                oldTime = currTime;
+            
+                velocity += deltaTime * GRAVITY;
+            
+                sphere_degrees[3] -= velocity;
+                sphere_degrees[4] -= velocity;
+            
+                if(sphere_degrees[3] < 270)
+                {
+                    sphere_degrees[3] = 270;
+                    sphere_degrees[4] = 270;
+                    sphere_degrees[0] = 270;
+                    sphere_degrees[0] = 270;
+                    ball_up[3] = 0;
+                    ball_up[4] = 0;
+                    ball_up[0] = 1;
+                    ball_up[1] = 1;
+                }
+            
+                float newX = cosf(DegreesToRadians*sphere_degrees[3]) + sphere_offsets[3];
+                float newY = sinf(DegreesToRadians*sphere_degrees[3]);
+            
+                Mat4 translation = *translate(newX, newY, 0.0, &translation);
+                Mat4 scale = *scaleMatrix(.25, &scale);
+                Mat4 temp = *matMultiplication(&translation, &scale, &temp);
+                transformation_matricies[3] = temp;
+            
+                vecArrayAdd(curr_sphere_centers, 3, newX, newY, 0.0, 1.0);
+            
+                newX = cosf(DegreesToRadians*sphere_degrees[4]) + sphere_offsets[4];
+                newY = sinf(DegreesToRadians*sphere_degrees[4]);
+            
+                translation = *translate(newX, newY, 0.0, &translation);
+                scale = *scaleMatrix(.25, &scale);
+                temp = *matMultiplication(&translation, &scale, &temp);
+                transformation_matricies[4] = temp;
+            
+                // Update current sphere center
+                vecArrayAdd(curr_sphere_centers, 4, newX, newY, 0.0, 1.0);
+            }
+            else
+            {
+                currTime = (float) clock() / CLOCKS_PER_SEC;
+                float deltaTime = (currTime - oldTime) * 30;
+                oldTime = currTime;
+                
+                velocity += deltaTime * GRAVITY;
+                
+                sphere_degrees[3] -= velocity;
+                sphere_degrees[4] -= velocity;
+                
+                float newX = cosf(DegreesToRadians*sphere_degrees[3]) + sphere_offsets[3];
+                float newY = sinf(DegreesToRadians*sphere_degrees[3]);
+                
+                Mat4 translation = *translate(newX, newY, 0.0, &translation);
+                Mat4 scale = *scaleMatrix(.25, &scale);
+                Mat4 temp = *matMultiplication(&translation, &scale, &temp);
+                transformation_matricies[3] = temp;
+                
+                // Update current sphere centers
+                vecArrayAdd(curr_sphere_centers, 3, newX, newY, 0.0, 1.0);
+                
+                newX = cosf(DegreesToRadians*sphere_degrees[4]) + sphere_offsets[4];
+                newY = sinf(DegreesToRadians*sphere_degrees[4]);
+                
+                translation = *translate(newX, newY, 0.0, &translation);
+                scale = *scaleMatrix(.25, &scale);
+                temp = *matMultiplication(&translation, &scale, &temp);
+                transformation_matricies[4] = temp;
+                
+                // Update current sphere centers
+                vecArrayAdd(curr_sphere_centers, 4, newX, newY, 0.0, 1.0);
+            }
+        }
+        else if(ball_up[4])
         {
             if(velocity >= 0)
             {
@@ -771,8 +851,6 @@ void idle(void)
                     sphere_degrees[0] = 270;
                     ball_up[4] = 0;
                     ball_up[0] = 1;
-                    
-                    printf("Velocity: %f\n",velocity);
                 }
               
                   float newX = cosf(DegreesToRadians*sphere_degrees[4]) + sphere_offsets[4];
@@ -788,12 +866,11 @@ void idle(void)
             }
             else // velocity less than 0
             {
-                //currTime = glutGet(GLUT_ELAPSED_TIME);
                 currTime = (float) clock() / CLOCKS_PER_SEC;
-                float deltaTime = (currTime - oldTime) * 30;//1000.0;
+                float deltaTime = (currTime - oldTime) * 30;
                 oldTime = currTime;
                 
-                
+
                 velocity += deltaTime * GRAVITY;
                 
                 sphere_degrees[4] -= velocity;
@@ -810,13 +887,16 @@ void idle(void)
                 vecArrayAdd(curr_sphere_centers, 4, newX, newY, 0.0, 1.0);
             }
         }
+        else if(ball_up[1] && ball_up[0])
+        {
+            
+        }
         else if(ball_up[0])
         {
             if(velocity > 0)
             {
-                //currTime = glutGet(GLUT_ELAPSED_TIME);
                 currTime = (float) clock() / CLOCKS_PER_SEC;
-                float deltaTime = (currTime - oldTime) * 30;//1000.0;
+                float deltaTime = (currTime - oldTime) * 30;
                 oldTime = currTime;
                 
     
@@ -852,8 +932,6 @@ void idle(void)
                     sphere_degrees[4] = 270;
                     ball_up[4] = 1;
                     ball_up[0] = 0;
-                    
-                    printf("Velocity: %f\n",velocity);
                 }
                 
                 
@@ -867,7 +945,6 @@ void idle(void)
                 
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 0, newX, newY, 0.0, 1.0);
-                
                 
             }
         }
