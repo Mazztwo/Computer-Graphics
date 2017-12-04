@@ -785,20 +785,22 @@ void idle(void)
                 
                 ball_up[4] = 0;
                 ball_up[0] = 1;
-                oldTime = 0;
+
             }
         }
         else if(ball_up[0])
         {
-            if(sphere_degrees[0] > (270-d1))
+            if(velocity > 0)
             {
                 currTime = glutGet(GLUT_ELAPSED_TIME);
                 float deltaTime = (currTime - oldTime)/1000.0;
                 oldTime = currTime;
-            
+                
+    
                 velocity -= deltaTime * GRAVITY;
-            
-                sphere_degrees[0] += velocity;
+                
+                
+                sphere_degrees[0] -= velocity;
                 if(sphere_degrees[0] < (270-d1)) sphere_degrees[0] = (270-d1);
                 
                 
