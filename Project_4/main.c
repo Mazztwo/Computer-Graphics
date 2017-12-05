@@ -34,9 +34,10 @@
 #define num_spheres 5
 #define num_shadows num_spheres
 #define groundVertices 12
+#define poleVertices 18
 #define sphereVertices 16206
 ///////// num_vertices is 16206 for a 5 degree increment
-#define num_vertices (num_spheres*sphereVertices) + groundVertices
+#define num_vertices (num_spheres*sphereVertices) + groundVertices + poleVertices
 ////////////////////////////////////////////////////////
 
 Vec4 vertices[num_vertices];
@@ -213,6 +214,14 @@ Vec4 curr_sphere_centers[num_spheres] =
 
 
 
+Vec4 pole_vertices[poleVertices] =
+{
+    {-.1, 0, -.7, 1.0},
+    {-2, -1.5, -.7, 1.0},
+    {.1, 0, -.7, 1.0},
+};
+
+
 void initSphere(float divisionDegrees)
 {
     
@@ -270,6 +279,19 @@ void initGround()
 }
 
 
+
+
+void initPoles()
+{
+    for(int i = 0; i < pole_vertices; i++)
+    {
+        
+        vecArrayAdd(vertices, v_index, pole_vertices[i].x, pole_vertices[i].y, pole_vertices[i].z, 1);
+        vecArrayAdd(normals, v_index, pole_vertices[i].x, pole_vertices[i].y, pole_vertices[i].z, 0);
+        
+        v_index++;
+    }
+}
 
 
 
@@ -422,6 +444,11 @@ void display(void)
     glUniform1i(isShadow_location, 0);
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ground_transformation);
     glDrawArrays(GL_TRIANGLES, 0, groundVertices);
+    /////////////////////////////////////////////////////////////////
+    
+    // Load pole information
+    /////////////////////////////////////////////////////////////////
+    
     /////////////////////////////////////////////////////////////////
     
     
