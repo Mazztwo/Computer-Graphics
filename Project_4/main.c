@@ -157,7 +157,7 @@ Vec4 ground_vertices[groundVertices] =
 // Ambient, Diffuse, Specular
 
 // Ground
-material ground_material = {{1,.2,0,1.0}, {1,.2,0,1.0}, {1,.2,0,1.0}, 10};
+material ground_material = {{1,0,0,1}, {1,0,0,1}, {1,0,0,1}, 100};
 
 
 material sphere_materials[num_spheres] =
