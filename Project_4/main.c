@@ -33,7 +33,7 @@
 #define windowSize 375
 #define num_spheres 5
 #define num_shadows num_spheres
-#define groundVertices 6
+#define groundVertices 12
 #define sphereVertices 16206
 ///////// num_vertices is 16206 for a 5 degree increment
 #define num_vertices (num_spheres*sphereVertices) + groundVertices
@@ -147,7 +147,15 @@ Vec4 ground_vertices[groundVertices] =
     
     { 2, -1.5, -.7, 1.0},
     {-2, -1.5,  .7, 1.0},
-    { 2, -1.5,  .7, 1.0}
+    { 2, -1.5,  .7, 1.0},
+    
+    {-2, -1.5, .7, 1.0},
+    {-2, -1.9, .7, 1.0},
+    { 2, -1.5, .7, 1.0},
+    
+    { 2, -1.5, .7, 1.0},
+    {-2, -1.9, .7, 1.0},
+    { 2, -1.9, .7, 1.0},
 };
 
 
