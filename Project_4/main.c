@@ -46,7 +46,7 @@ Vec4 normals[num_vertices];
 
 ///////////// Lookat and frustum variables/////////////////////////////////////////
 float eyex = 0.0, eyey = 0.0, eyez = 0.0;
-float atx = 0.0, aty = 0.0, atz = 0.0;
+float atx = 0.0, aty = -.5, atz = 0.0;
 float left = -0.5, right = 0.5, bottom = -0.5, top = 0.5, near = -.5, far = -100.0;
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -142,21 +142,21 @@ Mat4 ground_transformation =
 // ground vertices
 Vec4 ground_vertices[groundVertices] =
 {
-    {-2.4, -1.5, -.7, 1.0},
-    {-2.4, -1.5,  .7, 1.0},
-    { 2.4, -1.5, -.7, 1.0},
+    {-2.4, -2.5, -.7, 1.0},
+    {-2.4, -2.5,  .7, 1.0},
+    { 2.4, -2.5, -.7, 1.0},
     
-    { 2.4, -1.5, -.7, 1.0},
-    {-2.4, -1.5,  .7, 1.0},
-    { 2.4, -1.5,  .7, 1.0},
+    { 2.4, -2.5, -.7, 1.0},
+    {-2.4, -2.5,  .7, 1.0},
+    { 2.4, -2.5,  .7, 1.0},
     
-    {-2.4, -1.5, .7, 1.0},
-    {-2.4, -1.9, .7, 1.0},
-    {2.4, -1.5, .7, 1.0},
+    {-2.4, -2.5, .7, 1.0},
+    {-2.4, -2.9, .7, 1.0},
+    {2.4, -2.5, .7, 1.0},
     
-    { 2.4, -1.5, .7, 1.0},
-    {-2.4, -1.9, .7, 1.0},
-    {2.4, -1.9, .7, 1.0},
+    { 2.4, -2.5, .7, 1.0},
+    {-2.4, -2.9, .7, 1.0},
+    {2.4, -2.9, .7, 1.0},
 };
 
 
@@ -193,21 +193,21 @@ float oldTime, currTime;
 
 Vec4 resting_sphere_centers[num_spheres] =
 {
-    {-1,-1,0,1},
-    {-.5,-1,0,1},
-    {0,-1,0,1},
-    {.5,-1,0,1},
-    {1,-1,0,1},
+    {-1,-2,0,1},
+    {-.5,-2,0,1},
+    {0,-2,0,1},
+    {.5,-2,0,1},
+    {1,-2,0,1},
 };
 
 
 Vec4 curr_sphere_centers[num_spheres] =
 {
-    {-1,-1,0,1},
-    {-.5,-1,0,1},
-    {0,-1,0,1},
-    {.5,-1,0,1},
-    {1,-1,0,1},
+    {-1,-2,0,1},
+    {-.5,-2,0,1},
+    {0,-2,0,1},
+    {.5,-2,0,1},
+    {1,-2,0,1},
 };
 
 
@@ -218,12 +218,12 @@ material pole_material = {{0,0,0,1}, {0,0,0,1}, {0,0,0,1}, 100};
 Vec4 pole_vertices[poleVertices] =
 {
     {-.1, 0, -.7, 1.0},
-    {-.1, -1.5, -.7, 1.0},
+    {-.1, -2.5, -.7, 1.0},
     {.1, 0, -.7, 1.0},
     
     {.1, 0, -.7, 1.0},
-    {-.1, -1.5, -.7, 1.0},
-    {.1, -1.5, -.7, 1.0},
+    {-.1, -2.5, -.7, 1.0},
+    {.1, -2.5, -.7, 1.0},
     
     {-.1, 0, -.7, 1},
     {-.1, 0, 0, 1},
@@ -251,52 +251,72 @@ material string_material = {{0,0,0,1}, {0,0,0,1}, {0,0,0,1}, 100};
 Vec4 string_vertices[stringVertices] =
 {
     {-1.025, 0, 0, 1},
-    {-1.025, -1, 0, 1},
+    {-1.025, -2, 0, 1},
     {-.975, 0, 0, 1},
     
     {-.975, 0, 0, 1},
-    {-1.025, -1, 0, 1},
-    {-.975, -1, 0, 1},
+    {-1.025, -2, 0, 1},
+    {-.975, -2, 0, 1},
     
     {-.525, 0, 0, 1},
-    {-.525, -1, 0, 1},
+    {-.525, -2, 0, 1},
     {-.475, 0, 0, 1},
     
     {-.475, 0, 0, 1},
-    {-.525, -1, 0, 1},
-    {-.475, -1, 0, 1},
+    {-.525, -2, 0, 1},
+    {-.475, -2, 0, 1},
     
     {-.025, 0, 0, 1},
-    {-.025, -1, 0, 1},
+    {-.025, -2, 0, 1},
     {.025, 0, 0, 1},
     
     {.025, 0, 0, 1},
-    {-.025, -1, 0, 1},
-    {.025, -1, 0, 1},
+    {-.025, -2, 0, 1},
+    {.025, -2, 0, 1},
     
     {.475, 0, 0, 1},
-    {.525, -1, 0, 1},
-    {.475, -1, 0, 1},
+    {.525, -2, 0, 1},
+    {.475, -2, 0, 1},
     
     {.525, 0, 0, 1},
-    {.525, -1, 0, 1},
+    {.525, -2, 0, 1},
     {.475, 0, 0, 1},
     
     {.975, 0, 0, 1},
-    {1.025, -1, 0, 1},
-    {.975, -1, 0, 1},
+    {1.025, -2, 0, 1},
+    {.975, -2, 0, 1},
     
     {1.025, 0, 0, 1},
-    {1.025, -1, 0, 1},
+    {1.025, -2, 0, 1},
     {.975, 0, 0, 1},
 };
 
-Mat4 string_transformation =
+Mat4 string_transformations[num_spheres] =
 {
-    {1.0, 0.0, 0.0, 0.0},
-    {0.0, 1.0, 0.0, 0.0},
-    {0.0, 0.0, 1.0, 0.0},
-    {0.0, 0.0, 0.0, 1.0}
+    {{1.0, 0.0, 0.0, 0.0},
+        {0.0, 1.0, 0.0, 0.0},
+        {0.0, 0.0, 1.0, 0.0},
+        {0.0, 0.0, 0.0, 1.0}},
+    
+    {{1.0, 0.0, 0.0, 0.0},
+        {0.0, 1.0, 0.0, 0.0},
+        {0.0, 0.0, 1.0, 0.0},
+        {0.0, 0.0, 0.0, 1.0}},
+    
+    {{1.0, 0.0, 0.0, 0.0},
+        {0.0, 1.0, 0.0, 0.0},
+        {0.0, 0.0, 1.0, 0.0},
+        {0.0, 0.0, 0.0, 1.0}},
+    
+    {{1.0, 0.0, 0.0, 0.0},
+        {0.0, 1.0, 0.0, 0.0},
+        {0.0, 0.0, 1.0, 0.0},
+        {0.0, 0.0, 0.0, 1.0}},
+    
+    {{1.0, 0.0, 0.0, 0.0},
+        {0.0, 1.0, 0.0, 0.0},
+        {0.0, 0.0, 1.0, 0.0},
+        {0.0, 0.0, 0.0, 1.0}},
 };
 
 
@@ -406,7 +426,7 @@ void init(void)
     
     // Initialize spheress
     // x,y,z coordinates sphere centers
-    float x = -1, y = -1 , z = 0;
+    float x = -1, y = -2 , z = 0;
     Mat4 scaling_matrix;
     Mat4 translation_matrix;
     int i;
@@ -587,7 +607,7 @@ void display(void)
         // Draw poles after sending in all light info.
         // Else will use whatever is in memory
         glUniform1i(isShadow_location, 0);
-        glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &string_transformation);
+        glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &string_transformations[i]);
         glDrawArrays(GL_TRIANGLES, groundVertices + poleVertices + (6*i), 6);
     }
     ////////////////////////////////////////
@@ -794,12 +814,12 @@ void keyboard(unsigned char key, int mousex, int mousey)
 
     
     
-    // Recalculate new sphere positions
+    // Recalculate new sphere &  positions
     for(int i = 0; i < num_spheres; i++)
     {
         
-        float newX = cosf(DegreesToRadians*sphere_degrees[i]) + sphere_offsets[i];
-        float newY = sinf(DegreesToRadians*sphere_degrees[i]);
+        float newX = 2*cosf(DegreesToRadians*sphere_degrees[i]) + sphere_offsets[i];
+        float newY = 2*sinf(DegreesToRadians*sphere_degrees[i]);
         
         Mat4 translation = *translate(newX, newY, 0.0, &translation);
         Mat4 scale = *scaleMatrix(.25, &scale);
@@ -956,8 +976,8 @@ void idle(void)
                     ball_up[1] = 1;
                 }
             
-                float newX = cosf(DegreesToRadians*sphere_degrees[3]) + sphere_offsets[3];
-                float newY = sinf(DegreesToRadians*sphere_degrees[3]);
+                float newX = 2*cosf(DegreesToRadians*sphere_degrees[3]) + sphere_offsets[3];
+                float newY = 2*sinf(DegreesToRadians*sphere_degrees[3]);
             
                 Mat4 translation = *translate(newX, newY, 0.0, &translation);
                 Mat4 scale = *scaleMatrix(.25, &scale);
@@ -966,8 +986,8 @@ void idle(void)
             
                 vecArrayAdd(curr_sphere_centers, 3, newX, newY, 0.0, 1.0);
             
-                newX = cosf(DegreesToRadians*sphere_degrees[4]) + sphere_offsets[4];
-                newY = sinf(DegreesToRadians*sphere_degrees[4]);
+                newX = 2*cosf(DegreesToRadians*sphere_degrees[4]) + sphere_offsets[4];
+                newY = 2*sinf(DegreesToRadians*sphere_degrees[4]);
             
                 translation = *translate(newX, newY, 0.0, &translation);
                 scale = *scaleMatrix(.25, &scale);
@@ -988,8 +1008,8 @@ void idle(void)
                 sphere_degrees[3] -= velocity;
                 sphere_degrees[4] -= velocity;
                 
-                float newX = cosf(DegreesToRadians*sphere_degrees[3]) + sphere_offsets[3];
-                float newY = sinf(DegreesToRadians*sphere_degrees[3]);
+                float newX = 2*cosf(DegreesToRadians*sphere_degrees[3]) + sphere_offsets[3];
+                float newY = 2*sinf(DegreesToRadians*sphere_degrees[3]);
                 
                 Mat4 translation = *translate(newX, newY, 0.0, &translation);
                 Mat4 scale = *scaleMatrix(.25, &scale);
@@ -999,8 +1019,8 @@ void idle(void)
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 3, newX, newY, 0.0, 1.0);
                 
-                newX = cosf(DegreesToRadians*sphere_degrees[4]) + sphere_offsets[4];
-                newY = sinf(DegreesToRadians*sphere_degrees[4]);
+                newX = 2*cosf(DegreesToRadians*sphere_degrees[4]) + sphere_offsets[4];
+                newY = 2*sinf(DegreesToRadians*sphere_degrees[4]);
                 
                 translation = *translate(newX, newY, 0.0, &translation);
                 scale = *scaleMatrix(.25, &scale);
@@ -1033,8 +1053,8 @@ void idle(void)
                     ball_up[0] = 1;
                 }
               
-                  float newX = cosf(DegreesToRadians*sphere_degrees[4]) + sphere_offsets[4];
-                  float newY = sinf(DegreesToRadians*sphere_degrees[4]);
+                  float newX = 2*cosf(DegreesToRadians*sphere_degrees[4]) + sphere_offsets[4];
+                  float newY = 2*sinf(DegreesToRadians*sphere_degrees[4]);
                 
                   Mat4 translation = *translate(newX, newY, 0.0, &translation);
                   Mat4 scale = *scaleMatrix(.25, &scale);
@@ -1055,8 +1075,8 @@ void idle(void)
                 
                 sphere_degrees[4] -= velocity;
                 
-                float newX = cosf(DegreesToRadians*sphere_degrees[4]) + sphere_offsets[4];
-                float newY = sinf(DegreesToRadians*sphere_degrees[4]);
+                float newX = 2*cosf(DegreesToRadians*sphere_degrees[4]) + sphere_offsets[4];
+                float newY = 2*sinf(DegreesToRadians*sphere_degrees[4]);
                 
                 Mat4 translation = *translate(newX, newY, 0.0, &translation);
                 Mat4 scale = *scaleMatrix(.25, &scale);
@@ -1081,8 +1101,8 @@ void idle(void)
                 sphere_degrees[1] -= velocity;
                 sphere_degrees[0] -= velocity;
                 
-                float newX = cosf(DegreesToRadians*sphere_degrees[1]) + sphere_offsets[1];
-                float newY = sinf(DegreesToRadians*sphere_degrees[1]);
+                float newX = 2*cosf(DegreesToRadians*sphere_degrees[1]) + sphere_offsets[1];
+                float newY = 2*sinf(DegreesToRadians*sphere_degrees[1]);
                 
                 Mat4 translation = *translate(newX, newY, 0.0, &translation);
                 Mat4 scale = *scaleMatrix(.25, &scale);
@@ -1092,8 +1112,8 @@ void idle(void)
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 1, newX, newY, 0.0, 1.0);
                 
-                newX = cosf(DegreesToRadians*sphere_degrees[0]) + sphere_offsets[0];
-                newY = sinf(DegreesToRadians*sphere_degrees[0]);
+                newX = 2*cosf(DegreesToRadians*sphere_degrees[0]) + sphere_offsets[0];
+                newY = 2*sinf(DegreesToRadians*sphere_degrees[0]);
                 
                 translation = *translate(newX, newY, 0.0, &translation);
                 scale = *scaleMatrix(.25, &scale);
@@ -1129,8 +1149,8 @@ void idle(void)
                 }
                 
                 
-                float newX = cosf(DegreesToRadians*sphere_degrees[1]) + sphere_offsets[1];
-                float newY = sinf(DegreesToRadians*sphere_degrees[1]);
+                float newX = 2*cosf(DegreesToRadians*sphere_degrees[1]) + sphere_offsets[1];
+                float newY = 2*sinf(DegreesToRadians*sphere_degrees[1]);
                 
                 Mat4 translation = *translate(newX, newY, 0.0, &translation);
                 Mat4 scale = *scaleMatrix(.25, &scale);
@@ -1140,8 +1160,8 @@ void idle(void)
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 1, newX, newY, 0.0, 1.0);
                 
-                newX = cosf(DegreesToRadians*sphere_degrees[0]) + sphere_offsets[0];
-                newY = sinf(DegreesToRadians*sphere_degrees[0]);
+                newX = 2*cosf(DegreesToRadians*sphere_degrees[0]) + sphere_offsets[0];
+                newY = 2*sinf(DegreesToRadians*sphere_degrees[0]);
                 
                 translation = *translate(newX, newY, 0.0, &translation);
                 scale = *scaleMatrix(.25, &scale);
@@ -1166,8 +1186,8 @@ void idle(void)
                 
                 sphere_degrees[0] -= velocity;
                 
-                float newX = cosf(DegreesToRadians*sphere_degrees[0]) + sphere_offsets[0];
-                float newY = sinf(DegreesToRadians*sphere_degrees[0]);
+                float newX = 2*cosf(DegreesToRadians*sphere_degrees[0]) + sphere_offsets[0];
+                float newY = 2*sinf(DegreesToRadians*sphere_degrees[0]);
                 
                 Mat4 translation = *translate(newX, newY, 0.0, &translation);
                 Mat4 scale = *scaleMatrix(.25, &scale);
@@ -1197,8 +1217,8 @@ void idle(void)
                 }
                 
                 
-                float newX = cosf(DegreesToRadians*sphere_degrees[0]) + sphere_offsets[0];
-                float newY = sinf(DegreesToRadians*sphere_degrees[0]);
+                float newX = 2*cosf(DegreesToRadians*sphere_degrees[0]) + sphere_offsets[0];
+                float newY = 2*sinf(DegreesToRadians*sphere_degrees[0]);
                 
                 Mat4 translation = *translate(newX, newY, 0.0, &translation);
                 Mat4 scale = *scaleMatrix(.25, &scale);
