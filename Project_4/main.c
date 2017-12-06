@@ -34,7 +34,7 @@
 #define num_spheres 5
 #define num_shadows num_spheres
 #define groundVertices 12
-#define poleVertices 18
+#define poleVertices 6
 #define sphereVertices 16206
 ///////// num_vertices is 16206 for a 5 degree increment
 #define num_vertices (num_spheres*sphereVertices) + groundVertices + poleVertices
@@ -67,7 +67,7 @@ GLuint shininess_location, attenuation_constant_location, attenuation_linear_loc
 
 Vec4 AmbientProduct, DiffuseProduct, SpecularProduct;
 float shininess;
-float attenuation_constant = 0.2, attenuation_linear = 1.0, attenuation_quadratic = 1.0;
+float attenuation_constant = 0.2, attenuation_linear = 0.5, attenuation_quadratic = 0.5;
 
 // Camera control variables
 float phi = 70, theta = 90, radius = 3.0;
@@ -80,7 +80,6 @@ Vec4 LightPosition = {0, 0 , 0, 1.0};
 
 // Light ball sphere, not actual light
 Vec4 Light_Color = {1.0, 1.0, 1.0, 1.0};
-
 
 
 Mat4 model_view_matrix =
@@ -102,7 +101,7 @@ Mat4 projection_matrix =
 };
 
 // Transformation matricies for each sphere
-Mat4 transformation_matricies[num_spheres] =
+Mat4 sphere_transformation_matrices[num_spheres] =
 {
     {{1.0, 0.0, 0.0, 0.0},
         {0.0, 1.0, 0.0, 0.0},
@@ -211,14 +210,27 @@ Vec4 curr_sphere_centers[num_spheres] =
 };
 
 
-
+// Ground
+material pole_material = {{0,0,0,1}, {0,0,0,1}, {0,0,0,1}, 100};
 
 
 Vec4 pole_vertices[poleVertices] =
 {
     {-.1, 0, -.7, 1.0},
-    {-2, -1.5, -.7, 1.0},
+    {-.1, -1.5, -.7, 1.0},
     {.1, 0, -.7, 1.0},
+    
+    {.1, 0, -.7, 1.0},
+    {-.1, -1.5, -.7, 1.0},
+    {.1, -1.5, -.7, 1.0},
+};
+
+Mat4 pole_transformation =
+{
+    {1.0, 0.0, 0.0, 0.0},
+    {0.0, 1.0, 0.0, 0.0},
+    {0.0, 0.0, 1.0, 0.0},
+    {0.0, 0.0, 0.0, 1.0}
 };
 
 
@@ -283,7 +295,7 @@ void initGround()
 
 void initPoles()
 {
-    for(int i = 0; i < pole_vertices; i++)
+    for(int i = 0; i < poleVertices; i++)
     {
         
         vecArrayAdd(vertices, v_index, pole_vertices[i].x, pole_vertices[i].y, pole_vertices[i].z, 1);
@@ -292,6 +304,7 @@ void initPoles()
         v_index++;
     }
 }
+
 
 
 
@@ -333,7 +346,7 @@ void init(void)
         
         // Apply scaling, then translation
         temp1 = *matMultiplication(&translation_matrix, &scaling_matrix, &temp1);
-        transformation_matricies[i] = temp1;
+        sphere_transformation_matrices[i] = temp1;
     
         // Move center of next sphere
         x += .5;
@@ -446,10 +459,32 @@ void display(void)
     glDrawArrays(GL_TRIANGLES, 0, groundVertices);
     /////////////////////////////////////////////////////////////////
     
-    // Load pole information
-    /////////////////////////////////////////////////////////////////
+    // Load Pole info
+    ////////////////////
+    temp = *product(pole_material.reflect_ambient, light_ambient, &temp);
+    AmbientProduct = temp;
+    glUniform4fv(AmbientProduct_location, 1, (GLfloat *) &AmbientProduct);
     
-    /////////////////////////////////////////////////////////////////
+    // Diffuse product (array of vectors)
+    temp = *product(pole_material.reflect_diffuse, light_diffuse, &temp);
+    DiffuseProduct = temp;
+    glUniform4fv(DiffuseProduct_location, 1, (GLfloat *) &DiffuseProduct);
+    
+    // Specular product (array of vectors)
+    temp = *product(pole_material.reflect_specular, light_specular, &temp);
+    SpecularProduct = temp;
+    glUniform4fv(SpecularProduct_location, 1, (GLfloat *) &SpecularProduct);
+    
+    // Shininess (array of floats, just sent 1 here)
+    glUniform1f(shininess_location, pole_material.shininess);
+    
+    // Draw ground after sending in all light info.
+    // Else will use whatever is in memory
+    glUniform1i(isShadow_location, 0);
+    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &pole_transformation);
+    glDrawArrays(GL_TRIANGLES, groundVertices, poleVertices);
+    ////////////////////
+    
     
     
     // Load Sphere information
@@ -477,14 +512,14 @@ void display(void)
             
         // Draw sphere after sending in all light info.
         // Else will use whatever is in memory
-        glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &transformation_matricies[i]);
+        glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &sphere_transformation_matrices[i]);
         glUniform1i(isShadow_location, 0);
-        glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
+        glDrawArrays(GL_TRIANGLES, poleVertices + groundVertices + (sphereVertices * i), sphereVertices);
         
             
         // Send in shadow info
         glUniform1i(isShadow_location, 1);
-        glDrawArrays(GL_TRIANGLES, groundVertices + (sphereVertices * i), sphereVertices);
+        glDrawArrays(GL_TRIANGLES,poleVertices + groundVertices + (sphereVertices * i), sphereVertices);
     }
 
     
@@ -663,7 +698,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
         Mat4 translation = *translate(newX, newY, 0.0, &translation);
         Mat4 scale = *scaleMatrix(.25, &scale);
         Mat4 temp = *matMultiplication(&translation, &scale, &temp);
-        transformation_matricies[i] = temp;
+        sphere_transformation_matrices[i] = temp;
         
         // Update current sphere centers
         vecArrayAdd(curr_sphere_centers, i, newX, newY, 0.0, 1.0);
@@ -821,7 +856,7 @@ void idle(void)
                 Mat4 translation = *translate(newX, newY, 0.0, &translation);
                 Mat4 scale = *scaleMatrix(.25, &scale);
                 Mat4 temp = *matMultiplication(&translation, &scale, &temp);
-                transformation_matricies[3] = temp;
+                sphere_transformation_matrices[3] = temp;
             
                 vecArrayAdd(curr_sphere_centers, 3, newX, newY, 0.0, 1.0);
             
@@ -831,7 +866,7 @@ void idle(void)
                 translation = *translate(newX, newY, 0.0, &translation);
                 scale = *scaleMatrix(.25, &scale);
                 temp = *matMultiplication(&translation, &scale, &temp);
-                transformation_matricies[4] = temp;
+                sphere_transformation_matrices[4] = temp;
             
                 // Update current sphere center
                 vecArrayAdd(curr_sphere_centers, 4, newX, newY, 0.0, 1.0);
@@ -853,7 +888,7 @@ void idle(void)
                 Mat4 translation = *translate(newX, newY, 0.0, &translation);
                 Mat4 scale = *scaleMatrix(.25, &scale);
                 Mat4 temp = *matMultiplication(&translation, &scale, &temp);
-                transformation_matricies[3] = temp;
+                sphere_transformation_matrices[3] = temp;
                 
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 3, newX, newY, 0.0, 1.0);
@@ -864,7 +899,7 @@ void idle(void)
                 translation = *translate(newX, newY, 0.0, &translation);
                 scale = *scaleMatrix(.25, &scale);
                 temp = *matMultiplication(&translation, &scale, &temp);
-                transformation_matricies[4] = temp;
+                sphere_transformation_matrices[4] = temp;
                 
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 4, newX, newY, 0.0, 1.0);
@@ -898,7 +933,7 @@ void idle(void)
                   Mat4 translation = *translate(newX, newY, 0.0, &translation);
                   Mat4 scale = *scaleMatrix(.25, &scale);
                   Mat4 temp = *matMultiplication(&translation, &scale, &temp);
-                  transformation_matricies[4] = temp;
+                  sphere_transformation_matrices[4] = temp;
                 
                   // Update current sphere centers
                   vecArrayAdd(curr_sphere_centers, 4, newX, newY, 0.0, 1.0);
@@ -920,7 +955,7 @@ void idle(void)
                 Mat4 translation = *translate(newX, newY, 0.0, &translation);
                 Mat4 scale = *scaleMatrix(.25, &scale);
                 Mat4 temp = *matMultiplication(&translation, &scale, &temp);
-                transformation_matricies[4] = temp;
+                sphere_transformation_matrices[4] = temp;
                 
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 4, newX, newY, 0.0, 1.0);
@@ -946,7 +981,7 @@ void idle(void)
                 Mat4 translation = *translate(newX, newY, 0.0, &translation);
                 Mat4 scale = *scaleMatrix(.25, &scale);
                 Mat4 temp = *matMultiplication(&translation, &scale, &temp);
-                transformation_matricies[1] = temp;
+                sphere_transformation_matrices[1] = temp;
                 
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 1, newX, newY, 0.0, 1.0);
@@ -957,7 +992,7 @@ void idle(void)
                 translation = *translate(newX, newY, 0.0, &translation);
                 scale = *scaleMatrix(.25, &scale);
                 temp = *matMultiplication(&translation, &scale, &temp);
-                transformation_matricies[0] = temp;
+                sphere_transformation_matrices[0] = temp;
                 
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 0, newX, newY, 0.0, 1.0);
@@ -994,7 +1029,7 @@ void idle(void)
                 Mat4 translation = *translate(newX, newY, 0.0, &translation);
                 Mat4 scale = *scaleMatrix(.25, &scale);
                 Mat4 temp = *matMultiplication(&translation, &scale, &temp);
-                transformation_matricies[1] = temp;
+                sphere_transformation_matrices[1] = temp;
                 
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 1, newX, newY, 0.0, 1.0);
@@ -1005,7 +1040,7 @@ void idle(void)
                 translation = *translate(newX, newY, 0.0, &translation);
                 scale = *scaleMatrix(.25, &scale);
                 temp = *matMultiplication(&translation, &scale, &temp);
-                transformation_matricies[0] = temp;
+                sphere_transformation_matrices[0] = temp;
                 
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 0, newX, newY, 0.0, 1.0);
@@ -1031,7 +1066,7 @@ void idle(void)
                 Mat4 translation = *translate(newX, newY, 0.0, &translation);
                 Mat4 scale = *scaleMatrix(.25, &scale);
                 Mat4 temp = *matMultiplication(&translation, &scale, &temp);
-                transformation_matricies[0] = temp;
+                sphere_transformation_matrices[0] = temp;
                 
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 0, newX, newY, 0.0, 1.0);
@@ -1062,7 +1097,7 @@ void idle(void)
                 Mat4 translation = *translate(newX, newY, 0.0, &translation);
                 Mat4 scale = *scaleMatrix(.25, &scale);
                 Mat4 temp = *matMultiplication(&translation, &scale, &temp);
-                transformation_matricies[0] = temp;
+                sphere_transformation_matrices[0] = temp;
                 
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 0, newX, newY, 0.0, 1.0);
@@ -1081,6 +1116,7 @@ void idle(void)
 int main(int argc, char **argv)
 {
     initGround();
+    initPoles();
     
     // OpenGL initializaiton code
     glutInit(&argc, argv);
