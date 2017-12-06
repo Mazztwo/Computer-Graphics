@@ -478,7 +478,7 @@ void display(void)
     // Shininess (array of floats, just sent 1 here)
     glUniform1f(shininess_location, pole_material.shininess);
     
-    // Draw ground after sending in all light info.
+    // Draw poles after sending in all light info.
     // Else will use whatever is in memory
     glUniform1i(isShadow_location, 0);
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &pole_transformation);
@@ -643,7 +643,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
         sphere_degrees[1] -= 5.0;
         ball_up[1] = 1;
         sphere_degrees[0] -= 5.0;
-        ball_up[1] = 1;
+        ball_up[0] = 1;
     }
     else if(key == 'Z')
     {
