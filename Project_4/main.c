@@ -588,7 +588,7 @@ void display(void)
         // Else will use whatever is in memory
         glUniform1i(isShadow_location, 0);
         glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &string_transformation);
-        glDrawArrays(GL_TRIANGLES, groundVertices + poleVertices + (stringVertices*i), stringVertices);
+        glDrawArrays(GL_TRIANGLES, groundVertices + poleVertices + (6*i), 6);
     }
     ////////////////////////////////////////
     
