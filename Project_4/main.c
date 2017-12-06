@@ -67,7 +67,7 @@ GLuint shininess_location, attenuation_constant_location, attenuation_linear_loc
 
 Vec4 AmbientProduct, DiffuseProduct, SpecularProduct;
 float shininess;
-float attenuation_constant = 0.2, attenuation_linear = 0.5, attenuation_quadratic = 0.5;
+float attenuation_constant = 0.1, attenuation_linear = 0.1, attenuation_quadratic = 0.1;
 
 // Camera control variables
 float phi = 70, theta = 90, radius = 3.0;
@@ -76,7 +76,7 @@ float phi = 70, theta = 90, radius = 3.0;
 Vec4 light_ambient = {0.2, 0.2, 0.2, 1.0};
 Vec4 light_diffuse = {1.0, 1.0, 1.0, 1.0};
 Vec4 light_specular = {1.0, 1.0, 1.0, 1.0};
-Vec4 LightPosition = {0, 0 , 0, 1.0};
+Vec4 LightPosition = {0, 2 , .5, 1.0};
 
 // Light ball sphere, not actual light
 Vec4 Light_Color = {1.0, 1.0, 1.0, 1.0};
