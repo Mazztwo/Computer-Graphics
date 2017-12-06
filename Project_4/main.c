@@ -34,10 +34,11 @@
 #define num_spheres 5
 #define num_shadows num_spheres
 #define groundVertices 12
-#define poleVertices 6
+#define poleVertices 18
+#define stringVertices num_spheres * 6
 #define sphereVertices 16206
 ///////// num_vertices is 16206 for a 5 degree increment
-#define num_vertices (num_spheres*sphereVertices) + groundVertices + poleVertices
+#define num_vertices (num_spheres*sphereVertices) + groundVertices + poleVertices + stringVertices
 ////////////////////////////////////////////////////////
 
 Vec4 vertices[num_vertices];
@@ -223,6 +224,14 @@ Vec4 pole_vertices[poleVertices] =
     {.1, 0, -.7, 1.0},
     {-.1, -1.5, -.7, 1.0},
     {.1, -1.5, -.7, 1.0},
+    
+    {-.1, 0, -.7, 1},
+    {-.1, 0, 0, 1},
+    {.1, 0, -.7, 1},
+    
+    {.1, 0, -.7, 1},
+    {-.1, 0, 0, 1},
+    {.1, 0, 0, 1}
 };
 
 Mat4 pole_transformation =
@@ -232,6 +241,9 @@ Mat4 pole_transformation =
     {0.0, 0.0, 1.0, 0.0},
     {0.0, 0.0, 0.0, 1.0}
 };
+
+
+material string_material = {{0,0,0,1}, {0,0,0,1}, {0,0,0,1}, 100};
 
 
 void initSphere(float divisionDegrees)
@@ -461,17 +473,17 @@ void display(void)
     
     // Load Pole info
     ////////////////////
-    temp = *product(pole_material.reflect_ambient, light_ambient, &temp);
+    temp = *product(ground_material.reflect_ambient, light_ambient, &temp);
     AmbientProduct = temp;
     glUniform4fv(AmbientProduct_location, 1, (GLfloat *) &AmbientProduct);
     
     // Diffuse product (array of vectors)
-    temp = *product(pole_material.reflect_diffuse, light_diffuse, &temp);
+    temp = *product(ground_material.reflect_diffuse, light_diffuse, &temp);
     DiffuseProduct = temp;
     glUniform4fv(DiffuseProduct_location, 1, (GLfloat *) &DiffuseProduct);
     
     // Specular product (array of vectors)
-    temp = *product(pole_material.reflect_specular, light_specular, &temp);
+    temp = *product(ground_material.reflect_specular, light_specular, &temp);
     SpecularProduct = temp;
     glUniform4fv(SpecularProduct_location, 1, (GLfloat *) &SpecularProduct);
     
