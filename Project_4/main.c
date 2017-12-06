@@ -245,7 +245,7 @@ Mat4 pole_transformation =
 
 material string_material = {{0,0,0,1}, {0,0,0,1}, {0,0,0,1}, 100};
 
-
+float string_degrees[num_spheres] = {0,0,0,0,0};
 
 
 Vec4 string_vertices[stringVertices] =
@@ -690,6 +690,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     else if(key == 'B')
     {
         sphere_degrees[4] += 5.0;
+        string_degrees[4] += 5.0;
         ball_up[4] = 1;
         
     }
@@ -698,6 +699,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
         if( !(sphere_degrees[4] < 275 ))
         {
             sphere_degrees[4] -= 5.0;
+            string_degrees[4] -= 5.0;
             ball_up[4] = 1;
         }
         else
@@ -814,7 +816,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
 
     
     
-    // Recalculate new sphere &  positions
+    // Recalculate new sphere & string positions
     for(int i = 0; i < num_spheres; i++)
     {
         
@@ -828,6 +830,25 @@ void keyboard(unsigned char key, int mousex, int mousey)
         
         // Update current sphere centers
         vecArrayAdd(curr_sphere_centers, i, newX, newY, 0.0, 1.0);
+        
+        // Update strings
+        temp = *matRotateAboutZ(string_degrees[i], &temp);
+        
+        
+        Mat4 mult =
+        {
+            {1,0,0,0},
+            {0,1,0,0},
+            {0,0,1,0},
+            {0, 0, 0,1}
+        };
+        
+        
+        Mat4 temp2 = *matMultiplication(&mult, &temp, &temp2);
+        //temp = *matMultiplication(&temp2, &string_transformations[i], &temp);
+        string_transformations[i] = temp2;
+        
+        
     }
     
     
