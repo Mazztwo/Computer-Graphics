@@ -246,6 +246,24 @@ Mat4 pole_transformation =
 material string_material = {{0,0,0,1}, {0,0,0,1}, {0,0,0,1}, 100};
 
 
+
+
+Vec4 string_vertices[stringVertices] =
+{
+    {-1.05, 0, 0, 1},
+    {-1.05, -1, 0, 1},
+    {-.95, 0, 0, 1}
+};
+
+Mat4 string_transformation =
+{
+    {1.0, 0.0, 0.0, 0.0},
+    {0.0, 1.0, 0.0, 0.0},
+    {0.0, 0.0, 1.0, 0.0},
+    {0.0, 0.0, 0.0, 1.0}
+};
+
+
 void initSphere(float divisionDegrees)
 {
     
@@ -305,6 +323,7 @@ void initGround()
 
 
 
+
 void initPoles()
 {
     for(int i = 0; i < poleVertices; i++)
@@ -317,6 +336,17 @@ void initPoles()
     }
 }
 
+void initStrings()
+{
+    for(int i = 0; i < stringVertices; i++)
+    {
+        
+        vecArrayAdd(vertices, v_index, string_vertices[i].x, string_vertices[i].y, string_vertices[i].z, 1);
+        vecArrayAdd(normals, v_index, string_vertices[i].x, string_vertices[i].y, string_vertices[i].z, 0);
+        
+        v_index++;
+    }
+}
 
 
 
@@ -497,6 +527,31 @@ void display(void)
     glDrawArrays(GL_TRIANGLES, groundVertices, poleVertices);
     ////////////////////
     
+    // Load strings
+    /////////////////////////////////////////
+    temp = *product(string_material.reflect_ambient, light_ambient, &temp);
+    AmbientProduct = temp;
+    glUniform4fv(AmbientProduct_location, 1, (GLfloat *) &AmbientProduct);
+    
+    // Diffuse product (array of vectors)
+    temp = *product(string_material.reflect_diffuse, light_diffuse, &temp);
+    DiffuseProduct = temp;
+    glUniform4fv(DiffuseProduct_location, 1, (GLfloat *) &DiffuseProduct);
+    
+    // Specular product (array of vectors)
+    temp = *product(string_material.reflect_specular, light_specular, &temp);
+    SpecularProduct = temp;
+    glUniform4fv(SpecularProduct_location, 1, (GLfloat *) &SpecularProduct);
+    
+    // Shininess (array of floats, just sent 1 here)
+    glUniform1f(shininess_location, string_material.shininess);
+    
+    // Draw poles after sending in all light info.
+    // Else will use whatever is in memory
+    glUniform1i(isShadow_location, 0);
+    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &string_transformation);
+    glDrawArrays(GL_TRIANGLES, groundVertices + poleVertices, stringVertices);
+    ////////////////////////////////////////
     
     
     // Load Sphere information
@@ -526,12 +581,12 @@ void display(void)
         // Else will use whatever is in memory
         glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &sphere_transformation_matrices[i]);
         glUniform1i(isShadow_location, 0);
-        glDrawArrays(GL_TRIANGLES, poleVertices + groundVertices + (sphereVertices * i), sphereVertices);
+        glDrawArrays(GL_TRIANGLES, stringVertices + poleVertices + groundVertices + (sphereVertices * i), sphereVertices);
         
             
         // Send in shadow info
         glUniform1i(isShadow_location, 1);
-        glDrawArrays(GL_TRIANGLES,poleVertices + groundVertices + (sphereVertices * i), sphereVertices);
+        glDrawArrays(GL_TRIANGLES, stringVertices + poleVertices + groundVertices + (sphereVertices * i), sphereVertices);
     }
 
     
@@ -1129,6 +1184,7 @@ int main(int argc, char **argv)
 {
     initGround();
     initPoles();
+    initStrings();
     
     // OpenGL initializaiton code
     glutInit(&argc, argv);
