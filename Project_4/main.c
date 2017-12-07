@@ -255,8 +255,9 @@ Mat4 pole_transformation =
 
 material string_material = {{0,0,0,1}, {0,0,0,1}, {0,0,0,1}, 100};
 
-float string_degrees[num_spheres] = {0,0,0,0,0};
 
+float string_degrees[num_spheres] = {0,0,0,0,0};
+float string_offsets[num_spheres] = {1,.5,0,-.5,-1};
 
 Vec4 string_vertices[stringVertices];
 
@@ -850,10 +851,10 @@ void keyboard(unsigned char key, int mousex, int mousey)
         
         
         // Update string positions
-        translation = *translate(-1, 0, 0, &translation);
+        translation = *translate(string_offsets[i], 0, 0, &translation);
         Mat4 rotate = *matRotateAboutZ(string_degrees[i], &rotate);
         temp = *matMultiplication(&rotate, &translation, &temp);
-        translation = *translate(0, 0, 0, &translation);
+        translation = *translate(sphere_offsets[i], 0, 0, &translation);
         Mat4 temp2 = *matMultiplication(&translation, &temp, &temp2);
         string_transformations[i] = temp2;
         
