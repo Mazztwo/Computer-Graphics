@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "main.c"
-            timestampString = "534283238.781483"
+            timestampString = "534351966.026019"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "973"
-            endingLineNumber = "973"
+            startingLineNumber = "844"
+            endingLineNumber = "844"
             landmarkName = "idle"
             landmarkType = "9">
          </BreakpointContent>

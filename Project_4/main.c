@@ -35,7 +35,7 @@
 #define num_shadows num_spheres
 #define groundVertices 12
 #define poleVertices 18
-#define stringVertices num_spheres * 6
+#define stringVertices num_spheres * 2
 #define sphereVertices 16206
 ///////// num_vertices is 16206 for a 5 degree increment
 #define num_vertices (num_spheres*sphereVertices) + groundVertices + poleVertices + stringVertices
@@ -248,48 +248,8 @@ material string_material = {{0,0,0,1}, {0,0,0,1}, {0,0,0,1}, 100};
 float string_degrees[num_spheres] = {0,0,0,0,0};
 
 
-Vec4 string_vertices[stringVertices] =
-{
-    {-1.025, 0, 0, 1},
-    {-1.025, -2, 0, 1},
-    {-.975, 0, 0, 1},
-    
-    {-.975, 0, 0, 1},
-    {-1.025, -2, 0, 1},
-    {-.975, -2, 0, 1},
-    
-    {-.525, 0, 0, 1},
-    {-.525, -2, 0, 1},
-    {-.475, 0, 0, 1},
-    
-    {-.475, 0, 0, 1},
-    {-.525, -2, 0, 1},
-    {-.475, -2, 0, 1},
-    
-    {-.025, 0, 0, 1},
-    {-.025, -2, 0, 1},
-    {.025, 0, 0, 1},
-    
-    {.025, 0, 0, 1},
-    {-.025, -2, 0, 1},
-    {.025, -2, 0, 1},
-    
-    {.475, 0, 0, 1},
-    {.525, -2, 0, 1},
-    {.475, -2, 0, 1},
-    
-    {.525, 0, 0, 1},
-    {.525, -2, 0, 1},
-    {.475, 0, 0, 1},
-    
-    {.975, 0, 0, 1},
-    {1.025, -2, 0, 1},
-    {.975, -2, 0, 1},
-    
-    {1.025, 0, 0, 1},
-    {1.025, -2, 0, 1},
-    {.975, 0, 0, 1},
-};
+Vec4 string_vertices[stringVertices];
+
 
 Mat4 string_transformations[num_spheres] =
 {
@@ -392,17 +352,22 @@ void initPoles()
     }
 }
 
+
 void initStrings()
 {
-    for(int i = 0; i < stringVertices; i++)
+    for(int i = 0; i < num_spheres; i++)
     {
         
-        vecArrayAdd(vertices, v_index, string_vertices[i].x, string_vertices[i].y, string_vertices[i].z, 1);
-        vecArrayAdd(normals, v_index, string_vertices[i].x, string_vertices[i].y, string_vertices[i].z, 0);
+        vecArrayAdd(vertices, v_index, sphere_offsets[i], 0, 0, 1);
+        vecArrayAdd(normals, v_index, sphere_offsets[i], 0, 0, 0);
+        v_index++;
         
+        vecArrayAdd(vertices, v_index, resting_sphere_centers[i].x, resting_sphere_centers[i].y, resting_sphere_centers[i].z, 1);
+        vecArrayAdd(normals, v_index, resting_sphere_centers[i].x, resting_sphere_centers[i].y, resting_sphere_centers[i].z, 0);
         v_index++;
     }
 }
+
 
 
 
@@ -449,6 +414,10 @@ void init(void)
         // Move center of next sphere
         x += .5;
     }
+    
+   
+    
+
     
 
     GLuint program = initShader("vshader.glsl", "fshader.glsl");
@@ -510,11 +479,15 @@ void init(void)
 
 
 
+
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glPolygonMode(GL_FRONT, GL_FILL);
     glPolygonMode(GL_BACK, GL_FILL);
+   
+    glEnable(GL_LINE_SMOOTH);
+    glHint(GL_LINE_SMOOTH_HINT,  GL_NICEST);
     
     // Light Position
     glUniform4fv(LightPosition_location, 1, (GLfloat *) &LightPosition);
@@ -608,7 +581,7 @@ void display(void)
         // Else will use whatever is in memory
         glUniform1i(isShadow_location, 0);
         glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &string_transformations[i]);
-        glDrawArrays(GL_TRIANGLES, groundVertices + poleVertices + (6*i), 6);
+        glDrawArrays(GL_LINES, groundVertices + poleVertices + (2*i), 2);
     }
     ////////////////////////////////////////
     
@@ -647,9 +620,6 @@ void display(void)
         glUniform1i(isShadow_location, 1);
         glDrawArrays(GL_TRIANGLES, stringVertices + poleVertices + groundVertices + (sphereVertices * i), sphereVertices);
     }
-
-    
-    
     
     
     glutSwapBuffers();
@@ -831,22 +801,11 @@ void keyboard(unsigned char key, int mousex, int mousey)
         // Update current sphere centers
         vecArrayAdd(curr_sphere_centers, i, newX, newY, 0.0, 1.0);
         
+        
+        
+        
         // Update strings
-        temp = *matRotateAboutZ(string_degrees[i], &temp);
-        
-        
-        Mat4 mult =
-        {
-            {1,0,0,0},
-            {0,1,0,0},
-            {0,0,1,0},
-            {0, 0, 0,1}
-        };
-        
-        
-        Mat4 temp2 = *matMultiplication(&mult, &temp, &temp2);
-        //temp = *matMultiplication(&temp2, &string_transformations[i], &temp);
-        string_transformations[i] = temp2;
+      
         
         
     }
@@ -867,94 +826,6 @@ void keyboard(unsigned char key, int mousex, int mousey)
 }
 
 
-// Listner for mouse button events
-void mouse(int button, int state, int x, int y)
-{
-    if(button == GLUT_LEFT_BUTTON)
-    {
-   
-    }
-    
-    glutPostRedisplay();
-}
-
-
-
-
-
-// Listner for mouse motion
-void motion(int x, int y)
-{
-    // Read Pixel Color under mouse.
-    // R: first number is biggest
-    // G: second number is biggest
-    // B: third number is biggest
-    // Y: first two numbers are equal
-    // SkyBlue: last two numbers are equal
-    // Solid colors: All three numbers are the same
-    unsigned char color[3];
-    glReadPixels(x, 750 - y, 1,1,GL_RGB, GL_UNSIGNED_BYTE, &color);
-    
-    //printf("Color: [%d %d %d]\n", color[0], color[1], color[2]);
-    
-    
-    // Translate sphere center to be where mouse is...?
-    // Generate translation matrix to be at curr mouse position
-    GLint window[4]; //var to hold the viewport info
-    GLdouble modelview[16]; //var to hold the modelview info
-    GLdouble projection[16]; //var to hold the projection matrix info
-    GLfloat winX, winY, winZ; //variables to hold screen x,y,z coordinates
-    GLdouble worldX, worldY, worldZ; //variables to hold world x,y,z coordinates
-    
-    glGetDoublev( GL_MODELVIEW_MATRIX, modelview ); //get the modelview info
-    glGetDoublev( GL_PROJECTION_MATRIX, projection ); //get the projection matrix info
-    glGetIntegerv( GL_VIEWPORT, window ); //get the viewport info
-    
-    // Calculate window based on world
-    winX = (float)x;
-    winY = (float)window[3] - (float)y;
-    winZ = 0;
-    
-    //get the world coordinates from the screen coordinates
-    gluUnProject( winX, winY, winZ, modelview, projection, window, &worldX, &worldY, &worldZ);
-    
-    printf("x: %f, y: %f, z: %f\n", worldX, worldY, 0.0);
-    
-    
-    
-    // Red ball
-    if( (color[0] > color[1]) && (color[0] > color[2]))
-    {
-        /*
-        Vec4 old = *vec4create(curr_sphere_centers[0].x,
-                              curr_sphere_centers[0].y,
-                              0.0,
-                              1.0,
-                              &old);
-        
-        Vec4 new = *vec4create(x, y, 0.0, 1.0, &new);
-        
-        Vec4 direction = *vec4subtraction(&new, &old, &direction);
-        Vec4 normalizedDirection = *scalarMultVector((1.0/vecMagnitude(&direction)), &direction, &normalizedDirection);
-        
-        direction = *vec4addition(&normalizedDirection, &old, &direction);
-    
-        Mat4 translation = *translate(old.x + direction.x, old.y + direction.y, 0.0, &translation);
-        Mat4 temp = *matMultiplication(&translation, &transformation_matricies[0], &temp);
-        transformation_matricies[0] = temp;
-      
-        curr_sphere_centers[0].x = old.x + direction.x;
-        curr_sphere_centers[0].y = old.y + direction.y;
-        */
-        
-        
-        
-        
-    }
-    
-    
-    glutPostRedisplay();
-}
 
 
 
@@ -1275,8 +1146,6 @@ int main(int argc, char **argv)
     init();
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
-    glutMouseFunc(mouse);
-    glutMotionFunc(motion);
     glutIdleFunc(idle);
     glutMainLoop();
     
