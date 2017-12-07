@@ -845,11 +845,6 @@ void keyboard(unsigned char key, int mousex, int mousey)
         vecArrayAdd(curr_sphere_centers, i, newX, newY, 0.0, 1.0);
         
         
-        
-        
-        
-        
-        
         // Update string positions
         translation = *translate(string_offsets[i], 0, 0, &translation);
         Mat4 rotate = *matRotateAboutZ(string_degrees[i], &rotate);
@@ -890,6 +885,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
 
 
 
+
 void idle(void)
 {
     if(enableIdle)
@@ -906,13 +902,22 @@ void idle(void)
             
                 sphere_degrees[3] -= velocity;
                 sphere_degrees[4] -= velocity;
+                
+                string_degrees[3] -= velocity;
+                string_degrees[4] -= velocity;
             
                 if(sphere_degrees[3] < 270)
                 {
                     sphere_degrees[3] = 270;
                     sphere_degrees[4] = 270;
                     sphere_degrees[0] = 270;
-                    sphere_degrees[0] = 270;
+                    sphere_degrees[1] = 270;
+                    
+                    string_degrees[3] = 0;
+                    string_degrees[4] = 0;
+                    string_degrees[0] = 0;
+                    string_degrees[1] = 0;
+                    
                     ball_up[3] = 0;
                     ball_up[4] = 0;
                     ball_up[0] = 1;
@@ -929,6 +934,16 @@ void idle(void)
             
                 vecArrayAdd(curr_sphere_centers, 3, newX, newY, 0.0, 1.0);
             
+                
+                // Update string position
+                translation = *translate(string_offsets[3], 0, 0, &translation);
+                Mat4 rotate = *matRotateAboutZ(string_degrees[3], &rotate);
+                temp = *matMultiplication(&rotate, &translation, &temp);
+                translation = *translate(sphere_offsets[3], 0, 0, &translation);
+                Mat4 temp2 = *matMultiplication(&translation, &temp, &temp2);
+                string_transformations[3] = temp2;
+                
+                
                 newX = 2*cosf(DegreesToRadians*sphere_degrees[4]) + sphere_offsets[4];
                 newY = 2*sinf(DegreesToRadians*sphere_degrees[4]);
             
@@ -939,6 +954,16 @@ void idle(void)
             
                 // Update current sphere center
                 vecArrayAdd(curr_sphere_centers, 4, newX, newY, 0.0, 1.0);
+                
+                
+                // Update string position
+                translation = *translate(string_offsets[4], 0, 0, &translation);
+                rotate = *matRotateAboutZ(string_degrees[4], &rotate);
+                temp = *matMultiplication(&rotate, &translation, &temp);
+                translation = *translate(sphere_offsets[4], 0, 0, &translation);
+                temp2 = *matMultiplication(&translation, &temp, &temp2);
+                string_transformations[4] = temp2;
+                
             }
             else
             {
@@ -951,6 +976,9 @@ void idle(void)
                 sphere_degrees[3] -= velocity;
                 sphere_degrees[4] -= velocity;
                 
+                string_degrees[3] -= velocity;
+                string_degrees[4] -= velocity;
+                
                 float newX = 2*cosf(DegreesToRadians*sphere_degrees[3]) + sphere_offsets[3];
                 float newY = 2*sinf(DegreesToRadians*sphere_degrees[3]);
                 
@@ -962,6 +990,15 @@ void idle(void)
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 3, newX, newY, 0.0, 1.0);
                 
+                
+                // Update string position
+                translation = *translate(string_offsets[3], 0, 0, &translation);
+                Mat4 rotate = *matRotateAboutZ(string_degrees[3], &rotate);
+                temp = *matMultiplication(&rotate, &translation, &temp);
+                translation = *translate(sphere_offsets[3], 0, 0, &translation);
+                Mat4 temp2 = *matMultiplication(&translation, &temp, &temp2);
+                string_transformations[3] = temp2;
+                
                 newX = 2*cosf(DegreesToRadians*sphere_degrees[4]) + sphere_offsets[4];
                 newY = 2*sinf(DegreesToRadians*sphere_degrees[4]);
                 
@@ -972,6 +1009,15 @@ void idle(void)
                 
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 4, newX, newY, 0.0, 1.0);
+                
+                
+                // Update string position
+                translation = *translate(string_offsets[4], 0, 0, &translation);
+                rotate = *matRotateAboutZ(string_degrees[4], &rotate);
+                temp = *matMultiplication(&rotate, &translation, &temp);
+                translation = *translate(sphere_offsets[4], 0, 0, &translation);
+                temp2 = *matMultiplication(&translation, &temp, &temp2);
+                string_transformations[4] = temp2;
             }
         }
         else if(ball_up[4])
@@ -987,11 +1033,16 @@ void idle(void)
                 velocity += deltaTime * GRAVITY;
               
                 sphere_degrees[4] -= velocity;
+                string_degrees[4] -= velocity;
                 
                 if(sphere_degrees[4] < 270)
                 {
                     sphere_degrees[4] = 270;
                     sphere_degrees[0] = 270;
+                    
+                    string_degrees[4] = 0;
+                    string_degrees[0] = 0;
+                    
                     ball_up[4] = 0;
                     ball_up[0] = 1;
                 }
@@ -1006,6 +1057,15 @@ void idle(void)
                 
                   // Update current sphere centers
                   vecArrayAdd(curr_sphere_centers, 4, newX, newY, 0.0, 1.0);
+                
+                
+                // Update string position
+                translation = *translate(string_offsets[4], 0, 0, &translation);
+                Mat4 rotate = *matRotateAboutZ(string_degrees[4], &rotate);
+                temp = *matMultiplication(&rotate, &translation, &temp);
+                translation = *translate(sphere_offsets[4], 0, 0, &translation);
+                Mat4 temp2 = *matMultiplication(&translation, &temp, &temp2);
+                string_transformations[4] = temp2;
             }
             else // velocity less than 0
             {
@@ -1017,6 +1077,7 @@ void idle(void)
                 velocity += deltaTime * GRAVITY;
                 
                 sphere_degrees[4] -= velocity;
+                string_degrees[4] -= velocity;
                 
                 float newX = 2*cosf(DegreesToRadians*sphere_degrees[4]) + sphere_offsets[4];
                 float newY = 2*sinf(DegreesToRadians*sphere_degrees[4]);
@@ -1028,6 +1089,14 @@ void idle(void)
                 
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 4, newX, newY, 0.0, 1.0);
+                
+                // Update string position
+                translation = *translate(string_offsets[4], 0, 0, &translation);
+                Mat4 rotate = *matRotateAboutZ(string_degrees[4], &rotate);
+                temp = *matMultiplication(&rotate, &translation, &temp);
+                translation = *translate(sphere_offsets[4], 0, 0, &translation);
+                Mat4 temp2 = *matMultiplication(&translation, &temp, &temp2);
+                string_transformations[4] = temp2;
             }
         }
         else if(ball_up[1] && ball_up[0])
@@ -1044,6 +1113,9 @@ void idle(void)
                 sphere_degrees[1] -= velocity;
                 sphere_degrees[0] -= velocity;
                 
+                string_degrees[1] -= velocity;
+                string_degrees[0] -= velocity;
+                
                 float newX = 2*cosf(DegreesToRadians*sphere_degrees[1]) + sphere_offsets[1];
                 float newY = 2*sinf(DegreesToRadians*sphere_degrees[1]);
                 
@@ -1055,6 +1127,14 @@ void idle(void)
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 1, newX, newY, 0.0, 1.0);
                 
+                // Update string position
+                translation = *translate(string_offsets[1], 0, 0, &translation);
+                Mat4 rotate = *matRotateAboutZ(string_degrees[1], &rotate);
+                temp = *matMultiplication(&rotate, &translation, &temp);
+                translation = *translate(sphere_offsets[1], 0, 0, &translation);
+                Mat4 temp2 = *matMultiplication(&translation, &temp, &temp2);
+                string_transformations[1] = temp2;
+                
                 newX = 2*cosf(DegreesToRadians*sphere_degrees[0]) + sphere_offsets[0];
                 newY = 2*sinf(DegreesToRadians*sphere_degrees[0]);
                 
@@ -1065,6 +1145,14 @@ void idle(void)
                 
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 0, newX, newY, 0.0, 1.0);
+                
+                // Update string position
+                translation = *translate(string_offsets[0], 0, 0, &translation);
+                rotate = *matRotateAboutZ(string_degrees[0], &rotate);
+                temp = *matMultiplication(&rotate, &translation, &temp);
+                translation = *translate(sphere_offsets[0], 0, 0, &translation);
+                temp2 = *matMultiplication(&translation, &temp, &temp2);
+                string_transformations[0] = temp2;
                 
             }
             else // velocity is zero or less
@@ -1078,12 +1166,21 @@ void idle(void)
                 sphere_degrees[1] -= velocity;
                 sphere_degrees[0] -= velocity;
                 
+                string_degrees[1] -= velocity;
+                string_degrees[0] -= velocity;
+                
                 if(sphere_degrees[1] > 270)
                 {
                     sphere_degrees[1] = 270;
                     sphere_degrees[0] = 270;
                     sphere_degrees[3] = 270;
                     sphere_degrees[4] = 270;
+                    
+                    string_degrees[1] = 0;
+                    string_degrees[0] = 0;
+                    string_degrees[3] = 0;
+                    string_degrees[4] = 0;
+                    
                     ball_up[3] = 1;
                     ball_up[4] = 1;
                     ball_up[0] = 0;
@@ -1103,6 +1200,14 @@ void idle(void)
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 1, newX, newY, 0.0, 1.0);
                 
+                // Update string position
+                translation = *translate(string_offsets[1], 0, 0, &translation);
+                Mat4 rotate = *matRotateAboutZ(string_degrees[1], &rotate);
+                temp = *matMultiplication(&rotate, &translation, &temp);
+                translation = *translate(sphere_offsets[1], 0, 0, &translation);
+                Mat4 temp2 = *matMultiplication(&translation, &temp, &temp2);
+                string_transformations[1] = temp2;
+                
                 newX = 2*cosf(DegreesToRadians*sphere_degrees[0]) + sphere_offsets[0];
                 newY = 2*sinf(DegreesToRadians*sphere_degrees[0]);
                 
@@ -1113,6 +1218,14 @@ void idle(void)
                 
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 0, newX, newY, 0.0, 1.0);
+                
+                // Update string position
+                translation = *translate(string_offsets[0], 0, 0, &translation);
+                rotate = *matRotateAboutZ(string_degrees[0], &rotate);
+                temp = *matMultiplication(&rotate, &translation, &temp);
+                translation = *translate(sphere_offsets[0], 0, 0, &translation);
+                temp2 = *matMultiplication(&translation, &temp, &temp2);
+                string_transformations[0] = temp2;
                 
             }
         }
@@ -1128,6 +1241,7 @@ void idle(void)
                 velocity -= deltaTime * GRAVITY;
                 
                 sphere_degrees[0] -= velocity;
+                string_degrees[0] -= velocity;
                 
                 float newX = 2*cosf(DegreesToRadians*sphere_degrees[0]) + sphere_offsets[0];
                 float newY = 2*sinf(DegreesToRadians*sphere_degrees[0]);
@@ -1140,6 +1254,14 @@ void idle(void)
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 0, newX, newY, 0.0, 1.0);
                 
+                // Update string position
+                translation = *translate(string_offsets[0], 0, 0, &translation);
+                Mat4 rotate = *matRotateAboutZ(string_degrees[0], &rotate);
+                temp = *matMultiplication(&rotate, &translation, &temp);
+                translation = *translate(sphere_offsets[0], 0, 0, &translation);
+                Mat4 temp2 = *matMultiplication(&translation, &temp, &temp2);
+                string_transformations[0] = temp2;
+                
             }
             else // velocity is zero or less
             {
@@ -1150,11 +1272,16 @@ void idle(void)
                 velocity -= deltaTime * GRAVITY;
                 
                 sphere_degrees[0] -= velocity;
+                string_degrees[0] -= velocity;
                 
                 if(sphere_degrees[0] > 270)
                 {
                     sphere_degrees[0] = 270;
                     sphere_degrees[4] = 270;
+                    
+                    string_degrees[0] = 0;
+                    string_degrees[4] = 0;
+                    
                     ball_up[4] = 1;
                     ball_up[0] = 0;
                 }
@@ -1170,6 +1297,14 @@ void idle(void)
                 
                 // Update current sphere centers
                 vecArrayAdd(curr_sphere_centers, 0, newX, newY, 0.0, 1.0);
+                
+                // Update string position
+                translation = *translate(string_offsets[0], 0, 0, &translation);
+                Mat4 rotate = *matRotateAboutZ(string_degrees[0], &rotate);
+                temp = *matMultiplication(&rotate, &translation, &temp);
+                translation = *translate(sphere_offsets[0], 0, 0, &translation);
+                Mat4 temp2 = *matMultiplication(&translation, &temp, &temp2);
+                string_transformations[0] = temp2;
                 
             }
         }
