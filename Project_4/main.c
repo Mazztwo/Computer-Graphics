@@ -387,6 +387,7 @@ void initStrings()
 
 
 
+
 void init(void)
 {
     
@@ -689,6 +690,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     else if(key == 'B')
     {
         sphere_degrees[4] += 5.0;
+        string_degrees[4] += 5.0;
         ball_up[4] = 1;
         
     }
@@ -697,6 +699,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
         if( !(sphere_degrees[4] < 275 ))
         {
             sphere_degrees[4] -= 5.0;
+            string_degrees[4] -= 5.0;
             ball_up[4] = 1;
         }
         else
@@ -707,9 +710,11 @@ void keyboard(unsigned char key, int mousex, int mousey)
     else if(key == 'V')
     {
         sphere_degrees[3] += 5.0;
+        string_degrees[3] += 5.0;
         ball_up[3] = 1;
         
         sphere_degrees[4] += 5.0;
+        string_degrees[4] += 5.0;
         ball_up[4] = 1;
         
     }
@@ -718,6 +723,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
         if( !(sphere_degrees[3] < 275 ))
         {
             sphere_degrees[3] -= 5.0;
+            string_degrees[3] -= 5.0;
             ball_up[3] = 1;
         }
         else
@@ -728,6 +734,8 @@ void keyboard(unsigned char key, int mousex, int mousey)
     else if(key == 'C')
     {
         sphere_degrees[2] += 5.0;
+        string_degrees[2] += 5.0;
+        
         if(sphere_degrees[2] != 270)
         {
             ball_up[2] = 1;
@@ -740,6 +748,8 @@ void keyboard(unsigned char key, int mousex, int mousey)
     else if(key == 'c')
     {
         sphere_degrees[2] -= 5.0;
+        string_degrees[2] -= 5.0;
+        
         if(sphere_degrees[2] != 270)
         {
             ball_up[2] = 1;
@@ -755,6 +765,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
         if( !(sphere_degrees[1] > 265 ))
         {
             sphere_degrees[1] += 5.0;
+            string_degrees[1] += 5.0;
             ball_up[1] = 1;
         }
         else
@@ -766,8 +777,10 @@ void keyboard(unsigned char key, int mousex, int mousey)
     else if(key == 'x')
     {
         sphere_degrees[1] -= 5.0;
+        string_degrees[1] -= 5.0;
         ball_up[1] = 1;
         sphere_degrees[0] -= 5.0;
+        string_degrees[0] -= 5.0;
         ball_up[0] = 1;
     }
     else if(key == 'Z')
@@ -775,6 +788,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
         if( !(sphere_degrees[0] > 265 ))
         {
             sphere_degrees[0] += 5.0;
+            string_degrees[0] += 5.0;
             ball_up[0] = 1;
         }
         else
@@ -786,6 +800,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
     else if(key == 'z')
     {
         sphere_degrees[0] -= 5.0;
+        string_degrees[0] -= 5.0;
         ball_up[0] = 1;
     }
     // Start swinging animation
@@ -827,6 +842,23 @@ void keyboard(unsigned char key, int mousex, int mousey)
         
         // Update current sphere centers
         vecArrayAdd(curr_sphere_centers, i, newX, newY, 0.0, 1.0);
+        
+        
+        
+        
+        
+        
+        
+        // Update string positions
+        translation = *translate(-1, 0, 0, &translation);
+        Mat4 rotate = *matRotateAboutZ(string_degrees[i], &rotate);
+        temp = *matMultiplication(&rotate, &translation, &temp);
+        translation = *translate(0, 0, 0, &translation);
+        Mat4 temp2 = *matMultiplication(&translation, &temp, &temp2);
+        string_transformations[i] = temp2;
+        
+        
+        
     }
     
     
