@@ -231,7 +231,17 @@ Vec4 pole_vertices[poleVertices] =
     
     {.1, 0, -.7, 1},
     {-.1, 0, 0, 1},
-    {.1, 0, 0, 1}
+    {.1, 0, 0, 1},
+    
+    {-1, 0, -.05, 1},
+    {-1, 0, .05, 1},
+    {1, 0, -.05, 1},
+    
+    {1, 0, -.05, 1},
+    {-1, 0, .05, 1},
+    {1, 0, 0.05, 1}
+    
+    
 };
 
 Mat4 pole_transformation =
@@ -323,6 +333,8 @@ void initSphere(float divisionDegrees)
 
 
 
+
+
 void initGround()
 {
     for(int i = 0; i < groundVertices; i++)
@@ -357,10 +369,13 @@ void initStrings()
 {
     for(int i = 0; i < num_spheres; i++)
     {
+        printf("Index: %i\n",v_index);
         
         vecArrayAdd(vertices, v_index, sphere_offsets[i], 0, 0, 1);
         vecArrayAdd(normals, v_index, sphere_offsets[i], 0, 0, 0);
         v_index++;
+        
+        printf("Index: %i\n",v_index);
         
         vecArrayAdd(vertices, v_index, resting_sphere_centers[i].x, resting_sphere_centers[i].y, resting_sphere_centers[i].z, 1);
         vecArrayAdd(normals, v_index, resting_sphere_centers[i].x, resting_sphere_centers[i].y, resting_sphere_centers[i].z, 0);
@@ -473,13 +488,6 @@ void init(void)
 
 
 
-
-
-
-
-
-
-
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -556,6 +564,18 @@ void display(void)
     glDrawArrays(GL_TRIANGLES, groundVertices, poleVertices);
     ////////////////////
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     // Load strings
     /////////////////////////////////////////
     for(int i = 0; i < num_spheres; i++)
@@ -584,6 +604,15 @@ void display(void)
         glDrawArrays(GL_LINES, groundVertices + poleVertices + (2*i), 2);
     }
     ////////////////////////////////////////
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     // Load Sphere information
@@ -660,7 +689,6 @@ void keyboard(unsigned char key, int mousex, int mousey)
     else if(key == 'B')
     {
         sphere_degrees[4] += 5.0;
-        string_degrees[4] += 5.0;
         ball_up[4] = 1;
         
     }
@@ -669,7 +697,6 @@ void keyboard(unsigned char key, int mousex, int mousey)
         if( !(sphere_degrees[4] < 275 ))
         {
             sphere_degrees[4] -= 5.0;
-            string_degrees[4] -= 5.0;
             ball_up[4] = 1;
         }
         else
@@ -786,7 +813,7 @@ void keyboard(unsigned char key, int mousex, int mousey)
 
     
     
-    // Recalculate new sphere & string positions
+    // Recalculate new sphere positions
     for(int i = 0; i < num_spheres; i++)
     {
         
@@ -800,14 +827,6 @@ void keyboard(unsigned char key, int mousex, int mousey)
         
         // Update current sphere centers
         vecArrayAdd(curr_sphere_centers, i, newX, newY, 0.0, 1.0);
-        
-        
-        
-        
-        // Update strings
-      
-        
-        
     }
     
     
@@ -819,7 +838,6 @@ void keyboard(unsigned char key, int mousex, int mousey)
     Mat4 temp1 = look_at(eyex, eyey, eyez, atx, aty, atz, 0.0, 1.0, 0.0);
     model_view_matrix = temp1;
     
-
 
     glutPostRedisplay();
     
